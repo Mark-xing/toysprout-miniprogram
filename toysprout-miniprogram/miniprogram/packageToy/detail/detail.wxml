@@ -1,0 +1,66 @@
+<!-- packageToy/detail/detail.wxml -->
+<view class="page detail-page">
+  <view wx:if="{{loading}}" class="loading-state">正在加载玩具详情…</view>
+  <view wx:else>
+    <swiper class="detail-swiper" indicator-dots indicator-color="rgba(0,0,0,0.2)" indicator-active-color="#C94324">
+      <swiper-item wx:for="{{toy.images}}" wx:key="*this">
+        <image src="{{item}}" mode="aspectFill" class="detail-swiper__img" />
+      </swiper-item>
+    </swiper>
+
+    <view class="page" style="padding-top:24rpx;">
+      <text class="h2">{{toy.title}}</text>
+      <view class="flex-wrap" style="margin:16rpx 0;">
+        <text class="badge {{conditionCls}}">{{conditionLabel}}</text>
+        <text class="safety-tag safety-tag--age">适合 {{toy.ageRange}} 岁</text>
+        <text wx:if="{{toy.hasSmallParts}}" class="safety-tag safety-tag--warn">含小零件 · 3岁以下慎玩</text>
+        <text class="badge" style="background:var(--color-accent-tint);color:var(--color-accent-strong);">{{toy.points}} 积分</text>
+        <text wx:if="{{toy.isFreeShipping}}" class="safety-tag" style="color:var(--color-success);">包邮</text>
+      </view>
+      <!-- 不要写 {{a}} · {{b}} · {{c}}：WXML 会把 null 渲染成字面量「null」，
+           city 为空时页面会真的显示「积木拼搭 · null · 发布于 …」。已在 JS 侧用 joinMeta 滤空。 -->
+      <text class="caption text-tertiary">{{metaLine}}</text>
+      <view class="card card--muted" style="margin-top:20rpx;">
+        <text class="body-sm text-secondary">{{toy.description || '主人未填写描述'}}</text>
+      </view>
+
+      <view class="card" style="margin-top:20rpx;">
+        <view class="flex-row gap-2">
+          <image wx:if="{{hasOwnerAvatar}}" class="author-avatar author-avatar--img" src="{{toy.owner.avatarUrl}}" mode="aspectFill" binderror="onOwnerAvatarError" />
+          <view wx:else class="author-avatar"></view>
+          <view style="flex:1;">
+            <view class="flex-row gap-2">
+              <text class="body-sm" style="font-weight:600;">{{toy.owner.name || '未知家长'}}</text>
+              <text wx:if="{{toy.owner.isVerified}}" class="verified-badge">已实名</text>
+            </view>
+            <!-- 同上：creditScore 缺失时不能靠模板消隐，用 JS 侧拼好的 creditLine -->
+            <text class="badge {{creditCls}}" style="margin-top:8rpx;display:inline-block;">{{creditLine}}</text>
+            <text class="caption text-tertiary" style="display:block;margin-top:8rpx;">
+              {{reviewSummaryText}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="notice-bar" wx:if="{{shippingPreview}}" style="margin-top:20rpx;">
+        <text>{{shippingPreview.shippingNote}}</text>
+      </view>
+
+      <view class="notice-bar" style="margin-top:12rpx;">
+        <text>一换一：双方互相看中对方玩具时可直接交换，运费双方协商；积分兑换：无需对方同意，立即兑换</text>
+      </view>
+
+      <!-- 自己的玩具：积分兑换（swap.redeemWithPoints）与一换一（swap.create）在服务端都会 400 拒绝，
+           继续显示这两个按钮只会让用户点了没有任何反应。直接换成说明。 -->
+      <view wx:if="{{isMine}}" class="notice-bar" style="margin-top:32rpx;">
+        <text>这是你发布的玩具，不能对自己发起交换或用积分兑换。可到「我的」页管理它。</text>
+      </view>
+      <view wx:else style="margin-top:32rpx;display:flex;gap:16rpx;">
+        <button class="btn btn--primary" style="flex:1;" loading="{{redeeming}}" bindtap="onRedeemTap">
+          用 {{toy.points}} 积分兑换
+        </button>
+        <button class="btn btn--secondary" style="flex:1;" bindtap="onSwapTap">发起一换一交换</button>
+      </view>
+    </view>
+  </view>
+</view>

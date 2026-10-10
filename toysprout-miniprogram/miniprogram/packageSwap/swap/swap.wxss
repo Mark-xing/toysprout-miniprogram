@@ -1,0 +1,7 @@
+/* packageSwap/swap/swap.wxss */
+.target-img { width: 160rpx; height: 120rpx; border-radius: 16rpx; flex-shrink: 0; }
+.my-toy-row {
+  display: flex; align-items: center; gap: 16rpx; padding: 20rpx 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+.my-toy-row:last-child { border-bottom: none; }

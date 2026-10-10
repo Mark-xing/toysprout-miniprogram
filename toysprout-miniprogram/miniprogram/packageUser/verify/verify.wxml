@@ -1,0 +1,16 @@
+<!-- packageUser/verify/verify.wxml -->
+<view class="page verify-page">
+  <view class="card">
+    <text class="h4" style="display:block;margin-bottom:8rpx;">实名认证</text>
+    <text class="caption text-secondary" style="display:block;margin-bottom:24rpx;">仅存身份证哈希与掩码，不落地明文，保障您的隐私安全</text>
+    <view class="field">
+      <text class="field-label">真实姓名</text>
+      <input class="input" placeholder="请输入真实姓名" value="{{name}}" bindinput="onNameInput" />
+    </view>
+    <view class="field">
+      <text class="field-label">身份证号（18位）</text>
+      <input class="input" placeholder="请输入身份证号" value="{{idCard}}" bindinput="onIdCardInput" maxlength="18" />
+    </view>
+    <button class="btn btn--primary btn--block" bindtap="onSubmit" loading="{{submitting}}">提交实名认证</button>
+  </view>
+</view>

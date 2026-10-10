@@ -1,0 +1,10 @@
+{
+  "name": "membership",
+  "version": "1.0.0",
+  "description": "童芽 ToySprout · 会员订阅云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "uuid": "^9.0.1"
+  }
+}

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交换订单详情 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21V12"/><path d="M12 15c-3-1.6-5.4-4.6-5.8-8C10 7 13 8.8 14 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15c3-1.6 5.4-4.6 5.8-8C14 7 11 8.8 10 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-growing" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 13c-2.8-1.7-5.6-2.3-8-2.1C4.4 8 6.8 12.8 12 13z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9c2.8-1.7 5.6-2.3 8-2.1C19.6 4 17.2 8.8 12 9z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.3l1.1 2.3 2.5.35-1.8 1.8.4 2.5L12 14.3l-2.2 1.2.4-2.5-1.8-1.8 2.5-.35z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="8" width="15" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 12h13v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 8c-2.5 0-4.2-1-4.2-2.7C7.8 3.6 9.6 2.8 12 4.4 14.4 2.8 16.2 3.6 16.2 5.3 16.2 7 14.5 8 12 8z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wrinkle" viewBox="0 0 24 24"><path d="M5 8c3.5 0 3.5 2 7 2s3.5-2 7-2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M5 16c3.5 0 3.5-2 7-2s3.5 2 7 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-family" viewBox="0 0 24 24"><path d="M4 11.5l8-7 8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 9.5V20h11V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.2 15l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-parcel" viewBox="0 0 24 24"><path d="M4 7.2l8-3.2 8 3.2v9.6l-8 3.2-8-3.2z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.2l8 3.2 8-3.2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10.4V20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6.5h10.5v9H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 9.5H17l3.5 3.5v2.5h-7z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="16.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.5l8 3.5 8-3.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11v9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M9.5 8.5l2 2 3-3" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4.5L3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 8H15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M17 19.5L20.5 16 17 12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 16H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 16.8h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 20l-4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M5 15.5V6a1 1 0 0 1 1-1h9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9.5l6 5.5 6-5.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 20.5c1.2-3.8 3.9-5.7 7.5-5.7s6.3 1.9 7.5 5.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5.5h16v11.5H9.5L4 20.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.2-5.6-6.2-10.3a6.2 6.2 0 1 1 12.4 0C18.2 15.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10.4" r="2.3" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4.5" y="5.5" width="15" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 10h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M8.5 3.5v4M15.5 3.5v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M9.2 13.4L7.5 21l4.5-2.2L16.5 21l-1.7-7.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4c-8 0-14 3-15.5 9.5C3.6 17.5 6.5 20.5 10.5 19.5 17 18 20 11 20 4z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 19.5C9 14 13 10.5 17 8.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M20 3v4h-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10.5 13.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11L12 4l8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V20h12V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 13v-2a7.5 7.5 0 0 1 15 0v2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><rect x="3.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><rect x="16.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 17.5a3.5 3.5 0 0 1-3.5 3.2H16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="top-nav">
+  <div class="container">
+    <div class="top-nav__inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark"><svg class="ic"><use href="#i-sprout"/></svg></span>
+        <span>童芽 <em>ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="explore.html">发现玩具</a>
+        <a href="explore.html#publish">发布玩具</a>
+        <a href="orders.html" class="is-active">交换订单</a>
+        <a href="profile.html">我的</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--soft btn--sm" href="membership.html">会员权益</a>
+        <a class="btn btn--primary btn--sm" href="membership.html">开通会员</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="max-width:920px;padding-block:var(--space-6) var(--space-16);">
+    <div id="od-loading" class="caption text-tertiary" style="text-align:center;padding:40px 0;">正在加载订单…</div>
+    <div id="od-body" style="display:none;">
+      <div class="page-head" style="padding-block:0 0 var(--space-6);display:flex;gap:var(--space-4);align-items:center;flex-wrap:wrap;justify-content:space-between;">
+        <div>
+          <a href="orders.html" class="caption text-secondary">← 返回订单列表</a>
+          <h1 class="h1" style="font-size:24px;margin:6px 0 4px;">交换订单详情</h1>
+          <p class="caption text-secondary" id="od-sub" style="margin:0;"></p>
+        </div>
+        <span id="od-status-badge"></span>
+      </div>
+
+      <!-- 状态机 -->
+      <section class="card" aria-label="交换订单状态" style="margin-bottom:var(--space-5);">
+        <h2 class="h4" style="margin-bottom:var(--space-4);">交换进度</h2>
+        <div id="od-statemachine"></div>
+      </section>
+
+      <!-- 双轨运单 -->
+      <section class="card" aria-label="双轨运单" style="margin-bottom:var(--space-5);">
+        <h2 class="h4" style="margin-bottom:var(--space-4);">双轨运单（一换一互邮）</h2>
+        <div id="od-tracks"></div>
+        <div id="od-ship-form" style="display:none;margin-top:var(--space-4);">
+          <div style="display:flex;gap:var(--space-3);">
+            <input type="text" id="od-tracking-input" placeholder="填写你的快递单号（如 SF1402987634511）" style="flex:1;height:44px;border-radius:var(--radius-md);border:1px solid var(--color-border-strong);padding:0 12px;box-sizing:border-box;">
+            <button class="btn btn--primary" id="od-ship-btn">登记运单</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 双方玩具与地址 -->
+      <section class="card" aria-label="双方信息" style="margin-bottom:var(--space-5);">
+        <h2 class="h4" style="margin-bottom:var(--space-4);">交换双方</h2>
+        <div id="od-parties"></div>
+        <div id="od-address" class="notice-bar" style="display:none;margin-top:var(--space-4);">
+          <svg class="ic"><use href="#i-pin"/></svg>
+          <span id="od-address-text"></span>
+        </div>
+      </section>
+
+      <!-- 服务费保障条 -->
+      <div id="od-fee-bar" style="margin-bottom:var(--space-5);"></div>
+
+      <!-- 操作区 -->
+      <div id="od-actions" style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-bottom:var(--space-5);"></div>
+
+      <!-- 纠纷区 -->
+      <section class="card" id="od-dispute-form" style="display:none;">
+        <h2 class="h4" style="margin-bottom:var(--space-4);">发起纠纷</h2>
+        <div style="display:grid;gap:var(--space-3);">
+          <select id="od-dispute-type" style="height:44px;border-radius:var(--radius-md);border:1px solid var(--color-border-strong);padding:0 12px;">
+            <option value="item_mismatch">货不对板</option>
+            <option value="not_received">未收到货</option>
+            <option value="damaged">收到损坏</option>
+            <option value="other">其他问题</option>
+          </select>
+          <textarea id="od-dispute-desc" placeholder="描述纠纷情况（举证期 7 天，可提交照片/聊天/运单证据）" style="min-height:72px;border-radius:var(--radius-md);border:1px solid var(--color-border-strong);padding:10px 12px;box-sizing:border-box;font-family:var(--font-sans);"></textarea>
+          <button class="btn btn--danger" id="od-dispute-btn">提交纠纷</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"><svg class="ic"><use href="#i-check"/></svg><span>运单号已复制</span></div>
+
+<!-- ================= 页脚 ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <span class="brand-mark" style="width:30px;height:30px;"><svg class="ic"><use href="#i-sprout"/></svg></span>
+          <span>童芽 ToySprout</span>
+        </div>
+        <p class="footer__desc">C2C 家长玩具交换平台：闲置玩具一换一互邮，每单服务费 ¥1.9，会员免单。信用互评、成色如实、平台担保。</p>
+      </div>
+      <div class="footer__col">
+        <h4>发现</h4>
+        <a href="index.html">品牌首页</a>
+        <a href="explore.html">浏览玩具</a>
+        <a href="toy-detail.html">玩具详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>交换</h4>
+        <a href="swap.html">发起交换</a>
+        <a href="orders.html">我的交换订单</a>
+        <a href="order-detail.html">订单详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>账户</h4>
+        <a href="profile.html">我的主页</a>
+        <a href="membership.html">会员订阅</a>
+        <a href="profile.html#menu">收货地址与设置</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 童芽 ToySprout · 家长玩具交换平台（原型示例）</span>
+      <span>数据口径：服务费 ¥1.9/单 · 会员 ¥10/月</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var toast = document.getElementById('toast');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+      }
+      toast.classList.add('is-show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(function () { toast.classList.remove('is-show'); }, 1600);
+    });
+  });
+</script>
+
+<script src="app.js"></script>
+<script>
+(function () {
+  var T = window.ToySprout;
+  if (!T.requireAuth()) return;
+  T.renderNav();
+  var swapId = new URLSearchParams(location.search).get('id');
+  if (!swapId) { location.href = 'orders.html'; return; }
+
+  var SM = [
+    { key: 'requested', label: '已发起' },
+    { key: 'accepted', label: '对方已同意' },
+    { key: 'shipping', label: '双方邮寄中' },
+    { key: 'received', label: '已收货' },
+    { key: 'reviewed', label: '已互评' }
+  ];
+  var SM_ORDER = { requested: 1, accepted: 2, shipping: 3, received: 4, reviewed: 5, rejected: -1, cancelled: -1, disputed: 0 };
+
+  function load() {
+    T.get('/swaps/' + swapId).then(function (body) {
+      if (body.code !== 0) { document.getElementById('od-loading').textContent = body.message; return; }
+      render(body.data);
+    });
+  }
+
+  function render(s) {
+    document.getElementById('od-loading').style.display = 'none';
+    document.getElementById('od-body').style.display = '';
+    var isInitiator = s.myRole === 'initiator';
+    var mySide = isInitiator ? '你（发起方）' : '你（接收方）';
+    var otherSide = isInitiator ? '对方' : '对方';
+    document.getElementById('od-sub').textContent = '订单 #' + s.id.slice(0, 8) + ' · 发起于 ' + (s.createdAt || '').slice(0, 10) + ' · ' + mySide;
+    document.getElementById('od-status-badge').innerHTML = T.statusBadge(s.status);
+
+    // 状态机（竖排步骤条）
+    var smHtml = '<div class="sm-steps">';
+    if (s.status === 'cancelled' || s.status === 'rejected') {
+      smHtml += '<div class="sm-step st-done"><span class="sm-dot"></span><span>订单已' + (s.status === 'cancelled' ? '取消' : '被拒绝') + '，双方玩具已退回交换池</span></div>';
+    } else if (s.status === 'disputed') {
+      smHtml += '<div class="sm-step st-danger"><span class="sm-dot"></span><span>纠纷仲裁中 · 平台将在 3 个工作日内复核（举证期 7 天）</span></div>';
+    } else {
+      SM.forEach(function (step, i) {
+        var stOrder = SM_ORDER[s.status];
+        var stepOrder = i + 1;
+        var cls = '';
+        if (stepOrder < stOrder) cls = 'st-done';
+        else if (stepOrder === stOrder) cls = 'st-current';
+        smHtml += '<div class="sm-step ' + cls + '"><span class="sm-dot"></span><span>' + step.label + '</span></div>';
+      });
+    }
+    smHtml += '</div>';
+    document.getElementById('od-statemachine').innerHTML = smHtml;
+
+    // 双轨运单
+    var myTrackNo = isInitiator ? s.initiatorTrackingNo : s.targetTrackingNo;
+    var otherTrackNo = isInitiator ? s.targetTrackingNo : s.initiatorTrackingNo;
+    var tracks = '';
+    tracks += '<div class="track-row"><span class="caption text-secondary">' + mySide + ' 寄出 → 对方：</span><code class="mono">' + T.esc(myTrackNo || '未填写') + '</code></div>';
+    tracks += '<div class="track-row"><span class="caption text-secondary">对方 寄出 → 你：</span><code class="mono">' + T.esc(otherTrackNo || '未填写') + '</code></div>';
+    document.getElementById('od-tracks').innerHTML = tracks;
+
+    // 服务费
+    var fee = isInitiator ? s.serviceFeeAmountInitiator : s.serviceFeeAmountTarget;
+    var paid = isInitiator ? s.serviceFeePaidByInitiator : s.serviceFeePaidByTarget;
+    var feeText = '本单服务费 ¥1.9（会员免）· 双方发起快递时收取';
+    if (paid) feeText = '服务费已支付 ¥' + ((fee || 0) / 100).toFixed(1) + (fee === 0 ? '（会员免单）' : '');
+    document.getElementById('od-fee-bar').innerHTML =
+      '<div class="notice-bar' + (paid ? ' notice-bar--success' : '') + '">' + T.icon('i-shield-check') + '<span>' + feeText + '</span></div>';
+
+    // 双方信息
+    var myToy = s.myToy, otherToy = s.targetToy;
+    document.getElementById('od-parties').innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">' +
+      '<div class="card card--compact" style="margin:0;">' +
+      '<span class="caption text-tertiary">' + mySide + ' 的玩具</span>' +
+      '<div class="h4" style="margin:4px 0;">' + T.esc(myToy ? myToy.title : '—') + '</div>' +
+      (myToy ? '<div style="margin-top:4px;">' + T.conditionBadge(myToy.conditionLevel) + '</div>' : '') +
+      '</div>' +
+      '<div class="card card--compact" style="margin:0;">' +
+      '<span class="caption text-tertiary">对方 的玩具</span>' +
+      '<div class="h4" style="margin:4px 0;">' + T.esc(otherToy ? otherToy.title : '—') + '</div>' +
+      (otherToy ? '<div style="margin-top:4px;">' + T.conditionBadge(otherToy.conditionLevel) + '</div>' : '') +
+      '</div></div>';
+
+    // 对方地址（AC-16）
+    var addrBox = document.getElementById('od-address');
+    if (s.counterpartAddress) {
+      addrBox.style.display = '';
+      document.getElementById('od-address-text').textContent =
+        '对方收货地址：' + s.counterpartAddress.receiverName + ' ' + s.counterpartAddress.phone + ' · ' +
+        s.counterpartAddress.province + ' ' + s.counterpartAddress.city + ' ' + s.counterpartAddress.detail;
+    } else {
+      addrBox.style.display = 'none';
+    }
+
+    // 操作区
+    var actions = document.getElementById('od-actions');
+    actions.innerHTML = '';
+    function btn(label, cls, fn) {
+      var b = document.createElement('button');
+      b.className = 'btn ' + (cls || 'btn--secondary');
+      b.textContent = label;
+      b.addEventListener('click', fn);
+      actions.appendChild(b);
+      return b;
+    }
+
+    if (s.status === 'requested' && !isInitiator) {
+      btn('同意交换', 'btn--primary', function () {
+        T.post('/swaps/' + swapId + '/respond', { accept: true }).then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+      });
+      btn('拒绝', 'btn--ghost', function () {
+        T.post('/swaps/' + swapId + '/respond', { accept: false }).then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+      });
+    }
+    if (['requested', 'accepted'].includes(s.status)) {
+      btn('取消交换', 'btn--ghost', function () {
+        if (!confirm('确认取消该交换？双方玩具将退回交换池。')) return;
+        T.post('/swaps/' + swapId + '/cancel').then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+      });
+    }
+    if (['accepted', 'shipping'].includes(s.status) && !paid) {
+      btn(fee === 0 ? '确认免单（会员）' : '支付服务费 ¥' + ((fee || 190) / 100).toFixed(1), 'btn--primary', function () {
+        T.post('/swaps/' + swapId + '/pay-fee').then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+      });
+    }
+    if (['accepted', 'shipping'].includes(s.status) && !myTrackNo) {
+      document.getElementById('od-ship-form').style.display = '';
+    } else {
+      document.getElementById('od-ship-form').style.display = 'none';
+    }
+    if (s.status === 'shipping' && !((isInitiator && s.initiatorReceivedAt) || (!isInitiator && s.targetReceivedAt))) {
+      btn('确认收货', 'btn--primary', function () {
+        T.post('/swaps/' + swapId + '/confirm-receipt').then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+      });
+    }
+    if (s.status === 'received') {
+      btn('去评价', 'btn--primary', function () { showReview(s); });
+    }
+    if (!['reviewed', 'cancelled'].includes(s.status) && s.status !== 'disputed') {
+      document.getElementById('od-dispute-form').style.display = '';
+    } else {
+      document.getElementById('od-dispute-form').style.display = 'none';
+    }
+  }
+
+  // 简易评价浮层
+  function showReview(s) {
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(61,45,30,.4);z-index:300;display:flex;align-items:center;justify-content:center;';
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.style.cssText = 'max-width:420px;width:92%;padding:24px;border-radius:16px;';
+    var rating = 5;
+    var starHtml = '';
+    for (var i = 1; i <= 5; i++) starHtml += '<button type="button" class="star-btn' + (i <= rating ? ' on' : '') + '" data-v="' + i + '">' + T.icon('i-star') + '</button>';
+    card.innerHTML =
+      '<h3 class="h4" style="margin:0 0 12px;">评价这次交换</h3>' +
+      '<div class="star-row" style="display:flex;gap:6px;margin-bottom:12px;">' + starHtml + '</div>' +
+      '<div class="chips" id="rv-tags" style="margin-bottom:12px;">' +
+      '<span class="chip" data-t="成色如描述">成色如描述</span>' +
+      '<span class="chip" data-t="包装仔细">包装仔细</span>' +
+      '<span class="chip" data-t="沟通友好">沟通友好</span>' +
+      '<span class="chip" data-t="发货快">发货快</span>' +
+      '</div>' +
+      '<textarea id="rv-comment" placeholder="说点什么…" style="width:100%;min-height:64px;border-radius:10px;border:1px solid var(--color-border-strong);padding:10px 12px;box-sizing:border-box;font-family:var(--font-sans);margin-bottom:12px;"></textarea>' +
+      '<div style="display:flex;gap:10px;">' +
+      '<button class="btn btn--primary" style="flex:1;" id="rv-submit">提交评价</button>' +
+      '<button class="btn btn--ghost" id="rv-cancel">取消</button></div>';
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    var selectedTags = [];
+    card.querySelectorAll('.star-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        rating = parseInt(b.getAttribute('data-v'), 10);
+        card.querySelectorAll('.star-btn').forEach(function (x, idx) {
+          x.classList.toggle('on', idx < rating);
+          x.style.color = idx < rating ? 'var(--color-star)' : 'var(--color-star-empty)';
+        });
+      });
+    });
+    card.querySelectorAll('#rv-tags .chip').forEach(function (c) {
+      c.addEventListener('click', function () {
+        c.classList.toggle('is-active');
+        var t = c.getAttribute('data-t');
+        var i = selectedTags.indexOf(t);
+        if (i >= 0) selectedTags.splice(i, 1); else selectedTags.push(t);
+      });
+    });
+    card.querySelector('#rv-cancel').addEventListener('click', function () { overlay.remove(); });
+    card.querySelector('#rv-submit').addEventListener('click', function () {
+      T.post('/swaps/' + swapId + '/review', {
+        rating: rating,
+        tags: selectedTags,
+        comment: document.getElementById('rv-comment').value.trim()
+      }).then(function (b) {
+        if (b.code === 0) { T.toast(b.message, 'success'); overlay.remove(); load(); }
+        else T.toast(b.message, 'error');
+      });
+    });
+  }
+
+  document.getElementById('od-ship-btn').addEventListener('click', function () {
+    var no = document.getElementById('od-tracking-input').value.trim();
+    if (!no) return T.toast('请填写快递单号', 'error');
+    T.post('/swaps/' + swapId + '/ship', { trackingNo: no }).then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+  });
+
+  document.getElementById('od-dispute-btn').addEventListener('click', function () {
+    var desc = document.getElementById('od-dispute-desc').value.trim();
+    if (!desc) return T.toast('请描述纠纷情况', 'error');
+    T.post('/swaps/' + swapId + '/dispute', {
+      type: document.getElementById('od-dispute-type').value,
+      description: desc
+    }).then(function (b) { b.code === 0 ? load() : T.toast(b.message, 'error'); });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

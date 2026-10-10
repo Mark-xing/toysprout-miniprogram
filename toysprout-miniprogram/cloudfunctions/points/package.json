@@ -1,0 +1,9 @@
+{
+  "name": "points",
+  "version": "1.0.0",
+  "description": "童芽 ToySprout · 积分账户/估值预览/运费归属预览云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

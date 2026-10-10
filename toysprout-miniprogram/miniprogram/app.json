@@ -1,0 +1,45 @@
+{
+  "cloud": true,
+  "pages": [
+    "pages/discover/discover",
+    "pages/publish/publish",
+    "pages/mine/mine",
+    "pages/profile/profile"
+  ],
+  "subPackages": [
+    {
+      "root": "packageToy",
+      "pages": ["detail/detail"]
+    },
+    {
+      "root": "packageSwap",
+      "pages": ["swap/swap", "orders/orders", "order-detail/order-detail"]
+    },
+    {
+      "root": "packageUser",
+      "pages": ["addresses/addresses", "membership/membership", "verify/verify", "points-wallet/points-wallet"]
+    }
+  ],
+  "tabBar": {
+    "color": "#6B5E4F",
+    "selectedColor": "#C94324",
+    "backgroundColor": "#FBF6EC",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/discover/discover", "text": "发现" },
+      { "pagePath": "pages/publish/publish", "text": "发布" },
+      { "pagePath": "pages/mine/mine", "text": "我的" }
+    ]
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#FBF6EC",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "童芽 ToySprout",
+    "backgroundColor": "#FBF6EC"
+  },
+  "requiredPrivateInfos": [],
+  "permission": {},
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "usingComponents": {}
+}

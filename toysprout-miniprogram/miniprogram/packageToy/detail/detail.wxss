@@ -1,0 +1,9 @@
+/* packageToy/detail/detail.wxss */
+.detail-swiper { width: 100%; height: 560rpx; }
+.detail-swiper__img { width: 100%; height: 100%; }
+.author-avatar {
+  width: 96rpx; height: 96rpx; border-radius: 50%; background: var(--color-surface-sunken);
+  flex-shrink: 0;
+}
+/* 有真实头像时用 <image> 渲染，占位块的灰底仍然兜底 */
+.author-avatar--img { display: block; overflow: hidden; }

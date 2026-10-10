@@ -1,0 +1,69 @@
+<!-- components/toy-card/toy-card.wxml -->
+<!--
+  小红书风格瀑布流卡片。
+  结构：封面（等比占位 + 交互动效） → 标题(2行) → 作者行 + 想要。
+  交互：单击封面/正文进详情；双击封面表"想要"；右下心形可直接点。
+
+  ⚠️ 对外事件名（页面侧）：
+    bind:open → detail { id }   进详情。**不能叫 `tap`**（原生事件同名会串事件，
+                                    页面会收到 {x,y} 触点坐标而不是 {id}）。
+                                    详见 toy-card.js 顶部踩坑注释。
+    bind:want → detail { id, wanted }
+-->
+<view class="tcard" hover-class="tcard--pressed" hover-stay-time="60">
+
+  <!-- 封面：用 padding-top 百分比实现宽高比，这样在不同屏宽下比例恒定，不需要知道 px 宽度 -->
+  <view class="tcard__media" style="padding-top:{{mediaPad}}%" bindtap="onMediaTap">
+    <view class="tcard__media-inner">
+      <view wx:if="{{!imgLoaded}}" class="tcard__ph"></view>
+      <image
+        wx:if="{{hasImage}}"
+        class="tcard__img {{imgLoaded ? 'is-loaded' : ''}}"
+        src="{{toy.images[0]}}"
+        mode="aspectFill"
+        lazy-load
+        bindload="onImgLoad"
+        binderror="onImgError"
+      />
+      <view wx:if="{{!hasImage}}" class="tcard__ph tcard__ph--empty">
+        <view class="tcard__ph-heart"></view>
+        <!-- 用组件自己的 data.categoryLabel（observer 由 toy.category 派生）。
+             这里曾误写成 toy.categoryLabel —— 云函数 publicToy() 并不返回该字段，
+             于是永远回落到「童芽玩具」，品类文字形同虚设。数值断言查不出这类错。 -->
+        <text class="tcard__ph-text">{{categoryLabel || '童芽玩具'}}</text>
+      </view>
+
+      <view class="tcard__cond badge {{conditionCls}}">{{conditionLabel}}</view>
+      <view wx:if="{{toy.points}}" class="tcard__points">{{toy.points}} 积分</view>
+
+      <!-- 双击想要的瞬时反馈：一颗放大淡出的实心心 -->
+      <view wx:if="{{burst}}" class="tcard__burst">
+        <view class="tcard__burst-heart"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tcard__body" bindtap="onBodyTap">
+    <view class="tcard__title">{{toy.title}}</view>
+    <view class="tcard__tags">
+      <text class="tcard__tag">{{toy.ageRange}}岁</text>
+      <text wx:if="{{toy.city}}" class="tcard__tag">{{toy.city}}</text>
+      <text wx:if="{{toy.isFreeShipping}}" class="tcard__tag tcard__tag--ship">包邮</text>
+    </view>
+
+    <view class="tcard__foot">
+      <view class="tcard__author">
+        <image wx:if="{{hasAvatar}}" class="tcard__avatar" src="{{toy.owner.avatarUrl}}" mode="aspectFill" binderror="onAvatarError" />
+        <view wx:else class="tcard__avatar tcard__avatar--ph"></view>
+        <text class="tcard__name">{{toy.owner.name || '童芽用户'}}</text>
+        <view wx:if="{{toy.owner.isVerified}}" class="tcard__vf"></view>
+      </view>
+
+      <!-- catchtap：不让点击冒泡到正文的进详情 -->
+      <view class="tcard__want" catchtap="onWantTap">
+        <view class="tcard__heart {{toy.wanted ? 'is-on' : ''}}"></view>
+        <text class="tcard__wcount {{toy.wanted ? 'is-on' : ''}}">{{toy.wantCount || 0}}</text>
+      </view>
+    </view>
+  </view>
+</view>

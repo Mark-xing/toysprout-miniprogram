@@ -1,0 +1,33 @@
+# ===== 依赖 =====
+# toysprout-mvp 的依赖目录，约 19M，占比最大的噪音
+node_modules/
+**/node_modules/
+
+# ===== 本地会话/记忆目录 =====
+# .workbuddy/ 存放本地会话记忆、临时输出等工具内部状态，
+# 属于"本机工作上下文"而非项目源码，不纳入版本管理（文件本身保留在磁盘上）。
+.workbuddy/
+
+# ===== 系统噪音 =====
+.DS_Store
+Thumbs.db
+*.swp
+
+# ===== 日志与本地数据库 =====
+*.log
+toysprout-mvp/data/*.db
+toysprout-mvp/data/*.db-*
+
+# ===== 密钥/凭据（防御性：万一将来落盘了本地文件）=====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+id_rsa*
+
+# ===== 构建产物 =====
+dist/
+build/
+*.tgz

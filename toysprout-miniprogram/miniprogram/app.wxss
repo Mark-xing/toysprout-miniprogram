@@ -1,0 +1,251 @@
+/**
+ * app.wxss — 童芽 ToySprout · WarmTrust v2 设计系统（小程序端）
+ * 来源：phase2-design-tokens-v2.md（唯一权威，禁止自创色值）
+ * WXSS 不支持 :root，全局变量改用 page 选择器；px 按 1px≈2rpx（375px 设计基准）换算，
+ * 组件内可混用 px（用于边框等固定像素场景）与 rpx（用于随屏幕宽度缩放的间距/字号）。
+ */
+
+page {
+  /* Brand / Primary — 奶油暖黄 */
+  --color-primary: #F2B33D;
+  --color-primary-strong: #D98E1F;
+  --color-primary-tint: #FCF0D8;
+  --color-primary-ink: #7A4E0D;
+  /* Accent — 珊瑚橙 */
+  --color-accent: #F27355;
+  --color-accent-strong: #C94324;
+  --color-accent-tint: #FCE8E0;
+  /* Semantic */
+  --color-success: #3E7C59;
+  --color-success-tint: #E7F2E8;
+  --color-success-text: #2F5D46;
+  --color-success-border: #BFD8C6;
+  --color-warning: #9A6510;
+  --color-warning-tint: #FAEBD3;
+  --color-warning-text: #7A4E0D;
+  --color-warning-border: #EAD3A4;
+  --color-danger: #C2402F;
+  --color-danger-tint: #FBE4DF;
+  --color-danger-text: #A83325;
+  --color-danger-border: #F0C9BF;
+  --color-info: #43618E;
+  --color-info-tint: #E8EFF7;
+  --color-info-text: #35506E;
+  --color-info-border: #C3D2E4;
+  --color-neutral: #8A7C6A;
+  --color-neutral-tint: #F3EADB;
+  --color-neutral-border: #DBCDB8;
+  /* Neutral / Text */
+  --color-bg: #FBF6EC;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F8F1E6;
+  --color-surface-sunken: #F3EADB;
+  --color-border: #E9DFCE;
+  --color-border-strong: #D6C8B0;
+  --color-divider: #EFE7D9;
+  --color-text-primary: #33291F;
+  --color-text-secondary: #6B5E4F;
+  --color-text-tertiary: #7A6C5A;
+  --color-text-inverse: #FFFFFF;
+  --color-disabled: #B8AB99;
+  --color-disabled-bg: #EFE8DC;
+  /* 信用等级色 */
+  --color-credit-sprout: #8A7C6A;
+  --color-credit-sprout-tint: #F3EADB;
+  --color-credit-growing: #9A6510;
+  --color-credit-growing-tint: #FAEBD3;
+  --color-credit-trusted: #3E7C59;
+  --color-credit-trusted-tint: #E7F2E8;
+  --color-credit-elite: #2F5D46;
+  --color-credit-elite-tint: #DCEBDD;
+  /* 成色标签色 */
+  --color-condition-new: #3E7C59;
+  --color-condition-new-tint: #E7F2E8;
+  --color-condition-9new: #43618E;
+  --color-condition-9new-tint: #E8EFF7;
+  --color-condition-8new: #9A6510;
+  --color-condition-8new-tint: #FAEBD3;
+  --color-condition-used: #8A7C6A;
+  --color-condition-used-tint: #F3EADB;
+  /* 星级 / 担保 */
+  --color-star: #F2B33D;
+  --color-star-empty: #D6C8B0;
+  --color-guarantee: #3E7C59;
+  --color-guarantee-tint: #E7F2E8;
+
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* ============ 基础排版 ============ */
+.h1 { font-size: 44rpx; font-weight: 700; line-height: 1.3; color: var(--color-text-primary); }
+.h2 { font-size: 38rpx; font-weight: 700; line-height: 1.3; }
+.h3 { font-size: 32rpx; font-weight: 600; line-height: 1.4; }
+.h4 { font-size: 30rpx; font-weight: 600; line-height: 1.4; }
+.body { font-size: 28rpx; line-height: 1.6; }
+.body-sm { font-size: 26rpx; line-height: 1.55; }
+.caption { font-size: 24rpx; line-height: 1.5; color: var(--color-text-tertiary); }
+.micro { font-size: 22rpx; line-height: 1.4; font-weight: 500; }
+.num { font-weight: 700; }
+.mono { font-family: monospace; }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-success { color: var(--color-success-text); }
+.text-danger { color: var(--color-danger-text); }
+.text-warning { color: var(--color-warning-text); }
+
+/* ============ 布局容器 ============ */
+.page { padding: 24rpx; }
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 32rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(61, 45, 30, 0.05);
+}
+.card--compact { padding: 24rpx; border-radius: 24rpx; }
+.card--muted { background: var(--color-surface-muted); border: none; }
+.flex-row { display: flex; flex-direction: row; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { display: flex; flex-wrap: wrap; }
+.gap-1 { gap: 8rpx; }
+.gap-2 { gap: 16rpx; }
+.gap-3 { gap: 24rpx; }
+
+/* ============ 按钮 ============ */
+.btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 88rpx; border-radius: 20rpx; font-size: 30rpx; font-weight: 600;
+  padding: 0 32rpx;
+}
+.btn--primary { background: var(--color-accent-strong); color: #fff; }
+.btn--primary[disabled] { background: var(--color-disabled-bg); color: var(--color-disabled); }
+.btn--secondary { background: var(--color-surface); color: var(--color-text-primary); border: 1px solid var(--color-border-strong); }
+.btn--soft { background: var(--color-primary-tint); color: var(--color-primary-ink); }
+.btn--ghost { background: transparent; color: var(--color-text-secondary); }
+.btn--danger { background: var(--color-danger); color: #fff; }
+.btn--block { width: 100%; }
+.btn--sm { height: 64rpx; font-size: 26rpx; padding: 0 24rpx; }
+
+/* ============ 徽章/标签（成色/信用/认证） ============ */
+.badge {
+  display: inline-flex; align-items: center; gap: 4rpx;
+  padding: 4rpx 16rpx; border-radius: 999px; font-size: 22rpx; font-weight: 600;
+}
+.condition--new { background: var(--color-condition-new-tint); color: var(--color-condition-new); }
+.condition--9new { background: var(--color-condition-9new-tint); color: var(--color-condition-9new); }
+.condition--8new { background: var(--color-condition-8new-tint); color: var(--color-condition-8new); }
+.condition--used { background: var(--color-condition-used-tint); color: var(--color-condition-used); }
+.credit--sprout { background: var(--color-credit-sprout-tint); color: var(--color-credit-sprout); }
+.credit--growing { background: var(--color-credit-growing-tint); color: var(--color-credit-growing); }
+.credit--trusted { background: var(--color-credit-trusted-tint); color: var(--color-credit-trusted); }
+.credit--elite { background: var(--color-credit-elite); color: #fff; }
+.verified-badge { display: inline-flex; align-items: center; gap: 4rpx; color: var(--color-success-text); font-size: 22rpx; font-weight: 600; }
+.safety-tag { display: inline-flex; align-items: center; padding: 4rpx 16rpx; border-radius: 999px; font-size: 22rpx; }
+.safety-tag--age { background: var(--color-primary-tint); color: var(--color-primary-ink); }
+.safety-tag--warn { background: var(--color-warning-tint); color: var(--color-warning-text); }
+
+/* ============ 通知条 ============ */
+.notice-bar {
+  display: flex; align-items: flex-start; gap: 12rpx;
+  background: var(--color-surface-muted); border-radius: 20rpx; padding: 20rpx 24rpx;
+  font-size: 26rpx; color: var(--color-text-secondary);
+}
+.notice-bar--success { background: var(--color-success-tint); color: var(--color-success-text); }
+.notice-bar--warn { background: var(--color-warning-tint); color: var(--color-warning-text); }
+.notice-bar--danger { background: var(--color-danger-tint); color: var(--color-danger-text); }
+
+/* ============ 状态徽章 ============ */
+.status-chip {
+  display: inline-flex; align-items: center; padding: 4rpx 20rpx; border-radius: 999px;
+  font-size: 22rpx; font-weight: 600; background: var(--color-neutral-tint); color: var(--color-text-secondary);
+}
+.status-chip.st-ok { background: var(--color-success-tint); color: var(--color-success-text); }
+.status-chip.st-danger { background: var(--color-danger-tint); color: var(--color-danger-text); }
+
+/* ============ 表单 ============ */
+.field { margin-bottom: 32rpx; }
+.field-label { font-size: 26rpx; font-weight: 600; margin-bottom: 12rpx; display: block; }
+/*
+ * ⚠️ 踩坑点（勿改回 padding 撑高度）：
+ * 小程序内置 <input> / <textarea> 自带 UA 样式 height、line-height 均为 1.4rem（约 22.4px），
+ * 并带 overflow: hidden。一旦 .input 设为 box-sizing: border-box 却不给显式 height，
+ * 垂直方向的 padding(20rpx×2) + border(1px×2) 会把内容区压到接近 0（实测仅剩 0.39px），
+ * 占位符与输入文字随即被裁掉，表现为「文字顶部被切、贴在上边框上」。
+ * 因此：输入框必须显式给 height + line-height（两者相等即可垂直居中），垂直方向不再用 padding。
+ * 88rpx 与 .btn 默认高度一致，同时满足微信 44px 最小点按热区建议。
+ */
+.input {
+  width: 100%; box-sizing: border-box;
+  height: 88rpx; line-height: 88rpx;
+  padding: 0 24rpx;
+  border: 1px solid var(--color-border-strong); border-radius: 16rpx;
+  background: var(--color-surface); font-size: 28rpx;
+}
+.textarea {
+  width: 100%; box-sizing: border-box;
+  min-height: 160rpx; line-height: 1.5;
+  padding: 20rpx 24rpx;
+  border: 1px solid var(--color-border-strong); border-radius: 16rpx;
+  background: var(--color-surface); font-size: 28rpx;
+}
+.opt-chip {
+  display: inline-flex; align-items: center; gap: 8rpx; padding: 12rpx 28rpx; border-radius: 999px;
+  border: 1px solid var(--color-border-strong); background: var(--color-surface); font-size: 26rpx;
+  color: var(--color-text-secondary); margin: 0 12rpx 12rpx 0;
+}
+.opt-chip.selected { border-color: var(--color-primary); background: var(--color-primary-tint); color: var(--color-primary-ink); }
+
+/* ============ 头像 ============ */
+/*
+ * chooseAvatar 必须挂在 <button open-type="chooseAvatar"> 上，而小程序 <button> 自带
+ * 灰底 + padding + ::after 边框三件套，直接用会是个"灰色方块"。这里逐项清掉。
+ *
+ * ⚠️ 踩坑点（勿改回 display: flex）：
+ * <button> 同时是「flex 行里的 flex item」时，给它 display: flex 会让 width 声明失效——
+ * 实测声明 width:176rpx（=91.52px @390px 宽窗口），实际渲染成 184px，而同一规则里的
+ * height:176rpx 却是对的。改用 display:block + line-height 居中后宽度正常。
+ * 另外用 min/max-width 把尺寸钉死，避免再被按钮的 UA 默认宽度影响。
+ */
+.avatar-picker {
+  display: block;
+  width: 176rpx; min-width: 176rpx; max-width: 176rpx;
+  height: 176rpx; min-height: 176rpx; max-height: 176rpx;
+  padding: 0; margin: 0; flex: none;
+  border-radius: 50%; overflow: hidden;
+  background: var(--color-surface-sunken);
+  border: 2rpx dashed var(--color-border-strong);
+  /* box-sizing: border-box 下内容区 = 176rpx − border 4rpx，行高取内容区高度即可垂直居中 */
+  line-height: 172rpx; text-align: center;
+}
+/* 清除 button 组件默认的 ::after 边框（小程序 button 的边框实际画在这个伪元素上） */
+.avatar-picker::after { border: none; }
+.avatar-picker__img { display: block; width: 100%; height: 100%; }
+/* 列表/头部小尺寸头像 */
+.avatar {
+  display: block; width: 104rpx; height: 104rpx; border-radius: 50%; flex-shrink: 0;
+  background: var(--color-surface-sunken);
+}
+
+/* ============ 空状态/加载 ============ */
+.empty-state { text-align: center; padding: 120rpx 40rpx; color: var(--color-text-tertiary); font-size: 26rpx; }
+.loading-state { text-align: center; padding: 80rpx 0; color: var(--color-text-tertiary); font-size: 26rpx; }
+
+/* ============ 星级图标（SVG 矢量图标，非 Unicode 符号/emoji，颜色对应 --color-star 令牌值） ============ */
+.star-icon {
+  display: inline-block; width: 40rpx; height: 40rpx; background-size: contain;
+  background-repeat: no-repeat; background-position: center;
+}
+/* 实心星：填充色 #F2B33D，对应 --color-star 令牌值 */
+.star-icon--filled {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z' fill='%23F2B33D'/></svg>");
+}
+/* 空心星：描边色 #D6C8B0，对应 --color-star-empty 令牌值 */
+.star-icon--empty {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z' fill='none' stroke='%23D6C8B0' stroke-width='1.5'/></svg>");
+}
+.star-icon--lg { width: 56rpx; height: 56rpx; }
+

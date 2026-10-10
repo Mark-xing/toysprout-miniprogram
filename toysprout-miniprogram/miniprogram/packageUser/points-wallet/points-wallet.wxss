@@ -1,0 +1,9 @@
+/* packageUser/points-wallet/points-wallet.wxss */
+.ledger-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+.ledger-row:last-child { border-bottom: none; }

@@ -1,0 +1,1012 @@
+openapi: 3.0.3
+info:
+  title: 童芽 ToySprout API
+  description: >
+    C2C 玩具交换平台 Web MVP 后端接口契约。基于 SPEC.md §5 产出，
+    前端据此生成 TypeScript 类型 / Mock，后端据此实现。
+    所有金额字段以“分”为单位传输（如 190 = ¥1.90），前端负责除以 100 展示。
+  version: 1.0.0
+servers:
+  - url: /api/v1
+tags:
+  - name: auth
+    description: 注册/登录/验证码（开发态模拟）
+  - name: me
+    description: 当前用户信息与实名认证
+  - name: addresses
+    description: 收货地址管理
+  - name: toys
+    description: 玩具发布与浏览
+  - name: swaps
+    description: 交换订单状态机
+  - name: reviews
+    description: 互评
+  - name: membership
+    description: 会员订阅
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/send-code:
+    post:
+      tags: [auth]
+      summary: 模拟发送验证码（开发态固定返回 1234）
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone]
+              properties:
+                phone: { type: string, example: '13800000001' }
+      responses:
+        '200':
+          description: 发送成功（开发态直接回显验证码）
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          code: { type: string, example: '1234', description: '开发态固定回显，生产环境替换为真实短信网关后移除' }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /auth/register:
+    post:
+      tags: [auth]
+      summary: 手机号+验证码注册（若手机号已存在则等价登录，见 AC-02）
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, code, name]
+              properties:
+                phone: { type: string, example: '13800000001' }
+                code: { type: string, example: '1234' }
+                name: { type: string, example: '妈妈·小雨' }
+      responses:
+        '200':
+          description: 注册/登录成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token: { type: string }
+                          user: { $ref: '#/components/schemas/User' }
+        '400':
+          description: 验证码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: 手机号+验证码登录
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, code]
+              properties:
+                phone: { type: string, example: '13800000001' }
+                code: { type: string, example: '1234' }
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token: { type: string }
+                          user: { $ref: '#/components/schemas/User' }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /me:
+    get:
+      tags: [me]
+      summary: 当前用户信息（信用分/认证状态/会员状态）
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/User' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /me/verify:
+    post:
+      tags: [me]
+      summary: 提交实名认证（姓名+身份证号）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, idCard]
+              properties:
+                name: { type: string }
+                idCard: { type: string, description: '18 位身份证号，服务端仅存哈希+掩码，不落地明文', example: '440301199001011234' }
+      responses:
+        '200':
+          description: 认证成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/User' }
+        '400':
+          description: 身份证号格式非 18 位合法校验（AC-03）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /addresses:
+    get:
+      tags: [addresses]
+      summary: 我的地址列表
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Address' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [addresses]
+      summary: 新增地址
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AddressInput' }
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Address' }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /addresses/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    put:
+      tags: [addresses]
+      summary: 编辑地址
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AddressInput' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Address' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [addresses]
+      summary: 删除地址
+      responses:
+        '200':
+          $ref: '#/components/responses/OkEmpty'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /toys:
+    get:
+      tags: [toys]
+      summary: 玩具列表（筛选：category/age/condition/creditVerified/keyword，分页）
+      security: []
+      parameters:
+        - name: category
+          in: query
+          schema: { $ref: '#/components/schemas/ToyCategory' }
+        - name: age
+          in: query
+          schema: { type: string, example: '3-6' }
+        - name: condition
+          in: query
+          schema: { $ref: '#/components/schemas/ConditionLevel' }
+        - name: creditVerified
+          in: query
+          description: '仅信用达标（作者信用分 >= 800，对应 AC-05）'
+          schema: { type: boolean }
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1, minimum: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, minimum: 1, maximum: 100 }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/PaginatedToys' }
+    post:
+      tags: [toys]
+      summary: 发布玩具（图片数量<3 或未选成色/适龄将被拒绝，见 AC-04）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ToyInput' }
+      responses:
+        '201':
+          description: 发布成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Toy' }
+        '400':
+          description: 缺失必填字段（图片<3 张 / 未选成色 / 未选适龄）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /toys/mine:
+    get:
+      tags: [toys]
+      summary: 我的玩具（在换/已换）
+      parameters:
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/ToyStatus' }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Toy' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /toys/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    get:
+      tags: [toys]
+      summary: 玩具详情（含作者信用信息、互评摘要）
+      security: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/ToyDetail' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [toys]
+      summary: 编辑我的玩具
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ToyInput' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Toy' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [toys]
+      summary: 下架我的玩具（软删除，status 置为 removed）
+      responses:
+        '200':
+          $ref: '#/components/responses/OkEmpty'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /swaps:
+    get:
+      tags: [swaps]
+      summary: 我的交换订单列表（按状态分组）
+      parameters:
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/SwapStatus' }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Swap' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [swaps]
+      summary: 发起交换（创建 status=requested 订单，目标玩具下架为 swapping，见 AC-06）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetToyId, myToyId]
+              properties:
+                targetToyId: { type: string, format: uuid }
+                myToyId: { type: string, format: uuid }
+                message: { type: string, example: '你好，我家孩子很喜欢磁力片，想用平衡车跟你换～' }
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Swap' }
+        '400':
+          description: 玩具不可交换（非本人所有 / 已在其他交换中 / 目标玩具已下架）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /swaps/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    get:
+      tags: [swaps]
+      summary: 交换订单详情
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SwapDetail' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /swaps/{id}/respond:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 对方同意/拒绝交换意向（requested → accepted/rejected，见 AC-07）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [accept]
+              properties:
+                accept: { type: boolean }
+      responses:
+        '200':
+          description: 状态更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Swap' }
+        '400':
+          description: 订单当前状态不允许此操作（非 requested 状态）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/ship:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 填写运单号（发起己方邮寄；双方均填写后 status 转为 shipping，见 AC-08）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [trackingNo]
+              properties:
+                trackingNo: { type: string, example: 'SF1402987634511' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Swap' }
+        '400':
+          description: 尚未支付服务费（非会员必须先完成 pay-fee，见 AC-10）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/confirm-receipt:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 确认收货（己方；双方均确认后 status 转为 received，见 AC-09）
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Swap' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 取消交换（仅未成交状态可取消：requested/accepted）
+      responses:
+        '200':
+          description: 取消成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Swap' }
+        '400':
+          description: 订单已进入邮寄/完成阶段，不可取消
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/dispute:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 提交纠纷（类型+说明+举证图片URL，订单转为 disputed，见 AC-15）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type, description]
+              properties:
+                type: { type: string, example: 'item_mismatch', description: '纠纷类型：item_mismatch(货不对板) / not_received(未收到) / damaged(破损) / other(其他)' }
+                description: { type: string }
+                evidenceImages:
+                  type: array
+                  items: { type: string, format: uri }
+      responses:
+        '201':
+          description: 纠纷已提交
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Dispute' }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/pay-fee:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 模拟支付服务费（会员自动 ¥0，见 AC-10/AC-11）
+      responses:
+        '200':
+          description: 支付成功（含会员免单场景，amountPaid 为 0）
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          swapId: { type: string, format: uuid }
+                          amountPaid: { type: integer, description: '实付金额（分），会员为 0', example: 190 }
+                          isMember: { type: boolean }
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /swaps/{id}/review:
+    parameters:
+      - $ref: '#/components/parameters/IdParam'
+    post:
+      tags: [swaps]
+      summary: 提交互评（星级+文字+快捷标签），驱动信用分更新（AC-12/AC-13）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating]
+              properties:
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                tags:
+                  type: array
+                  items: { type: string }
+                  example: ['成色如描述', '包装仔细', '沟通友好']
+                comment: { type: string }
+      responses:
+        '201':
+          description: 评价成功，返回信用分变化
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          review: { $ref: '#/components/schemas/Review' }
+                          creditDelta: { type: integer, description: '本次评价对被评价人信用分的影响（+5 好评 rating>=4，-10 差评 rating<=2，0 中评 rating=3）', example: 5 }
+        '400':
+          description: 已重复评价该订单
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /reviews/received:
+    get:
+      tags: [reviews]
+      summary: 我收到的评价列表
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          items:
+                            type: array
+                            items: { $ref: '#/components/schemas/Review' }
+                          total: { type: integer }
+                          page: { type: integer }
+                          limit: { type: integer }
+                          hasMore: { type: boolean }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /membership/subscribe:
+    post:
+      tags: [membership]
+      summary: 模拟订阅会员（¥10/月，立即生效 30 天，见 AC-14）
+      responses:
+        '200':
+          description: 订阅成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          isMember: { type: boolean, example: true }
+                          memberExpiresAt: { type: string, format: date-time }
+                          amountPaid: { type: integer, example: 1000, description: '¥10.00 = 1000 分' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /membership/status:
+    get:
+      tags: [membership]
+      summary: 会员状态查询
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          isMember: { type: boolean }
+                          memberExpiresAt: { type: string, format: date-time, nullable: true }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    OkEmpty:
+      description: 操作成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiEnvelope'
+    BadRequest:
+      description: 参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiEnvelope'
+    Unauthorized:
+      description: 未认证或 token 失效
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiEnvelope'
+    Forbidden:
+      description: 无权限操作该资源（非本人所有）
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiEnvelope'
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiEnvelope'
+
+  schemas:
+    ApiEnvelope:
+      type: object
+      properties:
+        code: { type: integer, description: '0=成功，非0=错误码', example: 0 }
+        data: {}
+        message: { type: string, example: '' }
+      required: [code, data, message]
+
+    ToyCategory:
+      type: string
+      enum: [building_blocks, outdoor_sports, pretend_play, early_education, plush_fabric]
+
+    ConditionLevel:
+      type: string
+      enum: [new, 9new, 8new, used]
+
+    ToyStatus:
+      type: string
+      enum: [available, swapping, exchanged, removed]
+
+    SwapStatus:
+      type: string
+      enum: [requested, accepted, rejected, shipping, received, reviewed, cancelled, disputed]
+
+    CreditLevel:
+      type: string
+      enum: [sprout, growing, trusted, elite]
+      description: 'sprout: 500-599新芽 / growing: 600-799成长 / trusted: 800-949信赖 / elite: 950-1000优选'
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        phone: { type: string }
+        name: { type: string }
+        isVerified: { type: boolean }
+        creditScore: { type: integer, example: 862 }
+        creditLevel: { $ref: '#/components/schemas/CreditLevel' }
+        isMember: { type: boolean }
+        memberExpiresAt: { type: string, format: date-time, nullable: true }
+        city: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+
+    AddressInput:
+      type: object
+      required: [receiverName, phone, province, city, detail]
+      properties:
+        receiverName: { type: string }
+        phone: { type: string }
+        province: { type: string }
+        city: { type: string }
+        detail: { type: string }
+        isDefault: { type: boolean, default: false }
+
+    Address:
+      allOf:
+        - $ref: '#/components/schemas/AddressInput'
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            userId: { type: string, format: uuid }
+            createdAt: { type: string, format: date-time }
+
+    ToyInput:
+      type: object
+      required: [title, category, ageRange, conditionLevel, images]
+      properties:
+        title: { type: string, example: '乐高得宝大颗粒积木 120 粒' }
+        description: { type: string }
+        category: { $ref: '#/components/schemas/ToyCategory' }
+        ageRange: { type: string, example: '1.5-5' }
+        conditionLevel: { $ref: '#/components/schemas/ConditionLevel' }
+        hasSmallParts: { type: boolean, default: false }
+        images:
+          type: array
+          minItems: 3
+          items: { type: string, format: uri }
+          description: '至少 3 张图片 URL，少于 3 张将被拒绝（AC-04）'
+
+    Toy:
+      allOf:
+        - $ref: '#/components/schemas/ToyInput'
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            ownerId: { type: string, format: uuid }
+            city: { type: string, nullable: true }
+            status: { $ref: '#/components/schemas/ToyStatus' }
+            createdAt: { type: string, format: date-time }
+
+    ToyDetail:
+      allOf:
+        - $ref: '#/components/schemas/Toy'
+        - type: object
+          properties:
+            owner:
+              type: object
+              properties:
+                id: { type: string, format: uuid }
+                name: { type: string }
+                isVerified: { type: boolean }
+                creditScore: { type: integer }
+                creditLevel: { $ref: '#/components/schemas/CreditLevel' }
+            reviewSummary:
+              type: object
+              properties:
+                avgRating: { type: number, example: 4.8 }
+                count: { type: integer, example: 12 }
+
+    PaginatedToys:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/Toy' }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+        hasMore: { type: boolean }
+
+    Swap:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        initiatorId: { type: string, format: uuid }
+        targetOwnerId: { type: string, format: uuid }
+        myToyId: { type: string, format: uuid }
+        targetToyId: { type: string, format: uuid }
+        message: { type: string }
+        status: { $ref: '#/components/schemas/SwapStatus' }
+        serviceFeeAmountInitiator: { type: integer, nullable: true, description: '发起人应付服务费（分），会员为 0' }
+        serviceFeeAmountTarget: { type: integer, nullable: true, description: '目标方应付服务费（分），会员为 0' }
+        serviceFeePaidByInitiator: { type: boolean }
+        serviceFeePaidByTarget: { type: boolean }
+        initiatorTrackingNo: { type: string, nullable: true }
+        targetTrackingNo: { type: string, nullable: true }
+        initiatorReceivedAt: { type: string, format: date-time, nullable: true }
+        targetReceivedAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+
+    SwapDetail:
+      allOf:
+        - $ref: '#/components/schemas/Swap'
+        - type: object
+          properties:
+            myToy: { $ref: '#/components/schemas/Toy' }
+            targetToy: { $ref: '#/components/schemas/Toy' }
+            counterpartAddress:
+              allOf:
+                - $ref: '#/components/schemas/Address'
+              nullable: true
+              description: '仅当 status >= accepted 时返回对方地址，否则为 null（AC-16）'
+
+    Review:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        swapId: { type: string, format: uuid }
+        reviewerId: { type: string, format: uuid }
+        revieweeId: { type: string, format: uuid }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        tags:
+          type: array
+          items: { type: string }
+        comment: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    Dispute:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        swapId: { type: string, format: uuid }
+        reporterId: { type: string, format: uuid }
+        type: { type: string }
+        description: { type: string }
+        evidenceImages:
+          type: array
+          items: { type: string, format: uri }
+        status: { type: string, enum: [pending, resolved] }
+        createdAt: { type: string, format: date-time }

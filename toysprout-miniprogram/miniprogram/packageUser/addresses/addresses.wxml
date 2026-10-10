@@ -1,0 +1,49 @@
+<!-- packageUser/addresses/addresses.wxml -->
+<view class="page addresses-page">
+  <button class="btn btn--primary btn--block" style="margin-bottom:24rpx;" bindtap="onAddNew">+ 新增地址</button>
+
+  <view wx:if="{{addresses.length === 0}}" class="empty-state">
+    还没有收货地址，交换互邮时需要
+  </view>
+  <view wx:for="{{addresses}}" wx:key="id" class="card addr-item">
+    <view class="flex-between">
+      <view class="flex-row gap-1">
+        <text class="body-sm" style="font-weight:600;">{{item.receiverName}}</text>
+        <text class="caption text-tertiary">{{item.phone}}</text>
+        <text wx:if="{{item.isDefault}}" class="badge credit--trusted">默认</text>
+      </view>
+      <view class="flex-row gap-2">
+        <text class="caption text-secondary" bindtap="onEdit" data-id="{{item.id}}">编辑</text>
+        <text class="caption text-secondary" bindtap="onDelete" data-id="{{item.id}}">删除</text>
+      </view>
+    </view>
+    <text class="caption text-secondary" style="display:block;margin-top:8rpx;">{{item.province}}{{item.city}}{{item.detail}}</text>
+  </view>
+
+  <view wx:if="{{formVisible}}" class="modal-overlay">
+    <view class="card modal-card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">{{editingId ? '编辑地址' : '新增地址'}}</text>
+      <view class="field">
+        <input class="input" placeholder="收件人姓名" value="{{form.receiverName}}" bindinput="onFormInput" data-field="receiverName" />
+      </view>
+      <view class="field">
+        <input class="input" placeholder="11位手机号" value="{{form.phone}}" bindinput="onFormInput" data-field="phone" maxlength="11" />
+      </view>
+      <view class="flex-row gap-2">
+        <input class="input" style="flex:1" placeholder="省份" value="{{form.province}}" bindinput="onFormInput" data-field="province" />
+        <input class="input" style="flex:1" placeholder="城市" value="{{form.city}}" bindinput="onFormInput" data-field="city" />
+      </view>
+      <view class="field" style="margin-top:24rpx;">
+        <input class="input" placeholder="详细地址" value="{{form.detail}}" bindinput="onFormInput" data-field="detail" />
+      </view>
+      <label class="flex-row gap-2" style="margin-bottom:24rpx;">
+        <checkbox checked="{{form.isDefault}}" bindtap="onToggleDefault" />
+        <text class="body-sm">设为默认地址</text>
+      </label>
+      <view class="flex-row gap-2">
+        <button class="btn btn--primary" style="flex:1;" bindtap="onSave">保存</button>
+        <button class="btn btn--ghost" bindtap="onCancelForm">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

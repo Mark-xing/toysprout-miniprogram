@@ -1,0 +1,21 @@
+<!-- packageSwap/orders/orders.wxml -->
+<view class="page orders-page">
+  <view wx:if="{{loading}}" class="loading-state">正在加载订单…</view>
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    还没有交换订单，去发现玩具或发布一件开始第一单交换吧
+  </view>
+  <view wx:else>
+    <view class="card card--compact order-card" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="onOrderTap">
+      <view class="flex-between" style="margin-bottom:12rpx;">
+        <text class="caption mono">#{{item.shortId}}</text>
+        <text class="status-chip {{item.statusCls}}">{{item.statusLabel}}</text>
+      </view>
+      <view class="body-sm">
+        <text>{{item.myToyTitle}}</text>
+        <text class="text-tertiary"> ⇄ </text>
+        <text>{{item.targetToyTitle}}</text>
+      </view>
+      <text class="caption text-tertiary" style="display:block;margin-top:8rpx;">{{item.dateLabel}}</text>
+    </view>
+  </view>
+</view>

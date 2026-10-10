@@ -1,0 +1,16 @@
+/* packageSwap/order-detail/order-detail.wxss */
+.sm-step { display: flex; align-items: center; gap: 16rpx; padding: 8rpx 0; color: var(--color-text-tertiary); }
+.sm-dot { width: 20rpx; height: 20rpx; border-radius: 50%; border: 4rpx dashed var(--color-neutral-border); flex-shrink: 0; }
+.sm-step.st-done { color: var(--color-success-text); }
+.sm-step.st-done .sm-dot { background: var(--color-success); border-color: var(--color-success); border-style: solid; }
+.sm-step.st-current { color: var(--color-text-primary); font-weight: 600; }
+.sm-step.st-current .sm-dot { background: var(--color-warning); border-color: var(--color-warning); border-style: solid; }
+.sm-step-done, .sm-step-danger { padding: 16rpx 0; }
+.sm-step-danger { color: var(--color-danger-text); }
+.track-row { display: flex; justify-content: space-between; padding: 12rpx 0; border-bottom: 1px dashed var(--color-divider); }
+.track-row:last-of-type { border-bottom: none; }
+.review-overlay {
+  position: fixed; inset: 0; background: rgba(51, 41, 31, 0.4); z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+}
+.review-modal { width: 84%; margin: 0; }

@@ -1,0 +1,178 @@
+/* pages/discover/discover.wxss */
+/*
+ * 全屏 flex 纵向布局：顶部固定块（导航+Tab）不参与滚动，瀑布流占满剩余高度。
+ * 用 flex 而不是"JS 算高度写进 style"，是因为 rpx/px 混算容易在异形屏上错位，
+ * 而 100vh 在小程序里就是"窗口高度"（不含原生 tabBar），正好可用。
+ */
+page { height: 100%; }
+.dpage {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+/* ============ 固定顶部 ============ */
+.dtop {
+  flex: none;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-divider);
+}
+.dnav__row { display: flex; align-items: center; gap: 16rpx; padding: 0 24rpx; }
+
+/* 搜索框：奶油底 + 胶囊圆角，无边框（小红书式"轻"输入框） */
+.dsearch {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 10rpx;
+  height: 68rpx; padding: 0 20rpx;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999rpx;
+}
+.dsearch__icon {
+  width: 30rpx; height: 30rpx; flex-shrink: 0;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* 放大镜：#7A6C5A → 令牌 --color-text-tertiary */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='10.5' cy='10.5' r='6.5' fill='none' stroke='%237A6C5A' stroke-width='1.9'/><path d='M15.6 15.6L21 21' fill='none' stroke='%237A6C5A' stroke-width='1.9' stroke-linecap='round'/></svg>");
+}
+.dsearch__input { flex: 1; min-width: 0; height: 68rpx; line-height: 68rpx; font-size: 26rpx; }
+.dsearch__ph { color: var(--color-text-tertiary); }
+.dsearch__clear {
+  width: 30rpx; height: 30rpx; flex-shrink: 0; opacity: 0.6;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* 叉号：#8A7C6A → 令牌 --color-neutral */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='%238A7C6A'/><path d='M8.6 8.6l6.8 6.8M15.4 8.6l-6.8 6.8' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>");
+}
+
+/* 筛选入口 */
+.dfilter {
+  position: relative; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 68rpx; height: 68rpx; border-radius: 50%;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+}
+.dfilter.is-on { background: var(--color-accent-tint); border-color: var(--color-accent); }
+.dfilter__icon {
+  width: 32rpx; height: 32rpx;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* 滑杆：#6B5E4F → 令牌 --color-text-secondary */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M4 7h10M18 7h2M4 17h2M10 17h10' fill='none' stroke='%236B5E4F' stroke-width='1.9' stroke-linecap='round'/><circle cx='16' cy='7' r='2.3' fill='none' stroke='%236B5E4F' stroke-width='1.9'/><circle cx='8' cy='17' r='2.3' fill='none' stroke='%236B5E4F' stroke-width='1.9'/></svg>");
+}
+/* 有筛选生效时右上角一个小红点，比数字更轻、不抢视觉 */
+.dfilter__dot {
+  position: absolute; right: 6rpx; top: 6rpx;
+  width: 14rpx; height: 14rpx; border-radius: 50%;
+  background: var(--color-accent-strong);
+  border: 2rpx solid var(--color-surface);
+}
+
+/* 品类 Tab */
+.dtabs { white-space: nowrap; }
+.dtabs__inner { display: inline-flex; align-items: flex-end; padding: 0 16rpx; }
+.dtab {
+  position: relative;
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 18rpx 20rpx 14rpx;
+}
+.dtab__text {
+  font-size: 28rpx; color: var(--color-text-secondary);
+  transition: font-size 140ms ease-out, color 140ms ease-out;
+}
+.dtab.is-on .dtab__text { font-size: 32rpx; font-weight: 700; color: var(--color-text-primary); }
+/* 指示条：默认宽度 0，选中后展开到文字宽度——滑动时视觉跟随很清楚 */
+.dtab__bar {
+  margin-top: 8rpx; height: 6rpx; width: 0; border-radius: 999rpx;
+  background: var(--color-accent-strong);
+  transition: width 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dtab.is-on .dtab__bar { width: 40rpx; }
+
+/* ============ 瀑布流 ============ */
+.dfeed { flex: 1; min-height: 0; }
+.dcount {
+  padding: 20rpx 24rpx 8rpx;
+  font-size: 24rpx; color: var(--color-text-tertiary);
+}
+.dcols { display: flex; padding: 12rpx 20rpx 0; gap: 20rpx; }
+.dcol { flex: 1; min-width: 0; }
+
+.dfoot { padding: 24rpx 0 48rpx; text-align: center; }
+.dfoot__text { font-size: 24rpx; color: var(--color-text-tertiary); }
+
+/* ============ 骨架屏 ============ */
+.dsk {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: 24rpx; overflow: hidden; margin-bottom: 20rpx;
+}
+.dsk__media {
+  width: 100%;
+  background: linear-gradient(135deg, #F8F1E6 0%, #F1E4CE 55%, #EFE0C6 100%);
+  animation: dsk-shimmer 1.4s ease-in-out infinite;
+}
+.dsk__body { padding: 18rpx 20rpx 22rpx; }
+.dsk__line {
+  height: 24rpx; border-radius: 8rpx; margin-bottom: 12rpx;
+  background: var(--color-surface-sunken);
+  animation: dsk-shimmer 1.4s ease-in-out infinite;
+}
+.dsk__line--short { width: 55%; margin-bottom: 0; }
+@keyframes dsk-shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ============ 空态 ============ */
+.dempty {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 140rpx 60rpx 60rpx;
+}
+.dempty__art {
+  width: 200rpx; height: 200rpx; margin-bottom: 32rpx; opacity: 0.75;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* 空盒子：#D6C8B0 → 令牌 --color-border-strong */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 24l22-10 22 10v22l-22 10-22-10z' fill='none' stroke='%23D6C8B0' stroke-width='2.4' stroke-linejoin='round'/><path d='M10 24l22 10 22-10M32 34v22' fill='none' stroke='%23D6C8B0' stroke-width='2.4' stroke-linejoin='round'/><path d='M21 19l22 10' fill='none' stroke='%23E9DFCE' stroke-width='2.4' stroke-linecap='round'/></svg>");
+}
+.dempty__title { font-size: 30rpx; font-weight: 600; color: var(--color-text-primary); }
+.dempty__desc {
+  margin: 12rpx 0 36rpx; font-size: 25rpx; line-height: 1.6;
+  color: var(--color-text-tertiary); text-align: center;
+}
+.dempty__btn { width: 380rpx; }
+
+/* ============ 悬浮发布 ============ */
+.dfab {
+  position: fixed; right: 32rpx; bottom: 48rpx;
+  width: 104rpx; height: 104rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-accent-strong);
+  box-shadow: 0 12rpx 32rpx rgba(201, 67, 36, 0.34);
+  z-index: 20;
+}
+.dfab__plus {
+  width: 44rpx; height: 44rpx;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* 加号：白色 */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 5v14M5 12h14' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round'/></svg>");
+}
+
+/* ============ 筛选抽屉 ============ */
+.dsheet {
+  position: fixed; left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(51, 41, 31, 0.42);
+  z-index: 40;
+  display: flex; align-items: flex-end;
+  animation: dsheet-fade 160ms ease-out;
+}
+.dsheet__panel {
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 32rpx 32rpx calc(32rpx + env(safe-area-inset-bottom));
+  animation: dsheet-up 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dsheet__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28rpx; }
+.dsheet__reset { font-size: 26rpx; color: var(--color-accent-strong); }
+.dsheet__group { margin-bottom: 28rpx; }
+@keyframes dsheet-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dsheet-up { from { transform: translateY(40rpx); } to { transform: translateY(0); } }

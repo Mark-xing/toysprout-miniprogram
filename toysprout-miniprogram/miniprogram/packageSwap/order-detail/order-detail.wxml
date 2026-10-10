@@ -1,0 +1,108 @@
+<!-- packageSwap/order-detail/order-detail.wxml -->
+<view class="page order-detail-page">
+  <view wx:if="{{loading}}" class="loading-state">正在加载订单…</view>
+  <view wx:else>
+    <view class="flex-between" style="margin-bottom:24rpx;">
+      <text class="caption text-tertiary">{{swap.orderLine}}</text>
+      <text class="status-chip {{swap.statusCls}}">{{swap.statusLabel}}</text>
+    </view>
+
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:20rpx;">交换进度</text>
+      <view wx:if="{{swap.status === 'cancelled' || swap.status === 'rejected'}}" class="sm-step-done">
+        <text class="body-sm">订单已{{swap.status === 'cancelled' ? '取消' : '被拒绝'}}，双方玩具已退回交换池</text>
+      </view>
+      <view wx:elif="{{swap.status === 'disputed'}}" class="sm-step-danger">
+        <text class="body-sm">纠纷仲裁中 · 平台将在 3 个工作日内复核（举证期 7 天）</text>
+      </view>
+      <view wx:else>
+        <view wx:for="{{smSteps}}" wx:key="key" class="sm-step {{item.cls}}">
+          <view class="sm-dot"></view>
+          <text class="body-sm">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">双轨运单（一换一互邮）</text>
+      <view class="track-row">
+        <text class="caption text-secondary">{{myRoleLabel}} 寄出 → 对方：</text>
+        <text class="mono body-sm">{{myTrackingNo || '未填写'}}</text>
+      </view>
+      <view class="track-row">
+        <text class="caption text-secondary">对方 寄出 → 你：</text>
+        <text class="mono body-sm">{{otherTrackingNo || '未填写'}}</text>
+      </view>
+      <view wx:if="{{showShipForm}}" class="flex-row gap-2" style="margin-top:16rpx;">
+        <input class="input" style="flex:1" placeholder="填写你的快递单号" value="{{trackingInput}}" bindinput="onTrackingInput" />
+        <!-- 高度与同行 .input 对齐（88rpx），去掉 btn--sm 避免按钮比输入框高 -->
+        <button class="btn btn--primary" bindtap="onShip">登记</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">交换双方</text>
+      <view class="flex-row" style="gap:16rpx;">
+        <view class="card card--compact" style="flex:1;margin:0;">
+          <text class="caption text-tertiary">{{myRoleLabel}} 的玩具</text>
+          <text class="body-sm" style="display:block;margin-top:4rpx;">{{swap.myToy.title || '—'}}</text>
+        </view>
+        <view class="card card--compact" style="flex:1;margin:0;">
+          <text class="caption text-tertiary">对方 的玩具</text>
+          <text class="body-sm" style="display:block;margin-top:4rpx;">{{swap.targetToy.title || '—'}}</text>
+        </view>
+      </view>
+      <view wx:if="{{counterpartAddressText}}" class="notice-bar" style="margin-top:16rpx;">
+        <text>对方收货地址：{{counterpartAddressText}}</text>
+      </view>
+    </view>
+
+    <view class="notice-bar {{feeBarCls}}" style="margin-bottom:20rpx;">
+      <text>{{feeBarText}}</text>
+    </view>
+
+    <view class="flex-wrap gap-2" style="margin-bottom:24rpx;">
+      <button wx:if="{{canRespond}}" class="btn btn--primary" bindtap="onAccept">同意交换</button>
+      <button wx:if="{{canRespond}}" class="btn btn--ghost" bindtap="onReject">拒绝</button>
+      <button wx:if="{{canCancel}}" class="btn btn--ghost" bindtap="onCancel">取消交换</button>
+      <button wx:if="{{canPayFee}}" class="btn btn--primary" bindtap="onPayFee">{{payFeeLabel}}</button>
+      <button wx:if="{{canConfirmReceipt}}" class="btn btn--primary" bindtap="onConfirmReceipt">确认收货</button>
+      <button wx:if="{{canReview}}" class="btn btn--primary" bindtap="onOpenReview">去评价</button>
+    </view>
+
+    <view wx:if="{{canDispute}}" class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">发起纠纷</text>
+      <picker range="{{disputeTypeOptions}}" range-key="label" bindchange="onDisputeTypeChange">
+        <view class="input">{{disputeTypeLabel}}</view>
+      </picker>
+      <textarea class="textarea" style="margin-top:16rpx;" placeholder="描述纠纷情况（举证期 7 天）" value="{{disputeDesc}}" bindinput="onDisputeDescInput" />
+      <button class="btn btn--danger btn--block" style="margin-top:16rpx;" bindtap="onSubmitDispute">提交纠纷</button>
+    </view>
+
+    <!-- 评价浮层 -->
+    <view wx:if="{{reviewVisible}}" class="review-overlay">
+      <view class="review-modal card">
+        <text class="h4" style="display:block;margin-bottom:16rpx;">评价这次交换</text>
+        <view class="flex-row gap-1" style="margin-bottom:16rpx;">
+          <view
+            wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
+            class="star-icon star-icon--lg {{reviewRating >= item ? 'star-icon--filled' : 'star-icon--empty'}}"
+            data-v="{{item}}" bindtap="onStarTap"
+          ></view>
+        </view>
+        <view class="flex-wrap" style="margin-bottom:16rpx;">
+          <view
+            wx:for="{{reviewTagOptions}}" wx:key="*this"
+            class="opt-chip {{reviewTags.indexOf(item) > -1 ? 'selected' : ''}}"
+            data-tag="{{item}}" bindtap="onTagToggle"
+          >{{item}}</view>
+        </view>
+        <textarea class="textarea" placeholder="说点什么…" value="{{reviewComment}}" bindinput="onReviewCommentInput" />
+        <view class="flex-row gap-2" style="margin-top:16rpx;">
+          <button class="btn btn--primary" style="flex:1;" bindtap="onSubmitReview">提交评价</button>
+          <button class="btn btn--ghost" bindtap="onCloseReview">取消</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

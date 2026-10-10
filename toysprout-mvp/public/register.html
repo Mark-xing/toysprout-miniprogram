@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录/注册 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .auth-wrap { max-width: 420px; margin: 0 auto; padding: 48px 24px; }
+  .auth-card { border-radius: var(--radius-xl); padding: var(--space-8); box-shadow: var(--shadow-lg); }
+  .auth-brand { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+  .auth-brand .brand-mark { width: 34px; height: 34px; }
+  .auth-form { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+  .auth-form label { font-size: 14px; font-weight: 600; }
+  .auth-form input, .auth-form select {
+    width: 100%; height: 44px; padding: 0 12px; border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-strong); background: var(--color-surface);
+    font-size: 15px; color: var(--color-text-primary); box-sizing: border-box;
+  }
+  .auth-form input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring); }
+  .code-row { display: flex; gap: var(--space-3); }
+  .code-row input { flex: 1; }
+  .code-row .btn { white-space: nowrap; }
+  .hint { font-size: 13px; color: var(--color-text-tertiary); }
+  .seed-users { margin-top: var(--space-6); padding: var(--space-4); border-radius: var(--radius-lg);
+    background: var(--color-surface-muted); display: grid; gap: var(--space-2); }
+  .seed-users .chip { cursor: pointer; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21V12"/><path d="M12 15c-3-1.6-5.4-4.6-5.8-8C10 7 13 8.8 14 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15c3-1.6 5.4-4.6 5.8-8C14 7 11 8.8 10 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M11 18.5h2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M11.5 11.5L20 3M16.5 7.5l3 3M13.5 10.5l2 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 20.5c1.2-3.8 3.9-5.7 7.5-5.7s6.3 1.9 7.5 5.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z" fill="currentColor" stroke="none"/></symbol>
+  </defs>
+</svg>
+
+<main>
+  <div class="auth-wrap">
+    <div class="card auth-card">
+      <a class="auth-brand" href="index.html" aria-label="返回首页">
+        <span class="brand-mark"><svg class="ic"><use href="#i-sprout"/></svg></span>
+        <span class="h3" style="margin:0;">童芽 <em>ToySprout</em></span>
+      </a>
+      <h1 class="h2" style="margin:0 0 4px;">登录 / 注册</h1>
+      <p class="caption text-secondary" style="margin:0 0 20px;">手机号 + 验证码，新用户自动创建账号（开发态验证码：<strong>1234</strong>）</p>
+
+      <form class="auth-form" id="auth-form">
+        <div>
+          <label for="phone">手机号</label>
+          <input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="11"
+                 placeholder="请输入 11 位手机号" autocomplete="tel">
+        </div>
+        <div>
+          <label for="code">验证码</label>
+          <div class="code-row">
+            <input id="code" name="code" type="text" inputmode="numeric" maxlength="6"
+                   placeholder="请输入验证码">
+            <button type="button" class="btn btn--secondary" id="send-code-btn">获取验证码</button>
+          </div>
+        </div>
+        <div>
+          <label for="name">昵称（仅新用户需填写）</label>
+          <input id="name" name="name" type="text" maxlength="20" placeholder="如：妈妈·小雨">
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg" id="submit-btn">登录 / 注册</button>
+      </form>
+
+      <div class="seed-users">
+        <span class="caption text-secondary"><strong>演示账号（一键填入）：</strong></span>
+        <div class="chips">
+          <button type="button" class="chip" data-phone="13800000001">小雨妈妈 · 信赖862</button>
+          <button type="button" class="chip" data-phone="13800000002">阿哲爸爸 · 会员优选985</button>
+          <button type="button" class="chip" data-phone="13800000003">橙子妈妈 · 新芽560</button>
+          <button type="button" class="chip" data-phone="13800000004">大鹏爸爸 · 成长720</button>
+        </div>
+      </div>
+    </div>
+    <p class="caption text-tertiary" style="text-align:center;margin-top:var(--space-4);">
+      已登录用户将直接进入玩具发现页 · <a href="index.html">返回首页</a>
+    </p>
+  </div>
+</main>
+<script src="app.js"></script>
+<script>
+(function () {
+  var T = window.ToySprout;
+  var form = document.getElementById('auth-form');
+  var phoneInput = document.getElementById('phone');
+  var codeInput = document.getElementById('code');
+  var nameInput = document.getElementById('name');
+  var sendBtn = document.getElementById('send-code-btn');
+  var submitBtn = document.getElementById('submit-btn');
+  var countdown = 0;
+
+  // 已登录则直接进发现页
+  if (T.isLoggedIn()) { location.href = 'explore.html'; }
+
+  document.querySelectorAll('.seed-users .chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      phoneInput.value = chip.getAttribute('data-phone');
+      codeInput.value = '1234';
+      nameInput.value = '';
+      T.toast('演示账号已填入，点击"登录 / 注册"即可', 'warn');
+    });
+  });
+
+  sendBtn.addEventListener('click', function () {
+    var phone = phoneInput.value.trim();
+    if (!/^1[3-9]\d{9}$/.test(phone)) { T.toast('请先输入正确的手机号', 'error'); return; }
+    T.post('/auth/send-code', { phone: phone }).then(function (body) {
+      if (body.code === 0) {
+        T.toast('验证码已发送（开发态：' + body.data.code + '）', 'success');
+        countdown = 60;
+        sendBtn.disabled = true;
+        var timer = setInterval(function () {
+          countdown--;
+          sendBtn.textContent = countdown + 's';
+          if (countdown <= 0) { clearInterval(timer); sendBtn.disabled = false; sendBtn.textContent = '获取验证码'; }
+        }, 1000);
+      } else { T.toast(body.message, 'error'); }
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var phone = phoneInput.value.trim();
+    var code = codeInput.value.trim();
+    var name = nameInput.value.trim();
+    if (!/^1[3-9]\d{9}$/.test(phone)) { T.toast('请填写正确的手机号', 'error'); return; }
+    if (!code) { T.toast('请填写验证码', 'error'); return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = '登录中…';
+    T.post('/auth/register', { phone: phone, code: code, name: name }).then(function (body) {
+      if (body.code === 0) {
+        T.setToken(body.data.token);
+        T.toast('登录成功，欢迎回来', 'success');
+        setTimeout(function () { location.href = 'explore.html'; }, 600);
+      } else {
+        T.toast(body.message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '登录 / 注册';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

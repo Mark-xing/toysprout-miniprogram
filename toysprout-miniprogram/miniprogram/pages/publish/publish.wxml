@@ -1,0 +1,89 @@
+<!-- pages/publish/publish.wxml -->
+<view class="page publish-page">
+  <view class="card">
+    <view class="field">
+      <text class="field-label">玩具名称 *</text>
+      <input class="input" placeholder="如：乐高得宝大颗粒积木 120 粒" value="{{title}}" bindinput="onInput" data-field="title" maxlength="40" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">品类 *</text>
+      <view class="flex-wrap">
+        <view
+          wx:for="{{categoryOptions}}" wx:key="value"
+          class="opt-chip {{category === item.value ? 'selected' : ''}}"
+          data-value="{{item.value}}" bindtap="onCategoryTap"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">适龄范围 * <text class="caption text-tertiary">（如 3-6）</text></text>
+      <input class="input" placeholder="如：3-6" value="{{ageRange}}" bindinput="onInput" data-field="ageRange" maxlength="10" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">成色 *（如实标注，标错将影响信用分）</text>
+      <view class="flex-wrap">
+        <view
+          wx:for="{{conditionOptions}}" wx:key="value"
+          class="opt-chip {{conditionLevel === item.value ? 'selected' : ''}}"
+          data-value="{{item.value}}" bindtap="onConditionTap"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">描述 <text class="caption text-tertiary">（配件情况、瑕疵位置请如实说明）</text></text>
+      <textarea class="textarea" placeholder="如：原装收纳盒，配件齐全；轮子有一个轻微划痕，不影响使用…" value="{{description}}" bindinput="onInput" data-field="description" maxlength="500" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">实拍图片 * <text class="caption text-tertiary">至少 3 张：整体、细节、瑕疵特写</text></text>
+      <view class="flex-wrap" style="margin-bottom:16rpx;">
+        <view wx:for="{{images}}" wx:key="*this" class="img-preview">
+          <image src="{{item}}" mode="aspectFill" class="img-preview__img" />
+          <view class="img-preview__del" data-index="{{index}}" bindtap="onRemoveImage">×</view>
+        </view>
+        <view class="img-add" bindtap="onChooseImage">
+          <text class="h3">+</text>
+          <text class="micro">添加图片</text>
+        </view>
+      </view>
+      <text class="caption text-tertiary">已选 {{images.length}} / 建议 3-6 张</text>
+    </view>
+
+    <view class="field">
+      <label class="flex-row gap-2">
+        <checkbox value="hasSmallParts" checked="{{hasSmallParts}}" bindtap="onToggleSmallParts" />
+        <text class="body-sm">含小零件 · 3 岁以下慎玩</text>
+      </label>
+    </view>
+
+    <view class="field" wx:if="{{valuation}}">
+      <text class="field-label">预估积分 <text class="caption text-tertiary">（换出后到账，可在区间内微调）</text></text>
+      <view class="flex-row gap-2" style="align-items:center;">
+        <input
+          class="input" type="number" style="flex:1;"
+          value="{{finalPoints}}" bindinput="onFinalPointsInput"
+        />
+        <text class="caption text-tertiary">积分区间 {{valuation.min}} ~ {{valuation.max}}</text>
+      </view>
+    </view>
+
+    <view class="field">
+      <label class="flex-row gap-2">
+        <checkbox value="isFreeShipping" checked="{{isFreeShipping}}" bindtap="onToggleFreeShipping" />
+        <text class="body-sm">跨城兑换时我包邮 <text class="caption text-tertiary">（将获得更高曝光，同城兑换始终为自提无需邮寄）</text></text>
+      </label>
+    </view>
+
+    <view class="notice-bar notice-bar--warn" style="margin-bottom:32rpx;">
+      <text>平台免责声明：请家长自行确认玩具安全性；成色以实拍为准，纠纷时将作为裁定依据。</text>
+    </view>
+
+    <button class="btn btn--primary btn--block" bindtap="onSubmit" loading="{{submitting}}">
+      发布到交换池
+    </button>
+  </view>
+</view>

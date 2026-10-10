@@ -1,0 +1,11 @@
+/* packageUser/membership/membership.wxss */
+.compare-row {
+  display: flex; padding: 16rpx 0; border-bottom: 1px solid var(--color-divider); font-size: 26rpx;
+}
+.compare-row--head { font-weight: 600; color: var(--color-text-tertiary); font-size: 24rpx; }
+.compare-row:last-child { border-bottom: none; }
+/* 勾选图标：SVG 矢量，替代 Unicode ✓ 符号，颜色对应 --color-success 令牌值 */
+.check-icon {
+  width: 32rpx; height: 32rpx; background-size: contain; background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M5 12.5l4.5 4.5L19 7' fill='none' stroke='%233E7C59' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}

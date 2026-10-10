@@ -1,0 +1,33 @@
+<!-- packageUser/membership/membership.wxml -->
+<view class="page membership-page">
+  <view class="card" style="text-align:center;">
+    <text class="h2">会员 ¥10/月</text>
+    <text class="caption text-secondary" style="display:block;margin-top:8rpx;">免每单服务费 · 优先曝光 · 专属客服 · 信用分加成</text>
+  </view>
+
+  <view class="card">
+    <view class="compare-row compare-row--head">
+      <text style="flex:1;"></text>
+      <text style="flex:1;text-align:center;">普通用户</text>
+      <text style="flex:1;text-align:center;color:var(--color-accent-strong);">会员</text>
+    </view>
+    <view class="compare-row">
+      <text style="flex:1;">每单服务费</text>
+      <text style="flex:1;text-align:center;">¥1.9</text>
+      <text style="flex:1;text-align:center;">免</text>
+    </view>
+    <view class="compare-row">
+      <text style="flex:1;">优先曝光</text>
+      <text style="flex:1;text-align:center;">—</text>
+      <view style="flex:1;display:flex;justify-content:center;"><view class="check-icon"></view></view>
+    </view>
+    <view class="compare-row">
+      <text style="flex:1;">专属客服</text>
+      <text style="flex:1;text-align:center;">—</text>
+      <view style="flex:1;display:flex;justify-content:center;"><view class="check-icon"></view></view>
+    </view>
+  </view>
+
+  <text wx:if="{{memberStatusText}}" class="caption text-tertiary" style="display:block;text-align:center;margin-bottom:16rpx;">{{memberStatusText}}</text>
+  <button class="btn btn--primary btn--block" bindtap="onSubscribe" loading="{{submitting}}">{{buttonLabel}}</button>
+</view>

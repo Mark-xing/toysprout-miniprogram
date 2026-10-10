@@ -1,0 +1,2 @@
+/* packageSwap/orders/orders.wxss */
+.order-card { cursor: pointer; }

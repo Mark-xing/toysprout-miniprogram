@@ -1,0 +1,99 @@
+<!-- pages/mine/mine.wxml -->
+<view class="page mine-page">
+  <view class="card">
+    <view class="flex-between">
+      <view class="flex-row gap-3" style="flex:1;min-width:0;">
+        <image wx:if="{{user.avatarUrl}}" class="avatar" src="{{user.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="avatar"></view>
+        <view style="flex:1;min-width:0;">
+          <text class="h3">{{user.name || '还没设置昵称'}}</text>
+          <view class="caption text-secondary">
+            {{user.city || ''}}{{user.isMember ? ' · 会员' : ' · 普通用户'}}{{user.isVerified ? ' · 已实名' : ' · 未实名'}}
+          </view>
+        </view>
+      </view>
+      <button class="btn btn--ghost btn--sm" bindtap="onEditProfile">编辑资料</button>
+    </view>
+  </view>
+
+  <!-- 昵称为空 = 静默建档后尚未完善资料，此时不应阻止任何基础功能，只做温和引导 -->
+  <view wx:if="{{!user.profileCompleted}}" class="card">
+    <text class="h4">完善资料</text>
+    <text class="caption text-secondary" style="display:block;margin:8rpx 0 16rpx;">设置昵称后，交换对方才能认出你</text>
+    <button class="btn btn--soft btn--block" bindtap="onEditProfile">去设置</button>
+  </view>
+
+  <view class="card">
+    <view class="flex-between" style="margin-bottom:16rpx;">
+      <text class="h4">我的信用分</text>
+      <text class="badge {{creditCls}}">{{creditLabel}}</text>
+    </view>
+    <view class="flex-row gap-3">
+      <text class="h1">{{user.creditScore || 500}}</text>
+      <text class="caption text-tertiary">/ 1000</text>
+    </view>
+    <view class="credit-bar">
+      <view class="credit-bar__fill" style="width:{{creditPercent}}%"></view>
+    </view>
+    <text class="caption text-tertiary">500新芽 / 600成长 / 800信赖 / 950优选</text>
+  </view>
+
+  <view wx:if="{{!user.isVerified}}" class="card">
+    <text class="h4">实名认证</text>
+    <text class="caption text-secondary" style="display:block;margin:8rpx 0 16rpx;">实名认证后信用更可信，交换对方更放心</text>
+    <button class="btn btn--soft btn--block" bindtap="onGoVerify">去认证</button>
+  </view>
+
+  <view class="menu-list card">
+    <view class="menu-item" bindtap="onGoPointsWallet">
+      <text>我的积分 · {{pointsBalance}}</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGoOrders">
+      <text>交换订单</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGoAddresses">
+      <text>地址管理</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGoMembership">
+      <text>会员中心</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="flex-between" style="margin-bottom:16rpx;">
+      <text class="h4">我的玩具</text>
+      <text class="caption text-tertiary">{{myToys.length}} 件</text>
+    </view>
+    <view wx:if="{{myToys.length === 0}}" class="empty-state" style="padding:40rpx 0;">
+      还没有发布玩具，去发布第一件吧
+    </view>
+    <view wx:for="{{myToys}}" wx:key="id" class="toy-row">
+      <image wx:if="{{item.images[0]}}" src="{{item.images[0]}}" mode="aspectFill" class="toy-row__img" />
+      <view style="flex:1;">
+        <text class="body-sm">{{item.title}}</text>
+        <text class="caption text-tertiary" style="display:block;">{{item.statusLabel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="h4">收到的互评 · {{reviewTotal}} 条</text>
+    <view wx:for="{{reviews}}" wx:key="id" class="review-item">
+      <view class="flex-between">
+        <text class="body-sm">{{item.reviewer.name || '家长'}}</text>
+        <text class="caption text-tertiary">{{item.dateLabel}}</text>
+      </view>
+      <view class="flex-row">
+        <view wx:for="{{item.stars}}" wx:key="*this" wx:for-item="star" class="star-icon {{star.filled ? 'star-icon--filled' : 'star-icon--empty'}}"></view>
+      </view>
+      <text wx:if="{{item.comment}}" class="body-sm text-secondary">{{item.comment}}</text>
+    </view>
+    <view wx:if="{{reviews.length === 0}}" class="empty-state" style="padding:40rpx 0;">
+      完成交换并互评后，这里会展示对方给你的评价
+    </view>
+  </view>
+</view>

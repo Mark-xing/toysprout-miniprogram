@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "backgroundColor": "#FBF6EC",
+  "usingComponents": {
+    "toy-card": "/components/toy-card/toy-card"
+  }
+}

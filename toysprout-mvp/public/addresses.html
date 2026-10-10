@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地址管理 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .addr-wrap { max-width: 720px; margin: 0 auto; padding: 40px 24px 64px; }
+  .addr-card { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4);
+    border-radius: var(--radius-lg); margin-bottom: var(--space-4); }
+  .addr-card .actions { display: flex; gap: var(--space-2); flex-shrink: 0; }
+  .addr-form { display: grid; gap: var(--space-4); margin-top: var(--space-5); }
+  .addr-form label { font-size: 14px; font-weight: 600; }
+  .addr-form input, .addr-form select {
+    width: 100%; height: 44px; padding: 0 12px; border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-strong); background: var(--color-surface);
+    font-size: 15px; box-sizing: border-box;
+  }
+  .addr-form input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .default-tag { color: var(--color-success-text); background: var(--color-success-tint);
+    padding: 2px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21V12"/><path d="M12 15c-3-1.6-5.4-4.6-5.8-8C10 7 13 8.8 14 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15c3-1.6 5.4-4.6 5.8-8C14 7 11 8.8 10 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.2-5.6-6.2-10.3a6.2 6.2 0 1 1 12.4 0C18.2 15.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10.4" r="2.3" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11L12 4l8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V20h12V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top-nav">
+  <div class="container">
+    <div class="top-nav__inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark"><svg class="ic"><use href="#i-sprout"/></svg></span>
+        <span>童芽 <em>ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="explore.html">发现玩具</a>
+        <a href="publish.html">发布玩具</a>
+        <a href="orders.html">交换订单</a>
+        <a href="profile.html">我的</a>
+      </nav>
+      <div class="nav-actions"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="addr-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
+      <div>
+        <h1 class="h1" style="margin:0 0 4px;">地址管理</h1>
+        <p class="caption text-secondary" style="margin:0;">交换确认后，对方将看到你的默认地址用于互邮</p>
+      </div>
+      <button class="btn btn--primary" id="toggle-form-btn"><svg class="ic"><use href="#i-plus"/></svg>新增地址</button>
+    </div>
+
+    <div id="addr-list" style="display:grid;gap:var(--space-4);"></div>
+    <div id="empty-tip" class="notice-bar" style="display:none;">
+      <svg class="ic"><use href="#i-pin"/></svg>
+      <span>还没有收货地址，点击右上角「新增地址」添加，交换互邮时需要。</span>
+    </div>
+
+    <div class="card addr-form" id="addr-form-card" style="display:none;">
+      <h2 class="h3" style="margin:0;" id="form-title">新增地址</h2>
+      <div class="form-grid">
+        <div><label>收件人 *</label><input id="f-receiver" type="text" placeholder="收件人姓名"></div>
+        <div><label>手机号 *</label><input id="f-phone" type="tel" maxlength="11" placeholder="11 位手机号"></div>
+        <div><label>省份 *</label><input id="f-province" type="text" placeholder="如：广东省"></div>
+        <div><label>城市 *</label><input id="f-city" type="text" placeholder="如：深圳市"></div>
+      </div>
+      <div><label>详细地址 *</label><input id="f-detail" type="text" placeholder="街道、小区、楼栋门牌号"></div>
+      <label class="check-row" style="display:flex;align-items:center;gap:var(--space-2);font-size:14px;cursor:pointer;">
+        <input type="checkbox" id="f-default" style="width:18px;height:18px;accent-color:var(--color-accent-strong);">
+        设为默认地址
+      </label>
+      <div style="display:flex;gap:var(--space-3);">
+        <button class="btn btn--primary" id="save-addr-btn">保存</button>
+        <button class="btn btn--ghost" id="cancel-form-btn">取消</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+(function () {
+  var T = window.ToySprout;
+  T.requireAuth();
+  T.renderNav();
+  var editingId = null;
+
+  function load() {
+    T.get('/addresses').then(function (body) {
+      if (body.code !== 0) return T.toast(body.message, 'error');
+      var list = document.getElementById('addr-list');
+      var tip = document.getElementById('empty-tip');
+      list.innerHTML = '';
+      if (!body.data.length) { tip.style.display = ''; return; }
+      tip.style.display = 'none';
+      body.data.forEach(function (a) {
+        var card = document.createElement('div');
+        card.className = 'card addr-card';
+        card.innerHTML =
+          '<div>' +
+          '<div style="display:flex;gap:var(--space-2);align-items:center;margin-bottom:4px;">' +
+          '<strong>' + T.esc(a.receiverName) + '</strong>' +
+          '<span class="caption text-tertiary">' + T.esc(a.phone) + '</span>' +
+          (a.isDefault ? '<span class="default-tag">默认</span>' : '') +
+          '</div>' +
+          '<p class="caption text-secondary" style="margin:0;">' + T.esc(a.province + ' ' + a.city + ' ' + a.detail) + '</p>' +
+          '</div>' +
+          '<div class="actions">' +
+          '<button class="btn btn--secondary btn--sm" data-act="edit" data-id="' + a.id + '">编辑</button>' +
+          '<button class="btn btn--ghost btn--sm" data-act="del" data-id="' + a.id + '">删除</button>' +
+          '</div>';
+        card.querySelector('[data-act="edit"]').addEventListener('click', function () { edit(a); });
+        card.querySelector('[data-act="del"]').addEventListener('click', function () { remove(a.id); });
+        list.appendChild(card);
+      });
+    });
+  }
+
+  function showForm(show) {
+    document.getElementById('addr-form-card').style.display = show ? '' : 'none';
+  }
+
+  function edit(a) {
+    editingId = a.id;
+    document.getElementById('form-title').textContent = '编辑地址';
+    document.getElementById('f-receiver').value = a.receiverName;
+    document.getElementById('f-phone').value = a.phone;
+    document.getElementById('f-province').value = a.province;
+    document.getElementById('f-city').value = a.city;
+    document.getElementById('f-detail').value = a.detail;
+    document.getElementById('f-default').checked = a.isDefault;
+    showForm(true);
+  }
+
+  function remove(id) {
+    if (!confirm('确认删除该地址？')) return;
+    T.del('/addresses/' + id).then(function (body) {
+      if (body.code === 0) { T.toast('地址已删除', 'success'); load(); } else T.toast(body.message, 'error');
+    });
+  }
+
+  document.getElementById('toggle-form-btn').addEventListener('click', function () {
+    editingId = null;
+    document.getElementById('form-title').textContent = '新增地址';
+    ['f-receiver', 'f-phone', 'f-province', 'f-city', 'f-detail'].forEach(function (id) { document.getElementById(id).value = ''; });
+    document.getElementById('f-default').checked = false;
+    showForm(document.getElementById('addr-form-card').style.display === 'none');
+  });
+  document.getElementById('cancel-form-btn').addEventListener('click', function () { showForm(false); });
+
+  document.getElementById('save-addr-btn').addEventListener('click', function () {
+    var payload = {
+      receiverName: document.getElementById('f-receiver').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      province: document.getElementById('f-province').value.trim(),
+      city: document.getElementById('f-city').value.trim(),
+      detail: document.getElementById('f-detail').value.trim(),
+      isDefault: document.getElementById('f-default').checked
+    };
+    if (!payload.receiverName || !payload.phone || !payload.province || !payload.city || !payload.detail) {
+      return T.toast('请完整填写地址信息', 'error');
+    }
+    var req = editingId ? T.put('/addresses/' + editingId, payload) : T.post('/addresses', payload);
+    req.then(function (body) {
+      if (body.code === 0) { T.toast(body.message, 'success'); showForm(false); load(); } else T.toast(body.message, 'error');
+    });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

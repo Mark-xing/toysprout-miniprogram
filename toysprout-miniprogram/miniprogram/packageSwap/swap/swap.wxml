@@ -1,0 +1,50 @@
+<!-- packageSwap/swap/swap.wxml -->
+<view class="page swap-page">
+  <text class="h2" style="display:block;margin-bottom:8rpx;">发起交换</text>
+  <text class="caption text-secondary" style="display:block;margin-bottom:24rpx;">一换一互邮：你寄一件，对方寄一件，交换确认后互见地址。</text>
+
+  <view wx:if="{{loading}}" class="loading-state">正在加载…</view>
+  <view wx:else>
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">对方想换的玩具</text>
+      <view class="flex-row gap-2">
+        <image wx:if="{{targetToy.images[0]}}" src="{{targetToy.images[0]}}" mode="aspectFill" class="target-img" />
+        <view style="flex:1;">
+          <text class="body-sm" style="font-weight:600;">{{targetToy.title}}</text>
+          <view style="margin-top:8rpx;">
+            <text class="badge {{targetConditionCls}}">{{targetConditionLabel}}</text>
+          </view>
+          <text class="caption text-tertiary" style="display:block;margin-top:8rpx;">
+            主人：{{targetToy.owner.name}} · 信用 {{targetToy.owner.creditScore}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">我提供的玩具（选一件）</text>
+      <view wx:if="{{myToys.length === 0}}" class="empty-state" style="padding:40rpx 0;">
+        你还没有可用于交换的玩具，先去发布一件吧
+      </view>
+      <label wx:for="{{myToys}}" wx:key="id" class="my-toy-row" data-id="{{item.id}}" bindtap="onSelectMyToy">
+        <radio checked="{{selectedMyToy === item.id}}" color="#C94324" />
+        <view style="flex:1;">
+          <text class="body-sm">{{item.title}}</text>
+          <text class="caption text-tertiary" style="display:block;">{{item.metaLabel}}</text>
+        </view>
+        <text class="badge {{item.conditionCls}}">{{item.conditionLabel}}</text>
+      </label>
+    </view>
+
+    <view class="card">
+      <text class="h4" style="display:block;margin-bottom:16rpx;">给对方留言</text>
+      <textarea class="textarea" placeholder="如：你好，我家孩子很喜欢这个，想用我的玩具跟你换，运费我们商量～" value="{{message}}" bindinput="onMessageInput" maxlength="200" />
+    </view>
+
+    <view class="notice-bar" style="margin-bottom:32rpx;">
+      <text>本单服务费 ¥1.9（会员免）· 平台担保 · 双方发起快递时收取，意向未成不收费</text>
+    </view>
+
+    <button class="btn btn--primary btn--block" bindtap="onSubmit" loading="{{submitting}}">发出交换意向</button>
+  </view>
+</view>

@@ -1,0 +1,4 @@
+/* pages/profile/profile.wxss */
+.profile-page { padding: 48rpx 32rpx; }
+.profile-head { margin-bottom: 40rpx; }
+.profile-head .h1 { display: block; margin-bottom: 12rpx; }

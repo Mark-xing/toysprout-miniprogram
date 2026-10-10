@@ -1,0 +1,7 @@
+/* packageUser/addresses/addresses.wxss */
+.addr-item { margin-bottom: 16rpx; }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(51, 41, 31, 0.4); z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-card { width: 86%; margin: 0; }

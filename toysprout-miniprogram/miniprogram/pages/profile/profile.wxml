@@ -1,0 +1,58 @@
+<!-- pages/profile/profile.wxml -->
+<!--
+  资料完善页（原「登录」页）。方案 A 之后不存在"登录"这一步：
+  openid 静默登录已在 app.onLaunch 完成，本页只补全对外展示身份——头像 + 昵称。
+-->
+<view class="page profile-page">
+  <view class="profile-head">
+    <text class="h1">{{isFirstTime ? '完善一下资料' : '编辑资料'}}</text>
+    <text class="caption text-secondary">
+      {{isFirstTime ? '设置昵称和头像，交换对方才能认出你' : '昵称与头像会展示给交换对方'}}
+    </text>
+  </view>
+
+  <view class="card">
+    <view class="field">
+      <text class="field-label">头像（可选）</text>
+      <view class="flex-row gap-3">
+        <!--
+          open-type="chooseAvatar"：微信现行为数不多仍对「个人主体」开放的账号信息能力。
+          wx.getUserInfo / wx.getUserProfile 已分别于 2021-04-13 / 2022-10-25 被回收，不可再用。
+        -->
+        <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image wx:if="{{avatarPreview}}" class="avatar-picker__img" src="{{avatarPreview}}" mode="aspectFill" />
+          <text wx:else class="caption text-tertiary">点击选择</text>
+        </button>
+        <view style="flex:1;">
+          <text class="caption text-secondary">可使用微信头像，也可从相册选一张</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">昵称</text>
+      <!-- type="nickname"：键盘上方会出现「使用微信昵称」快捷填入，同样对个人主体开放 -->
+      <input
+        class="input"
+        type="nickname"
+        maxlength="20"
+        placeholder="如：妈妈·小雨"
+        value="{{name}}"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <button class="btn btn--primary btn--block" bindtap="onSave" loading="{{submitting}}">
+      {{isFirstTime ? '保存并开始' : '保存'}}
+    </button>
+    <button wx:if="{{!isFirstTime}}" class="btn btn--ghost btn--block" style="margin-top:16rpx;" bindtap="onCancel">
+      取消
+    </button>
+  </view>
+
+  <view class="card card--muted">
+    <text class="caption text-secondary">
+      童芽只用昵称与头像让交换双方互相识别。手机号不会在注册时索取，只有填写收货地址时才需要，且仅用于物流联系。
+    </text>
+  </view>
+</view>

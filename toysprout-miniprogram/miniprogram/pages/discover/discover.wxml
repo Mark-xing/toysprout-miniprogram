@@ -1,0 +1,163 @@
+<!-- pages/discover/discover.wxml -->
+<!--
+  发现页（小红书式信息流）：固定顶部（自定义导航 + 搜索 + 品类 Tab） + 下方可滚动双列瀑布流。
+  采用 navigationStyle: custom，所以状态栏高度、导航行高、右侧胶囊避让全部由 JS 算出来。
+-->
+<view class="dpage">
+
+  <!-- ============ 固定顶部 ============ -->
+  <view class="dtop">
+    <view class="dnav" style="padding-top:{{statusBarHeight}}px;">
+      <!-- padding-right 给微信胶囊让位，否则搜索框会被胶囊压住 -->
+      <view class="dnav__row" style="height:{{navBarHeight}}px;padding-right:{{navRight}}px;">
+        <view class="dsearch">
+          <view class="dsearch__icon"></view>
+          <input
+            class="dsearch__input"
+            placeholder="搜索玩具名，如：乐高 / 平衡车"
+            placeholder-class="dsearch__ph"
+            value="{{keyword}}"
+            confirm-type="search"
+            bindconfirm="onSearchConfirm"
+            bindinput="onKeywordInput"
+          />
+          <view wx:if="{{keyword}}" class="dsearch__clear" bindtap="onClearKeyword"></view>
+        </view>
+        <view class="dfilter {{activeFilterCount ? 'is-on' : ''}}" bindtap="onOpenFilter">
+          <view class="dfilter__icon"></view>
+          <view wx:if="{{activeFilterCount}}" class="dfilter__dot"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 品类 Tab：横向滚动 + 选中态底部指示条 -->
+    <scroll-view class="dtabs" scroll-x scroll-with-animation scroll-into-view="{{tabIntoView}}">
+      <view class="dtabs__inner">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="value"
+          id="dtab-{{index}}"
+          class="dtab {{categoryFilter === item.value ? 'is-on' : ''}}"
+          data-value="{{item.value}}"
+          data-index="{{index}}"
+          bindtap="onCategoryTap"
+        >
+          <text class="dtab__text">{{item.label}}</text>
+          <view class="dtab__bar"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ============ 瀑布流 ============ -->
+  <scroll-view
+    class="dfeed"
+    scroll-y
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    refresher-background="#FBF6EC"
+    lower-threshold="300"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+  >
+    <!-- 首屏骨架屏：形状与真实卡片一致，避免"先空白再突然出现" -->
+    <view wx:if="{{loading && items.length === 0}}" class="dcols">
+      <view class="dcol">
+        <view wx:for="{{skelLeft}}" wx:key="p" class="dsk">
+          <view class="dsk__media" style="padding-top:{{item.p}}%"></view>
+          <view class="dsk__body">
+            <view class="dsk__line"></view>
+            <view class="dsk__line dsk__line--short"></view>
+          </view>
+        </view>
+      </view>
+      <view class="dcol">
+        <view wx:for="{{skelRight}}" wx:key="p" class="dsk">
+          <view class="dsk__media" style="padding-top:{{item.p}}%"></view>
+          <view class="dsk__body">
+            <view class="dsk__line"></view>
+            <view class="dsk__line dsk__line--short"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空态 -->
+    <view wx:elif="{{items.length === 0}}" class="dempty">
+      <view class="dempty__art"></view>
+      <text class="dempty__title">{{activeFilterCount || keyword || categoryFilter ? '没有找到匹配的玩具' : '还没有玩具在等新主人'}}</text>
+      <text class="dempty__desc">{{activeFilterCount || keyword || categoryFilter ? '试试调整筛选条件，或换个关键词' : '发布第一件闲置玩具，让它继续被玩下去'}}</text>
+      <button class="btn btn--primary dempty__btn" bindtap="onEmptyAction">
+        {{activeFilterCount || keyword || categoryFilter ? '清空筛选条件' : '去发布玩具'}}
+      </button>
+    </view>
+
+    <!-- 双列瀑布流 -->
+    <block wx:else>
+      <view class="dcount">共 {{total}} 件正在等新主人</view>
+      <view class="dcols">
+        <view class="dcol">
+          <toy-card
+            wx:for="{{leftCol}}"
+            wx:key="id"
+            toy="{{item}}"
+            bind:open="onToyTap"
+            bind:want="onWant"
+          />
+        </view>
+        <view class="dcol">
+          <toy-card
+            wx:for="{{rightCol}}"
+            wx:key="id"
+            toy="{{item}}"
+            bind:open="onToyTap"
+            bind:want="onWant"
+          />
+        </view>
+      </view>
+
+      <view class="dfoot">
+        <text wx:if="{{loadingMore}}" class="dfoot__text">正在加载更多…</text>
+        <text wx:elif="{{!hasMore}}" class="dfoot__text">— 已经到底啦 —</text>
+        <text wx:else class="dfoot__text">上滑看更多</text>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 悬浮发布入口 -->
+  <view class="dfab" bindtap="onGoPublish">
+    <view class="dfab__plus"></view>
+  </view>
+
+  <!-- 筛选抽屉：成色 + 信用。改动先落在本地，点"查看结果"才打一次请求 -->
+  <view wx:if="{{filterVisible}}" class="dsheet" bindtap="onCloseFilter">
+    <view class="dsheet__panel" catchtap="noop">
+      <view class="dsheet__head">
+        <text class="h4">筛选</text>
+        <text class="dsheet__reset" bindtap="onResetFilter">重置</text>
+      </view>
+
+      <view class="dsheet__group">
+        <text class="field-label">成色</text>
+        <view class="flex-wrap">
+          <view
+            wx:for="{{conditionOptions}}"
+            wx:key="value"
+            class="opt-chip {{conditionFilter === item.value ? 'selected' : ''}}"
+            data-value="{{item.value}}"
+            bindtap="onConditionTap"
+          >{{item.label}}</view>
+        </view>
+      </view>
+
+      <view class="dsheet__group">
+        <text class="field-label">主人信用</text>
+        <view class="flex-wrap">
+          <view class="opt-chip {{creditFilter ? 'selected' : ''}}" bindtap="onCreditToggle">仅看信用 800+ 的主人</view>
+        </view>
+      </view>
+
+      <button class="btn btn--primary btn--block" bindtap="onCloseFilter">查看结果</button>
+    </view>
+  </view>
+</view>
