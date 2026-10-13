@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会员订阅 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21V12"/><path d="M12 15c-3-1.6-5.4-4.6-5.8-8C10 7 13 8.8 14 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15c3-1.6 5.4-4.6 5.8-8C14 7 11 8.8 10 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-growing" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 13c-2.8-1.7-5.6-2.3-8-2.1C4.4 8 6.8 12.8 12 13z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9c2.8-1.7 5.6-2.3 8-2.1C19.6 4 17.2 8.8 12 9z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.3l1.1 2.3 2.5.35-1.8 1.8.4 2.5L12 14.3l-2.2 1.2.4-2.5-1.8-1.8 2.5-.35z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="8" width="15" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 12h13v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 8c-2.5 0-4.2-1-4.2-2.7C7.8 3.6 9.6 2.8 12 4.4 14.4 2.8 16.2 3.6 16.2 5.3 16.2 7 14.5 8 12 8z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wrinkle" viewBox="0 0 24 24"><path d="M5 8c3.5 0 3.5 2 7 2s3.5-2 7-2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M5 16c3.5 0 3.5-2 7-2s3.5 2 7 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-family" viewBox="0 0 24 24"><path d="M4 11.5l8-7 8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 9.5V20h11V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.2 15l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-parcel" viewBox="0 0 24 24"><path d="M4 7.2l8-3.2 8 3.2v9.6l-8 3.2-8-3.2z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.2l8 3.2 8-3.2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10.4V20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6.5h10.5v9H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 9.5H17l3.5 3.5v2.5h-7z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="16.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.5l8 3.5 8-3.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11v9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M9.5 8.5l2 2 3-3" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4.5L3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 8H15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M17 19.5L20.5 16 17 12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 16H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 16.8h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 20l-4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M5 15.5V6a1 1 0 0 1 1-1h9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9.5l6 5.5 6-5.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 20.5c1.2-3.8 3.9-5.7 7.5-5.7s6.3 1.9 7.5 5.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5.5h16v11.5H9.5L4 20.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.2-5.6-6.2-10.3a6.2 6.2 0 1 1 12.4 0C18.2 15.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10.4" r="2.3" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4.5" y="5.5" width="15" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 10h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M8.5 3.5v4M15.5 3.5v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M9.2 13.4L7.5 21l4.5-2.2L16.5 21l-1.7-7.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4c-8 0-14 3-15.5 9.5C3.6 17.5 6.5 20.5 10.5 19.5 17 18 20 11 20 4z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 19.5C9 14 13 10.5 17 8.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M20 3v4h-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10.5 13.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11L12 4l8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V20h12V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 13v-2a7.5 7.5 0 0 1 15 0v2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><rect x="3.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><rect x="16.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 17.5a3.5 3.5 0 0 1-3.5 3.2H16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= 顶部导航（会员页：CTA 换成浏览玩具） ================= -->
+<header class="top-nav">
+  <div class="container">
+    <div class="top-nav__inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark"><svg class="ic"><use href="#i-sprout"/></svg></span>
+        <span>童芽 <em>ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="explore.html">发现玩具</a>
+        <a href="explore.html#publish">发布玩具</a>
+        <a href="orders.html">交换订单</a>
+        <a href="profile.html">我的</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--soft btn--sm" href="profile.html">我的会员</a>
+        <a class="btn btn--primary btn--sm" href="explore.html">浏览玩具</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="padding-top:var(--space-12);">
+    <!-- 头部 -->
+    <div class="center" style="max-width:640px;margin-inline:auto;margin-bottom:var(--space-12);">
+      <span class="kicker" style="margin-bottom:var(--space-3);display:inline-block;">会员订阅</span>
+      <h1 class="h1" style="margin-bottom:var(--space-3);">换得越多，省得越多</h1>
+      <p class="body-lg text-secondary">会员 ¥10/月：每单免收 ¥1.9 服务费，另享优先曝光、专属客服与信用分加成。</p>
+    </div>
+
+    <!-- 会员权益对照表 -->
+    <section class="section--tight" aria-labelledby="matrix-title" style="padding-top:0;">
+      <h2 class="h2 center" id="matrix-title" style="margin-bottom:var(--space-8);">权益对照</h2>
+      <div style="overflow-x:auto;">
+        <table class="feature-table">
+          <thead>
+            <tr>
+              <th style="min-width:140px;">权益</th>
+              <th>普通用户</th>
+              <th class="is-featured">会员 <span class="mono">¥10/月</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>每单服务费</th>
+              <td><span class="mono" style="color:var(--color-accent-strong);font-weight:700;">¥1.9</span> /单</td>
+              <td class="is-featured mark-yes">免收</td>
+            </tr>
+            <tr>
+              <th>玩具优先曝光</th>
+              <td class="mark-no">—</td>
+              <td class="is-featured mark-yes">✓</td>
+            </tr>
+            <tr>
+              <th>专属客服 · 纠纷优先</th>
+              <td class="mark-no">—</td>
+              <td class="is-featured mark-yes">✓</td>
+            </tr>
+            <tr>
+              <th>信用分加成</th>
+              <td class="mark-no">—</td>
+              <td class="is-featured mark-yes">✓</td>
+            </tr>
+            <tr>
+              <th>订阅价</th>
+              <td><span class="mono">¥0</span></td>
+              <td class="is-featured"><span class="mono" style="font-weight:700;">¥10</span>/月</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 免服务费计算器 -->
+    <section class="section--tight" aria-labelledby="calc-title" style="padding-top:0;">
+      <h2 class="h2 center" id="calc-title" style="margin-bottom:var(--space-8);">一年能省多少？算给你看</h2>
+      <div class="calc-card" style="max-width:720px;margin-inline:auto;">
+        <label class="field">
+          <span class="label">每月预计交换 <span class="num" id="calc-count">3</span> 单</span>
+          <input type="range" id="calc-range" min="1" max="10" value="3" aria-label="每月预计交换单数">
+        </label>
+        <div class="calc-row">
+          <div>
+            <div class="caption text-tertiary">普通用户一年服务费</div>
+            <div class="calc-num">¥<span id="calc-normal">68.4</span></div>
+            <div class="caption text-tertiary">¥1.9 × 每月 <span id="calc-n2">3</span> 单 × 12 个月</div>
+          </div>
+          <div>
+            <div class="caption text-tertiary">会员一年立省</div>
+            <div class="calc-num calc-num--saved">¥<span id="calc-saved">68.4</span></div>
+            <div class="caption text-tertiary">会员 ¥10/月 · 全年免服务费</div>
+          </div>
+        </div>
+        <div class="notice-bar notice-bar--warn" style="margin-top:var(--space-5);">
+          <svg class="ic"><use href="#i-clock"/></svg>
+          <span>服务费在双方发起快递时收取；意向未成 / 取消不收费，以上按每月全部成交估算。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 权益明细 -->
+    <section class="section section--muted" aria-labelledby="benefit-title">
+      <div class="container">
+        <div class="section-head" style="justify-content:center;text-align:center;">
+          <div style="width:100%;">
+            <h2 class="h2" id="benefit-title">会员四重权益</h2>
+            <p class="section-sub">不只是省钱，更是把交换体验变得更省心</p>
+          </div>
+        </div>
+        <div class="grid grid-4">
+          <div class="card trust-pillar">
+            <span class="trust-pillar__icon" style="background:var(--color-primary-tint);color:var(--color-primary-ink);"><svg class="ic"><use href="#i-shield-check"/></svg></span>
+            <h3 class="trust-pillar__title">免每单服务费</h3>
+            <p class="trust-pillar__desc">双方发起快递时每单免收 ¥1.9，换得越多省得越多。</p>
+          </div>
+          <div class="card trust-pillar">
+            <span class="trust-pillar__icon" style="background:var(--color-accent-tint);color:var(--color-accent-strong);"><svg class="ic"><use href="#i-star-shield"/></svg></span>
+            <h3 class="trust-pillar__title">玩具优先曝光</h3>
+            <p class="trust-pillar__desc">发布的玩具在发现流获得更高权重，更快遇到想交换的家长。</p>
+          </div>
+          <div class="card trust-pillar">
+            <span class="trust-pillar__icon" style="background:var(--color-info-tint);color:var(--color-info-text);"><svg class="ic"><use href="#i-headset"/></svg></span>
+            <h3 class="trust-pillar__title">专属客服</h3>
+            <p class="trust-pillar__desc">客服优先响应，纠纷仲裁优先处理，寄件问题专人跟进。</p>
+          </div>
+          <div class="card trust-pillar">
+            <span class="trust-pillar__icon" style="background:var(--color-success-tint);color:var(--color-success-text);"><svg class="ic"><use href="#i-award"/></svg></span>
+            <h3 class="trust-pillar__title">信用分加成</h3>
+            <p class="trust-pillar__desc">会员完成互评后获得信用分加成，更快升级到「信赖 / 优选」等级，曝光更高。</p>
+            <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;margin-top:var(--space-2);">
+              <span class="credit-badge credit--sprout"><svg class="ic"><use href="#i-sprout"/></svg>新芽·<span class="credit-badge__score">560</span></span>
+              <span class="credit-badge credit--growing"><svg class="ic"><use href="#i-growing"/></svg>成长·<span class="credit-badge__score">720</span></span>
+              <span class="credit-badge credit--trusted"><svg class="ic"><use href="#i-shield-check"/></svg>信赖·<span class="credit-badge__score">862</span></span>
+              <span class="credit-badge credit--elite"><svg class="ic"><use href="#i-star-shield"/></svg>优选·<span class="credit-badge__score">985</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 订阅 CTA -->
+    <section class="section" aria-label="订阅">
+      <div class="container">
+        <div class="guarantee-bar" style="max-width:720px;margin-inline:auto;margin-bottom:var(--space-6);" role="note">
+          <span class="guarantee-bar__icon"><svg class="ic"><use href="#i-shield-check"/></svg></span>
+          <span class="guarantee-bar__body">本单服务费 <span class="guarantee-bar__fee">¥1.9</span>（会员免）· <span class="guarantee-bar__guarantee">平台担保</span> · 双方发起快递时收取，取消不收费</span>
+          <span class="badge badge--solid-success"><svg class="ic"><use href="#i-check"/></svg>会员免单</span>
+        </div>
+        <div class="pricing-grid">
+          <div class="card pricing-card card--featured">
+            <span class="badge badge--solid-success pricing-card__featured-tag">推荐</span>
+            <h3 class="h4">会员</h3>
+            <div class="pricing-card__price"><span class="price-currency">¥</span><span class="price-num">10</span><span class="price-unit">/月</span></div>
+            <ul class="pricing-card__list">
+              <li><svg class="ic"><use href="#i-check"/></svg>免每单服务费（立省 ¥1.9/单）</li>
+              <li><svg class="ic"><use href="#i-check"/></svg>玩具优先曝光</li>
+              <li><svg class="ic"><use href="#i-check"/></svg>专属客服 · 纠纷优先处理</li>
+              <li><svg class="ic"><use href="#i-check"/></svg>信用分加成</li>
+            </ul>
+            <a class="btn btn--primary btn--block" href="profile.html" style="margin-top:auto;">开通会员 ¥10/月</a>
+          </div>
+          <div class="card pricing-card">
+            <h3 class="h4">普通用户</h3>
+            <div class="pricing-card__price"><span class="price-currency">¥</span><span class="price-num">1.9</span><span class="price-unit">/单</span></div>
+            <ul class="pricing-card__list">
+              <li><svg class="ic"><use href="#i-check"/></svg>浏览与发布玩具</li>
+              <li><svg class="ic"><use href="#i-check"/></svg>一换一互邮交换</li>
+              <li class="is-na"><svg class="ic"><use href="#i-plus"/></svg>每单服务费 ¥1.9</li>
+              <li class="is-na"><svg class="ic"><use href="#i-plus"/></svg>优先曝光 / 专属客服 / 信用分加成</li>
+            </ul>
+            <a class="btn btn--secondary btn--block" href="explore.html" style="margin-top:auto;">先免费逛逛</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="section--tight" aria-labelledby="faq-title" style="padding-bottom:var(--space-12);">
+      <div class="container" style="max-width:760px;">
+        <h2 class="h2 center" id="faq-title" style="margin-bottom:var(--space-8);">常见问题</h2>
+        <div style="display:grid;gap:var(--space-4);">
+          <details class="guarantee-rules">
+            <summary><svg class="ic"><use href="#i-chevron"/></svg> 服务费什么时候收？没换成功会收费吗？</summary>
+            <p class="body-sm text-secondary" style="padding-top:var(--space-3);">每单 ¥1.9，在双方发起快递时收取。意向未成、取消、未互寄一律不收费。</p>
+          </details>
+          <details class="guarantee-rules">
+            <summary><svg class="ic"><use href="#i-chevron"/></svg> 会员免服务费怎么生效？</summary>
+            <p class="body-sm text-secondary" style="padding-top:var(--space-3);">开通会员（¥10/月）后，账户自动标记为会员，后续发起的交换订单每单服务费显示 ¥0 免单。</p>
+          </details>
+          <details class="guarantee-rules">
+            <summary><svg class="ic"><use href="#i-chevron"/></svg> 会员可以随时取消吗？</summary>
+            <p class="body-sm text-secondary" style="padding-top:var(--space-3);">会员按自然月生效，可在「我的 → 设置」中关闭自动续费，到期不自动续费。</p>
+          </details>
+          <details class="guarantee-rules">
+            <summary><svg class="ic"><use href="#i-chevron"/></svg> 信用分加成是什么？</summary>
+            <p class="body-sm text-secondary" style="padding-top:var(--space-3);">会员完成互评后获得信用分加成（信用分 500 起 / 1000 满），帮助更快达到「信赖 / 优选」等级，获得更高曝光。</p>
+          </details>
+          <details class="guarantee-rules">
+            <summary><svg class="ic"><use href="#i-chevron"/></svg> 运费谁出？</summary>
+            <p class="body-sm text-secondary" style="padding-top:var(--space-3);">运费不设固定规则，由双方在聊天中协商分摊或由一方承担，结果随交换意向卡确认。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ================= 页脚 ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <span class="brand-mark" style="width:30px;height:30px;"><svg class="ic"><use href="#i-sprout"/></svg></span>
+          <span>童芽 ToySprout</span>
+        </div>
+        <p class="footer__desc">C2C 家长玩具交换平台：闲置玩具一换一互邮，每单服务费 ¥1.9，会员免单。信用互评、成色如实、平台担保。</p>
+      </div>
+      <div class="footer__col">
+        <h4>发现</h4>
+        <a href="index.html">品牌首页</a>
+        <a href="explore.html">浏览玩具</a>
+        <a href="toy-detail.html">玩具详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>交换</h4>
+        <a href="swap.html">发起交换</a>
+        <a href="orders.html">我的交换订单</a>
+        <a href="order-detail.html">订单详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>账户</h4>
+        <a href="profile.html">我的主页</a>
+        <a href="membership.html">会员订阅</a>
+        <a href="profile.html#menu">收货地址与设置</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 童芽 ToySprout · 家长玩具交换平台（原型示例）</span>
+      <span>数据口径：服务费 ¥1.9/单 · 会员 ¥10/月</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var range = document.getElementById('calc-range');
+  var count = document.getElementById('calc-count');
+  var n2 = document.getElementById('calc-n2');
+  var normal = document.getElementById('calc-normal');
+  var saved = document.getElementById('calc-saved');
+  function update() {
+    var n = parseInt(range.value, 10);
+    count.textContent = n;
+    n2.textContent = n;
+    var v = (1.9 * n * 12).toFixed(1);
+    normal.textContent = v;
+    saved.textContent = v;
+  }
+  range.addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>

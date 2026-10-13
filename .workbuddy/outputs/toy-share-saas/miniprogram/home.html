@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首页 · 童芽 ToySprout 小程序</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏 + 胶囊（可复用结构） ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <span class="nav-title">童芽 <em class="brand-en">ToySprout</em></span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 搜索栏 -->
+    <a class="search" href="library.html" aria-label="搜索玩具、品牌…">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <span class="search-ph">搜索玩具、品牌…</span>
+    </a>
+
+    <!-- 轮播 Banner（1 张 + 指示点） -->
+    <section class="banner sec" aria-label="活动横幅">
+      <span class="b-kicker">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5l-3.5 2 1-4L6 10.5l4.2-.4L12 6l1.8 4.1 4.2.4-3.5 3 1 4z"/></svg>
+        新会员专享
+      </span>
+      <h2 class="b-title">新会员首月 5 折<br>100% 消毒 · 全程可追溯</h2>
+      <p class="b-sub">订阅制玩具共享，让孩子玩得更省、更安心</p>
+      <div class="b-cta">
+        <a class="btn btn--primary btn--sm" href="rental.html?plan=month&discount=half">立即领取</a>
+      </div>
+      <div class="b-dots" aria-hidden="true">
+        <span class="b-dot b-dot--active"></span>
+        <span class="b-dot"></span>
+        <span class="b-dot"></span>
+      </div>
+    </section>
+
+    <!-- 安全标识 2×2（信任组件 6.4 移动化） -->
+    <section class="sec" aria-label="安全承诺">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">安全承诺</div>
+          <div class="sec-sub">每一件玩具，我们都在替你守护</div>
+        </div>
+      </div>
+      <div class="safety-grid">
+        <div class="safety-card">
+          <span class="safety-ic safety-ic--success">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 11-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 13.5l2 2 3.5-4"/></svg>
+          </span>
+          <div>
+            <div class="safety-title">100% 消毒</div>
+            <div class="safety-desc">标准化 UV/高温消毒</div>
+          </div>
+        </div>
+        <div class="safety-card">
+          <span class="safety-ic safety-ic--success">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          </span>
+          <div>
+            <div class="safety-title">质检合格</div>
+            <div class="safety-desc">逐件人工质检留档</div>
+          </div>
+        </div>
+        <div class="safety-card">
+          <span class="safety-ic safety-ic--warning">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h7a3 3 0 010 6H9a3 3 0 000 6h8"/><circle cx="5" cy="6" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>
+          </span>
+          <div>
+            <div class="safety-title">全程可追溯</div>
+            <div class="safety-desc">批次号实时可查</div>
+          </div>
+        </div>
+        <div class="safety-card">
+          <span class="safety-ic safety-ic--primary">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C4 10 10 5 20 4c1 10-4 16-14 16z"/><path d="M4 20c4-6 8-9 12-11"/></svg>
+          </span>
+          <div>
+            <div class="safety-title">无铅 · 无 BPA</div>
+            <div class="safety-desc">食品级安全材质</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分类横排 -->
+    <section class="sec" aria-label="玩具分类">
+      <div class="cat-row">
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg></span>
+          <span>积木</span>
+        </a>
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+          <span>益智</span>
+        </a>
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C4 10 10 5 20 4c1 10-4 16-14 16z"/></svg></span>
+          <span>木制</span>
+        </a>
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M8.5 13l2 2 3.5-4"/></svg></span>
+          <span>早教</span>
+        </a>
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="6" r="2.4"/><circle cx="16" cy="6" r="2.4"/><path d="M3 16l3-4 3 5M21 16l-3-4-3 5"/><path d="M7 18h10"/></svg></span>
+          <span>户外</span>
+        </a>
+        <a class="cat-item" href="library.html">
+          <span class="cat-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+          <span>更多</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 今日推荐（玩具卡 2 列 + 质检徽章 + 参考月租） -->
+    <section class="sec" aria-label="今日推荐">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">今日推荐</div>
+          <div class="sec-sub">根据家庭档案挑选 · 件件质检合格</div>
+        </div>
+        <a class="sec-more" href="library.html">更多<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="toy-grid">
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="乐高积木经典款">
+              <rect width="200" height="200" fill="#F8F1E6"/>
+              <rect x="50" y="122" width="100" height="26" rx="6" fill="#F2B33D"/>
+              <circle cx="66" cy="130" r="4" fill="#FCF0D8"/><circle cx="84" cy="130" r="4" fill="#FCF0D8"/><circle cx="102" cy="130" r="4" fill="#FCF0D8"/><circle cx="120" cy="130" r="4" fill="#FCF0D8"/><circle cx="138" cy="130" r="4" fill="#FCF0D8"/>
+              <rect x="50" y="92" width="70" height="26" rx="6" fill="#F27355"/>
+              <circle cx="64" cy="100" r="4" fill="#FCE8E0"/><circle cx="80" cy="100" r="4" fill="#FCE8E0"/><circle cx="96" cy="100" r="4" fill="#FCE8E0"/><circle cx="112" cy="100" r="4" fill="#FCE8E0"/>
+              <rect x="124" y="92" width="30" height="26" rx="6" fill="#3E7C59"/>
+              <circle cx="133" cy="100" r="4" fill="#E7F2E8"/><circle cx="146" cy="100" r="4" fill="#E7F2E8"/>
+              <rect x="50" y="62" width="30" height="26" rx="6" fill="#43618E"/>
+              <circle cx="59" cy="70" r="4" fill="#E8EFF7"/><circle cx="72" cy="70" r="4" fill="#E8EFF7"/>
+              <rect x="84" y="62" width="30" height="26" rx="6" fill="#F2B33D"/>
+              <circle cx="93" cy="70" r="4" fill="#FCF0D8"/><circle cx="106" cy="70" r="4" fill="#FCF0D8"/>
+            </svg>
+            <span class="qbadge qbadge--cert"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>质检合格</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">乐高积木经典款</h3>
+            <div class="toy-meta"><span class="rating"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>4.8</span><span>·</span><span>4–7 岁</span></div>
+            <div class="toy-price"><span class="ref">参考</span><span class="num">¥58</span><span class="unit">/月</span></div>
+          </div>
+        </a>
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="Hape 木制厨房套装">
+              <rect width="200" height="200" fill="#F3EADB"/>
+              <rect x="56" y="98" width="74" height="40" rx="10" fill="#D98E1F"/>
+              <rect x="50" y="90" width="86" height="14" rx="7" fill="#B06A1F"/>
+              <circle cx="88" cy="98" r="6" fill="#FCF0D8"/>
+              <ellipse cx="148" cy="120" rx="28" ry="11" fill="#B06A1F"/>
+              <rect x="158" y="110" width="24" height="8" rx="4" fill="#D98E1F"/>
+              <rect x="74" y="140" width="7" height="22" rx="3.5" fill="#D98E1F"/>
+              <rect x="84" y="140" width="7" height="22" rx="3.5" fill="#B06A1F"/>
+            </svg>
+            <span class="qbadge qbadge--cert"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>质检合格</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">Hape 木制厨房套装</h3>
+            <div class="toy-meta"><span class="rating"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>4.9</span><span>·</span><span>3–6 岁</span></div>
+            <div class="toy-price"><span class="ref">参考</span><span class="num">¥49</span><span class="unit">/月</span></div>
+          </div>
+        </a>
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="磁力片 100 片装">
+              <rect width="200" height="200" fill="#E8EFF7"/>
+              <rect x="56" y="74" width="52" height="52" rx="8" fill="#F27355" opacity="0.88"/>
+              <rect x="63" y="81" width="38" height="38" rx="5" fill="none" stroke="#FCE8E0" stroke-width="2.5"/>
+              <polygon points="86,44 118,94 56,94" fill="#F2B33D" opacity="0.92"/>
+              <rect x="120" y="94" width="40" height="40" rx="8" fill="#3E7C59" opacity="0.85"/>
+              <circle cx="128" cy="102" r="3.5" fill="#E7F2E8"/><circle cx="152" cy="102" r="3.5" fill="#E7F2E8"/><circle cx="128" cy="126" r="3.5" fill="#E7F2E8"/><circle cx="152" cy="126" r="3.5" fill="#E7F2E8"/>
+              <circle cx="42" cy="140" r="3.5" fill="#43618E"/><circle cx="52" cy="148" r="3.5" fill="#F27355"/>
+            </svg>
+            <span class="qbadge qbadge--cert"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>质检合格</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">磁力片 100 片装</h3>
+            <div class="toy-meta"><span class="rating"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>4.7</span><span>·</span><span>2–5 岁</span></div>
+            <div class="toy-price"><span class="ref">参考</span><span class="num">¥55</span><span class="unit">/月</span></div>
+          </div>
+        </a>
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="美乐儿童画板">
+              <rect width="200" height="200" fill="#FCF0D8"/>
+              <path d="M82 102v50" stroke="#D98E1F" stroke-width="7" stroke-linecap="round"/>
+              <path d="M120 102v50" stroke="#D98E1F" stroke-width="7" stroke-linecap="round"/>
+              <rect x="64" y="64" width="74" height="52" rx="8" fill="#B06A1F"/>
+              <rect x="71" y="69" width="60" height="42" rx="4" fill="#FBF6EC"/>
+              <circle cx="86" cy="81" r="6" fill="#F27355"/>
+              <path d="M104 88l-5 10h10z" fill="#3E7C59"/>
+              <path d="M116 78h8" stroke="#F2B33D" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="74" cy="130" r="4.5" fill="#F27355"/><circle cx="88" cy="132" r="4.5" fill="#F2B33D"/><circle cx="102" cy="130" r="4.5" fill="#3E7C59"/><circle cx="116" cy="132" r="4.5" fill="#43618E"/>
+            </svg>
+            <span class="qbadge qbadge--cert"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>质检合格</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">美乐儿童画板</h3>
+            <div class="toy-meta"><span class="rating"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>4.7</span><span>·</span><span>3–8 岁</span></div>
+            <div class="toy-price"><span class="ref">参考</span><span class="num">¥38</span><span class="unit">/月</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 会员开通横幅卡（进度条） -->
+    <section class="sec" aria-label="会员开通">
+      <div class="member-card">
+        <div class="member-top">
+          <span class="member-level">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.3 1.1 6L12 16.9 6.7 19.7l1.1-6L3.3 9.4l6.1-.8z"/></svg>
+            芽苗会员
+          </span>
+          <span class="member-sub">开通即享 8 折换新 + 优先上新</span>
+        </div>
+        <div class="progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="升级进度">
+          <div class="progress-fill" style="width:50%;"></div>
+        </div>
+        <div class="member-foot">
+          <span>距「金芽」还差 2 单</span>
+          <a class="link" href="rental.html?plan=year">开通会员<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 底部 TabBar ===== -->
+  <nav class="tab-bar" aria-label="底部导航">
+    <a class="tab-item tab-item--active" href="home.html" aria-current="page">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7"/><path d="M5.5 9v10h13V9"/><path d="M10 19v-5.5h4V19"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 7.4V20a1.5 1.5 0 01-1.5 1.5H14.5V15h-5v6.5H4.5A1.5 1.5 0 013 20v-9.6z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">首页</span>
+    </a>
+    <a class="tab-item" href="library.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2"/><rect x="13" y="13" width="7.5" height="7.5" rx="2"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">玩具库</span>
+    </a>
+    <a class="tab-item" href="orders.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-2.2-1.4-1.8 1.4-1.8-1.4L10.4 20l-1.8-1.4L6 20z"/><path d="M9 8h6"/><path d="M9 11.5h6"/><path d="M9 15h3"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" fill="currentColor" stroke="none"/><path d="M8 8.2h8M8 11.7h8M8 15.2h5" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round"/></svg>
+      <span class="tab-label">订单</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor" stroke="none"/><path d="M5 20.5c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">我的</span>
+    </a>
+  </nav>
+
+</div>
+</div>
+</body>
+</html>

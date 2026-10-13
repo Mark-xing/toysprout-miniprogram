@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布玩具 · 童芽 ToySprout 小程序</title>
+<!-- 设计系统：WarmTrust v2（phase2-design-tokens-v2.md §11 Quick Snippet）｜ C2C 一换一互邮交换 -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏 + 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <span class="nav-title">发布玩具</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <form class="form-list" id="publish-form" onsubmit="return false;">
+
+      <!-- 9 宫格照片上传占位 -->
+      <div class="form-cell">
+        <span class="form-label">实物照片 <span class="req">*</span></span>
+        <div class="photo-grid" role="group" aria-label="照片上传">
+          <button class="photo-cell" type="button" aria-label="添加照片">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4.5 17.5l4.5-4 3.5 3 3-2.5 4 3.5"/></svg>
+            拍摄/上传
+          </button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-cell" type="button" aria-label="添加照片"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <!-- 实拍规范提示（物如实） -->
+        <p class="photo-note">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          实拍 ≥3 张 · 整体 / 细节 / <strong>瑕疵特写</strong> · 自然光下拍摄
+        </p>
+        <p class="text-tertiary" style="font-size:12px;line-height:1.5;margin-top:2px;">实拍照片将作为成色纠纷的裁定依据</p>
+      </div>
+
+      <!-- 玩具名称 -->
+      <div class="form-cell">
+        <span class="form-label">玩具名称 <span class="req">*</span></span>
+        <input class="form-input" type="text" placeholder="如：费雪小钢琴 · 2 岁+" aria-label="玩具名称">
+      </div>
+
+      <!-- 品类 -->
+      <div class="form-cell">
+        <span class="form-label">品类 <span class="req">*</span></span>
+        <div class="chip-row" role="group" aria-label="品类选择">
+          <button class="chip chip-s chip--active" type="button">积木</button>
+          <button class="chip chip-s" type="button">益智</button>
+          <button class="chip chip-s" type="button">木制</button>
+          <button class="chip chip-s" type="button">早教</button>
+          <button class="chip chip-s" type="button">其它</button>
+        </div>
+      </div>
+
+      <!-- 成色四级单选（物如实 · 一等组件） -->
+      <div class="form-cell">
+        <span class="form-label">成色 <span class="req">*</span></span>
+        <div class="cond-select" role="radiogroup" aria-label="成色选择">
+          <button class="cond-opt" type="button" role="radio" aria-checked="false">
+            <span class="cond-badge cond-badge--m cond-badge--new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h16V20H4z"/><path d="M12 9.5V20"/><path d="M12 9.5c-1.6-1.4-3.2-1.7-4.8-1.1.4 1.7 2 2.8 4.8 3.1 2.8-.3 4.4-1.4 4.8-3.1-1.6-.6-3.2-.3-4.8 1.1z"/></svg>全新</span>
+            <span class="cond-desc">未拆封 / 仅试玩</span>
+          </button>
+          <button class="cond-opt cond-opt--active" type="button" role="radio" aria-checked="true">
+            <span class="cond-badge cond-badge--m cond-badge--9new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>9成新</span>
+            <span class="cond-desc">轻微使用无瑕疵</span>
+          </button>
+          <button class="cond-opt" type="button" role="radio" aria-checked="false">
+            <span class="cond-badge cond-badge--m cond-badge--8new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.5 1.5"/></svg>8成新</span>
+            <span class="cond-desc">正常使用痕迹</span>
+          </button>
+          <button class="cond-opt" type="button" role="radio" aria-checked="false">
+            <span class="cond-badge cond-badge--m cond-badge--used"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h16M4 12h16M4 15.5h16"/></svg>有使用痕迹</span>
+            <span class="cond-desc">明显磨损需如实说明</span>
+          </button>
+        </div>
+        <p class="text-tertiary" style="font-size:12px;line-height:1.5;">平台提供成色对照图，发布时请如实选择；纠纷以实拍照片为准</p>
+      </div>
+
+      <!-- 适龄 + 小零件（安全提示标签 · 物如实） -->
+      <div class="form-cell">
+        <span class="form-label">适龄 <span class="req">*</span></span>
+        <div class="chip-row" role="group" aria-label="适龄选择">
+          <button class="chip chip-s" type="button">0–3岁</button>
+          <button class="chip chip-s chip--active" type="button">3–6岁</button>
+          <button class="chip chip-s" type="button">6–10岁</button>
+        </div>
+        <label class="checkline">
+          <input type="checkbox" aria-label="含小零件">
+          <span class="check-text"><span class="safety-tag safety-tag--warn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5"/><path d="M12 17.2v.1"/></svg>含小零件 · 3 岁以下慎玩</span></span>
+        </label>
+        <p class="text-tertiary" style="font-size:12px;line-height:1.5;">CCC 认证（3C 目录内品类可选填上传）</p>
+        <p class="text-tertiary" style="font-size:12px;line-height:1.5;">家长需自行确认玩具安全性</p>
+      </div>
+
+      <!-- 描述 -->
+      <div class="form-cell">
+        <span class="form-label">描述 <span class="req">*</span></span>
+        <textarea class="form-textarea" placeholder="描述玩具状态、玩法、功能是否正常，如有瑕疵请注明位置…" aria-label="玩具描述"></textarea>
+        <div class="shoot-strip">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span><strong>描述模板：</strong>玩具名称 · 功能状态 · 瑕疵位置 · 想交换的类型。<br>实拍 ≥3 张 · 瑕疵特写 · 自然光，交换更顺利。</span>
+        </div>
+      </div>
+
+      <!-- 发布按钮 -->
+      <button class="btn btn--primary btn--lg btn--block" type="submit" onclick="toast('发布成功 · 已进入发现流');">
+        发布
+      </button>
+
+    </form>
+
+  </main>
+
+  <!-- ===== Toast ===== -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ===== 底部 TabBar（发布 激活） ===== -->
+  <nav class="tab-bar" aria-label="底部导航">
+    <a class="tab-item" href="discover.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="currentColor" stroke="none"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="#FFF" stroke="none"/></svg>
+      <span class="tab-label">发现</span>
+    </a>
+    <a class="tab-item" href="message.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.3 8.3 0 01-12 7.3L4 21l1.7-5A8.3 8.3 0 1121 12z"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.3 8.3 0 01-12 7.3L4 21l1.7-5A8.3 8.3 0 1121 12z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">消息</span>
+      <span class="tab-dot" aria-label="3 条未读" aria-hidden="true"></span>
+    </a>
+    <a class="tab-item tab-item--publish tab-item--active" href="publish.html" aria-current="page">
+      <span class="tab-pub"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span class="tab-label">发布</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor" stroke="none"/><path d="M5 20.5c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">我的</span>
+    </a>
+  </nav>
+
+  <script>
+    function toast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('toast--show');
+      clearTimeout(t._h);
+      t._h = setTimeout(function () { t.classList.remove('toast--show'); }, 1800);
+    }
+    // 成色单选
+    var opts = document.querySelectorAll('.cond-opt');
+    opts.forEach(function (o) {
+      o.addEventListener('click', function () {
+        opts.forEach(function (x) { x.classList.remove('cond-opt--active'); x.setAttribute('aria-checked', 'false'); });
+        o.classList.add('cond-opt--active'); o.setAttribute('aria-checked', 'true');
+      });
+    });
+    // 品类 / 适龄 chips 单选
+    var groups = document.querySelectorAll('.chip-row');
+    groups.forEach(function (g) {
+      g.addEventListener('click', function (e) {
+        if (e.target.classList.contains('chip')) {
+          g.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('chip--active'); });
+          e.target.classList.add('chip--active');
+        }
+      });
+    });
+  </script>
+
+</div>
+</div>
+</body>
+</html>

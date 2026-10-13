@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的 · 童芽 ToySprout 小程序</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏 + 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <span class="nav-title">我的</span>
+      <button class="nav-right" type="button" aria-label="设置">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.8v2.2M12 18v2.2M3.8 12H6M18 12h2.2M6.2 6.2l1.6 1.6M16.2 16.2l1.6 1.6M17.8 6.2l-1.6 1.6M7.8 16.2l-1.6 1.6"/></svg>
+      </button>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 头像 + 昵称 -->
+    <div class="profile-head">
+      <span class="avatar-lg">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      </span>
+      <div>
+        <div class="profile-name">林女士</div>
+        <div class="profile-sub">芽苗会员 · 年卡 · 已续订 2 个月</div>
+      </div>
+    </div>
+
+    <!-- 会员卡（等级 / 进度条 / 到期日） -->
+    <div class="member-card">
+      <div class="member-top">
+        <span class="member-level">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.3 1.1 6L12 16.9 6.7 19.7l1.1-6L3.3 9.4l6.1-.8z"/></svg>
+          芽苗会员
+        </span>
+        <span class="member-sub">会员有效期至 2026-06-14</span>
+      </div>
+      <div class="progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="升级进度">
+        <div class="progress-fill" style="width:50%;"></div>
+      </div>
+      <div class="member-foot">
+        <span>距「金芽」还差 <span class="num">2</span> 单</span>
+        <a class="link" href="library.html">去挑选玩具<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+
+    <!-- 信任提示（信任组件：消毒安全背书） -->
+    <div class="trust-strip sec--tight">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      已认证：每一件玩具 100% 消毒 · 质检合格 · 全程可追溯
+    </div>
+
+    <!-- 订单 / 心愿单 / 优惠券 快捷入口 -->
+    <div class="stat-grid sec">
+      <a class="stat-item" href="orders.html">
+        <div class="num">3</div>
+        <div class="lbl">订单</div>
+      </a>
+      <a class="stat-item" href="#">
+        <div class="num">6</div>
+        <div class="lbl">心愿单</div>
+      </a>
+      <a class="stat-item" href="#">
+        <div class="num">2</div>
+        <div class="lbl">优惠券</div>
+      </a>
+    </div>
+
+    <!-- 菜单列表 -->
+    <div class="menu-list sec">
+      <a class="menu-row" href="#">
+        <span class="menu-ic menu-ic--primary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-2.6 2.9-4 5.5-4s4.7 1.4 5.5 4"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 15.2c2.3.3 3.8 1.6 4.3 3.8"/></svg></span>
+        <span class="menu-label">家庭档案</span>
+        <span class="menu-chev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="#">
+        <span class="menu-ic menu-ic--info"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 1114 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <span class="menu-label">收货地址</span>
+        <span class="menu-chev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="#">
+        <span class="menu-ic menu-ic--success"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <span class="menu-label">消毒与安全</span>
+        <span class="menu-chev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="#">
+        <span class="menu-ic menu-ic--warning"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13a8 8 0 0116 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M20 19v.5a2.5 2.5 0 01-2.5 2.5H14"/></svg></span>
+        <span class="menu-label">客服</span>
+        <span class="menu-chev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="#">
+        <span class="menu-ic menu-ic--accent"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.8v2.2M12 18v2.2M3.8 12H6M18 12h2.2M6.2 6.2l1.6 1.6M16.2 16.2l1.6 1.6M17.8 6.2l-1.6 1.6M7.8 16.2l-1.6 1.6"/></svg></span>
+        <span class="menu-label">设置</span>
+        <span class="menu-chev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+
+    <div class="text-tertiary sec" style="text-align:center;font-size:12px;">童芽 ToySprout · v2.1.0</div>
+
+  </main>
+
+  <!-- ===== 底部 TabBar ===== -->
+  <nav class="tab-bar" aria-label="底部导航">
+    <a class="tab-item" href="home.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7"/><path d="M5.5 9v10h13V9"/><path d="M10 19v-5.5h4V19"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 7.4V20a1.5 1.5 0 01-1.5 1.5H14.5V15h-5v6.5H4.5A1.5 1.5 0 013 20v-9.6z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">首页</span>
+    </a>
+    <a class="tab-item" href="library.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2"/><rect x="13" y="13" width="7.5" height="7.5" rx="2"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">玩具库</span>
+    </a>
+    <a class="tab-item" href="orders.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-2.2-1.4-1.8 1.4-1.8-1.4L10.4 20l-1.8-1.4L6 20z"/><path d="M9 8h6"/><path d="M9 11.5h6"/><path d="M9 15h3"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" fill="currentColor" stroke="none"/><path d="M8 8.2h8M8 11.7h8M8 15.2h5" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round"/></svg>
+      <span class="tab-label">订单</span>
+    </a>
+    <a class="tab-item tab-item--active" href="profile.html" aria-current="page">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor" stroke="none"/><path d="M5 20.5c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">我的</span>
+    </a>
+  </nav>
+
+</div>
+</div>
+</body>
+</html>

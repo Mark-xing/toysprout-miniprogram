@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的订单 · 童芽 ToySprout 小程序</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏 + 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <span class="nav-title">我的订单</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 顶部 Tab（全部 / 进行中 / 已完成） -->
+    <div class="otabs" role="tablist" aria-label="订单状态">
+      <button class="otab otab--active" type="button" data-filter="all" role="tab" aria-selected="true">全部</button>
+      <button class="otab" type="button" data-filter="active" role="tab" aria-selected="false">进行中</button>
+      <button class="otab" type="button" data-filter="done" role="tab" aria-selected="false">已完成</button>
+    </div>
+
+    <!-- 订单列表（每单内嵌消毒状态行） -->
+    <div class="order-list sec" id="order-list">
+
+      <!-- 订单 1：使用中（绿） -->
+      <article class="order-card" data-status="active">
+        <div class="order-head">
+          <span class="order-id mono">ORD-20250610-1120</span>
+          <span class="badge badge--success"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4"/><path d="M21 3v4h-4"/><path d="M8.5 12.5l2.5 2.5 5-5"/></svg>使用中</span>
+        </div>
+        <div class="order-row">
+          <div class="order-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="乐高积木缩略图"><rect width="200" height="200" fill="#F8F1E6"/><rect x="50" y="120" width="100" height="26" rx="6" fill="#F2B33D"/><circle cx="66" cy="128" r="4" fill="#FCF0D8"/><circle cx="84" cy="128" r="4" fill="#FCF0D8"/><circle cx="102" cy="128" r="4" fill="#FCF0D8"/><circle cx="120" cy="128" r="4" fill="#FCF0D8"/><circle cx="138" cy="128" r="4" fill="#FCF0D8"/><rect x="50" y="90" width="70" height="26" rx="6" fill="#F27355"/><rect x="124" y="90" width="30" height="26" rx="6" fill="#3E7C59"/></svg>
+          </div>
+          <div class="order-main">
+            <div class="order-name">乐高积木经典款 · 4–7 岁</div>
+            <div class="order-sub">归还日 <strong style="color:var(--color-text-primary);">06-20（周五）</strong> · 可续租</div>
+            <div class="order-sub">批次 <span class="mono">BATCH-20250610-1120</span></div>
+          </div>
+        </div>
+        <div class="order-sani" style="color:var(--color-success-text);">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          已消毒质检合格 · 报告 TS-20250610-1120
+        </div>
+      </article>
+
+      <!-- 订单 2：配送中（蓝） -->
+      <article class="order-card" data-status="active">
+        <div class="order-head">
+          <span class="order-id mono">ORD-20250612-1836</span>
+          <span class="badge badge--info"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>配送中</span>
+        </div>
+        <div class="order-row">
+          <div class="order-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="Hape 木制厨房缩略图"><rect width="200" height="200" fill="#F3EADB"/><rect x="56" y="98" width="74" height="40" rx="10" fill="#D98E1F"/><rect x="50" y="90" width="86" height="14" rx="7" fill="#B06A1F"/><circle cx="88" cy="98" r="6" fill="#FCF0D8"/><ellipse cx="148" cy="120" rx="28" ry="11" fill="#B06A1F"/><rect x="74" y="140" width="7" height="22" rx="3.5" fill="#D98E1F"/><rect x="84" y="140" width="7" height="22" rx="3.5" fill="#B06A1F"/></svg>
+          </div>
+          <div class="order-main">
+            <div class="order-name">Hape 木制厨房套装 · 3–6 岁</div>
+            <div class="order-sub">预计 <strong style="color:var(--color-info-text);">06-15 送达</strong> · 快递员派送中</div>
+            <div class="order-sub">批次 <span class="mono">BATCH-20250612-1836</span></div>
+          </div>
+        </div>
+        <div class="order-sani" style="color:var(--color-info-text);">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          消毒质检已通过 ✓ · 密封包装已出库
+        </div>
+      </article>
+
+      <!-- 订单 3：已完成（绿） -->
+      <article class="order-card" data-status="done">
+        <div class="order-head">
+          <span class="order-id mono">ORD-20250601-0908</span>
+          <span class="badge badge--success"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4z"/><path d="M4 9h16"/><path d="M8 3v4M16 3v4"/><path d="M9 14l2 2 4-4"/></svg>已归还</span>
+        </div>
+        <div class="order-row">
+          <div class="order-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="磁力片缩略图"><rect width="200" height="200" fill="#E8EFF7"/><rect x="56" y="74" width="52" height="52" rx="8" fill="#F27355" opacity="0.88"/><polygon points="86,44 118,94 56,94" fill="#F2B33D" opacity="0.92"/><rect x="120" y="94" width="40" height="40" rx="8" fill="#3E7C59" opacity="0.85"/></svg>
+          </div>
+          <div class="order-main">
+            <div class="order-name">磁力片 100 片装 · 2–5 岁</div>
+            <div class="order-sub">已归还 06-08 · 押金 <span class="num" style="color:var(--color-success-text);">¥100</span> 已退回</div>
+            <div class="order-sub">批次 <span class="mono">BATCH-20250601-0908</span></div>
+          </div>
+        </div>
+        <div class="order-sani" style="color:var(--color-success-text);">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4z"/><path d="M4 9h16"/><path d="M8 3v4M16 3v4"/><path d="M9 14l2 2 4-4"/></svg>
+          归还复检通过 ✓ · 已进入消毒队列
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- ===== 底部 TabBar ===== -->
+  <nav class="tab-bar" aria-label="底部导航">
+    <a class="tab-item" href="home.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7"/><path d="M5.5 9v10h13V9"/><path d="M10 19v-5.5h4V19"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 7.4V20a1.5 1.5 0 01-1.5 1.5H14.5V15h-5v6.5H4.5A1.5 1.5 0 013 20v-9.6z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">首页</span>
+    </a>
+    <a class="tab-item" href="library.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2"/><rect x="13" y="13" width="7.5" height="7.5" rx="2"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/><rect x="13" y="13" width="7.5" height="7.5" rx="2" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">玩具库</span>
+    </a>
+    <a class="tab-item tab-item--active" href="orders.html" aria-current="page">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-2.2-1.4-1.8 1.4-1.8-1.4L10.4 20l-1.8-1.4L6 20z"/><path d="M9 8h6"/><path d="M9 11.5h6"/><path d="M9 15h3"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3" fill="currentColor" stroke="none"/><path d="M8 8.2h8M8 11.7h8M8 15.2h5" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round"/></svg>
+      <span class="tab-label">订单</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      <svg class="tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor" stroke="none"/><path d="M5 20.5c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">我的</span>
+    </a>
+  </nav>
+
+</div>
+</div>
+
+<script>
+/* 订单状态过滤（全部 / 进行中 / 已完成） */
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#order-list .order-card'));
+  document.querySelectorAll('.otab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.otab').forEach(function (x) { x.classList.remove('otab--active'); x.setAttribute('aria-selected', 'false'); });
+      t.classList.add('otab--active'); t.setAttribute('aria-selected', 'true');
+      var f = t.getAttribute('data-filter');
+      cards.forEach(function (c) {
+        c.style.display = (f === 'all' || c.getAttribute('data-status') === f) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

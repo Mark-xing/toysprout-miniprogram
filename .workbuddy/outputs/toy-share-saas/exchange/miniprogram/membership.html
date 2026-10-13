@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会员中心 · 童芽 ToySprout 小程序</title>
+<!-- 设计系统：WarmTrust v2（phase2-design-tokens-v2.md §11 Quick Snippet）｜ C2C 一换一互邮交换 -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏（返回箭头）+ 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <a class="nav-back" href="profile.html" aria-label="返回上一页">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <span class="nav-title">会员中心</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 会员卡 Hero -->
+    <section class="member-hero" aria-label="会员概览">
+      <div class="mh-title">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.3 1.1 6L12 16.9 6.7 19.7l1.1-6L3.3 9.4l6.1-.8z"/></svg>
+        童芽会员
+      </div>
+      <p class="mh-sub">免每单服务费 <span class="mono">¥1.9</span> · 玩具优先曝光 · 专属客服 · 信用分加成</p>
+      <div class="mh-foot">按每月交换 3 单算：普通支出 <span class="mono">¥5.7</span>/月 · 会员全年免服务费</div>
+    </section>
+
+    <!-- 套餐选择（单档 · 会员 ¥10/月） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">选择套餐</div></div>
+      <div class="plan-list">
+
+        <button class="plan-card plan-card--rec plan-card--active" id="plan-member" type="button" role="radio" aria-checked="true">
+          <span class="plan-check"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>
+          <span class="plan-main">
+            <span class="plan-name">会员</span>
+            <span class="plan-desc">免每单服务费 · 优先曝光 · 专属客服 · 信用分加成</span>
+          </span>
+          <span class="plan-price"><span class="num">¥10</span><span class="unit"> / 月</span></span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- 会员权益对照卡（普通 / 会员 单档） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">权益对比</div></div>
+      <table class="compare-table" aria-label="会员权益对照">
+        <thead>
+          <tr>
+            <th>权益</th>
+            <th>普通</th>
+            <th class="rec-col">会员 <span class="mini">¥10/月</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>每单服务费</td>
+            <td class="mono">¥1.9</td>
+            <td class="check-ok rec-col">免</td>
+          </tr>
+          <tr>
+            <td>优先曝光</td>
+            <td class="check-no">—</td>
+            <td class="check-ok rec-col">✓</td>
+          </tr>
+          <tr>
+            <td>专属客服</td>
+            <td class="check-no">—</td>
+            <td class="check-ok rec-col">✓</td>
+          </tr>
+          <tr>
+            <td>信用分加成</td>
+            <td class="check-no">—</td>
+            <td class="check-ok rec-col">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 权益列表 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">会员专属</div></div>
+      <div class="benefit-list">
+        <div class="benefit-row">
+          <span class="benefit-ic benefit-ic--accent"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <div class="benefit-main">
+            <div class="benefit-name">免每单服务费</div>
+            <div class="benefit-desc">双方发起快递时不再收 ¥1.9/单 · 换得越多省得越多</div>
+          </div>
+        </div>
+        <div class="benefit-row">
+          <span class="benefit-ic benefit-ic--primary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M12 7l1.4 3 3.2.4-2.3 2.3.6 3.2L12 14.8l-2.9 1.5.6-3.2-2.3-2.3 3.2-.4z"/></svg></span>
+          <div class="benefit-main">
+            <div class="benefit-name">优先曝光</div>
+            <div class="benefit-desc">玩具在发现流获得更多曝光，交换更快成交</div>
+          </div>
+        </div>
+        <div class="benefit-row">
+          <span class="benefit-ic benefit-ic--info"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg></span>
+          <div class="benefit-main">
+            <div class="benefit-name">专属客服</div>
+            <div class="benefit-desc">优先响应，纠纷仲裁专人跟进</div>
+          </div>
+        </div>
+        <div class="benefit-row">
+          <span class="benefit-ic benefit-ic--success"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></span>
+          <div class="benefit-main">
+            <div class="benefit-name">信用分加成</div>
+            <div class="benefit-desc">完成互评后信用分加成，更快升级信赖 / 优选等级</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 开通按钮 -->
+    <section class="sec">
+      <button class="btn btn--primary btn--lg btn--block" id="open-btn" type="button" onclick="openMember()">开通会员 ¥10/月</button>
+      <p class="text-tertiary" style="font-size:12px;margin-top:10px;text-align:center;line-height:1.6;">服务费在双方发起快递时收取 · 取消 / 未互寄不收费</p>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function toast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('toast--show');
+      clearTimeout(t._h);
+      t._h = setTimeout(function () { t.classList.remove('toast--show'); }, 1800);
+    }
+    function openMember() {
+      var btn = document.getElementById('open-btn');
+      btn.textContent = '已开通 · 会员生效';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      toast('开通成功 · 本单立省 ¥1.9');
+    }
+  </script>
+
+</div>
+</div>
+</body>
+</html>

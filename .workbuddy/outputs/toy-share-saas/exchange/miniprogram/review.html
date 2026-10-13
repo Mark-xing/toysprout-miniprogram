@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>评价本次交换 · 童芽 ToySprout 小程序</title>
+<!-- 设计系统：WarmTrust v2（phase2-design-tokens-v2.md §11 Quick Snippet）｜ C2C 一换一互邮交换 -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏（返回箭头）+ 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <a class="nav-back" href="order-detail.html" aria-label="返回上一页">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <span class="nav-title">评价本次交换</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 信用分变化提示（提交后显示） -->
+    <div class="credit-change" id="credit-change" hidden>
+      <span class="cc-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>
+      <div>
+        <div class="cc-title">评价成功 · 信用分 +4</div>
+        <div class="cc-sub"><span class="mono">862 → 866</span>（信赖）· 双方互评后解锁下一次交换</div>
+      </div>
+    </div>
+
+    <!-- 互评规则提示（确认收货 7 天内 · 超时默认 5 星） -->
+    <div class="panel" style="padding:10px 14px;">
+      <p class="text-tertiary" style="font-size:12px;line-height:1.6;margin:0;">确认收货后 <strong style="color:var(--color-text-primary);">7 天</strong>内可评价，超时默认 <strong style="color:var(--color-text-primary);">5 星</strong></p>
+    </div>
+
+    <!-- 双方玩具摘要（物如实） -->
+    <section class="sec--tight">
+      <div class="sec-head" style="margin-bottom:10px;"><div class="sec-title" style="font-size:15px;">本次交换</div></div>
+      <div class="review-toys">
+        <div class="review-toy">
+          <span class="rt-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="布鲁可恐龙套装"><rect width="200" height="200" fill="#F3EADB"/><path d="M52 130l22-42 18 8 14-26 20 10 16-12 12 18 20 14-6 30z" fill="#3E7C59"/><rect x="66" y="130" width="12" height="24" rx="5" fill="#2F5D46"/></svg>
+          </span>
+          <div class="rt-main">
+            <div class="rt-name">布鲁可恐龙套装</div>
+            <div class="rt-dir">我收到 · 乐乐爸寄来</div>
+          </div>
+        </div>
+        <div class="review-toy">
+          <span class="rt-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="费雪小钢琴"><rect width="200" height="200" fill="#FCE8E0"/><rect x="46" y="96" width="108" height="52" rx="10" fill="#C94324"/><rect x="56" y="88" width="88" height="12" rx="6" fill="#F27355"/><g fill="#FFF"><rect x="58" y="104" width="9" height="26" rx="2"/><rect x="70" y="104" width="9" height="26" rx="2"/><rect x="82" y="104" width="9" height="26" rx="2"/><rect x="94" y="104" width="9" height="26" rx="2"/><rect x="106" y="104" width="9" height="26" rx="2"/><rect x="118" y="104" width="9" height="26" rx="2"/><rect x="130" y="104" width="9" height="26" rx="2"/></g></svg>
+          </span>
+          <div class="rt-main">
+            <div class="rt-name">费雪小钢琴</div>
+            <div class="rt-dir">我寄出 · 换给乐乐爸</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 本次交换体验（5 星 · 品牌黄） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">给乐乐爸打分</div></div>
+      <div class="star-block">
+        <span class="star-label">本次交换体验</span>
+        <div class="star-rate" id="star-rate" role="radiogroup" aria-label="星级评分">
+          <button type="button" role="radio" aria-checked="true" data-v="1" aria-label="1 星"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>
+          <button type="button" role="radio" aria-checked="true" data-v="2" aria-label="2 星"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>
+          <button type="button" role="radio" aria-checked="true" data-v="3" aria-label="3 星"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>
+          <button type="button" role="radio" aria-checked="true" data-v="4" aria-label="4 星"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>
+          <button type="button" role="radio" aria-checked="true" data-v="5" aria-label="5 星"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>
+        </div>
+      </div>
+      <p class="text-tertiary" style="font-size:12px;margin-top:8px;line-height:1.5;"><span style="color:var(--color-danger-text);">差评（1–2 星）将影响对方信用分</span> · 差评可申诉（平台 3 天复核）· 恶意差评将删除并警告</p>
+    </section>
+
+    <!-- 快捷标签 chips -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">对方做得好（可多选）</div></div>
+      <div class="tag-select" id="tag-select" role="group" aria-label="快捷标签">
+        <button class="tag-chip tag-chip--active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg>玩具如描述</button>
+        <button class="tag-chip tag-chip--active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg>包装用心</button>
+        <button class="tag-chip" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg>沟通顺畅</button>
+        <button class="tag-chip" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg>发货及时</button>
+      </div>
+    </section>
+
+    <!-- 文字评价 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">文字评价（可选）</div></div>
+      <textarea class="form-textarea" placeholder="聊聊这次交换体验吧…" aria-label="文字评价"></textarea>
+    </section>
+
+    <!-- 提交 -->
+    <section class="sec">
+      <button class="btn btn--primary btn--lg btn--block" id="submit-review" type="button" onclick="submitReview()">提交评价</button>
+      <p class="text-tertiary" style="font-size:12px;margin-top:10px;text-align:center;line-height:1.6;">评价后双方信用分即时更新 · 解锁下一次交换</p>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function toast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('toast--show');
+      clearTimeout(t._h);
+      t._h = setTimeout(function () { t.classList.remove('toast--show'); }, 1800);
+    }
+    // 星级选择（品牌黄恒色）
+    var stars = document.querySelectorAll('#star-rate button');
+    stars.forEach(function (s) {
+      s.addEventListener('click', function () {
+        var v = parseInt(s.getAttribute('data-v'), 10);
+        stars.forEach(function (x) {
+          var filled = parseInt(x.getAttribute('data-v'), 10) <= v;
+          x.classList.toggle('sr-empty', !filled);
+          x.setAttribute('aria-checked', String(filled));
+        });
+      });
+    });
+    // 快捷标签多选
+    var tags = document.querySelectorAll('#tag-select .tag-chip');
+    tags.forEach(function (t) {
+      t.addEventListener('click', function () { t.classList.toggle('tag-chip--active'); });
+    });
+    // 提交 → 信用分变化提示
+    function submitReview() {
+      document.getElementById('credit-change').hidden = false;
+      var btn = document.getElementById('submit-review');
+      btn.textContent = '已提交评价';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      toast('评价成功 · 信用分 862 → 866');
+      document.getElementById('credit-change').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+
+</div>
+</div>
+</body>
+</html>

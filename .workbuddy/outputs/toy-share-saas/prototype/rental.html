@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>确认订阅 · 租赁流程 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- ================= 顶部导航 ================= -->
+<header class="top-nav top-nav--solid">
+  <div class="container">
+    <div class="inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9"/><path d="M12 12C10 9 7 8 4 8c0 3 1 5 8 4z"/><path d="M12 12c2-3 5-4 8-4 0 3-1 5-8 4z"/></svg>
+        </span>
+        <span>童芽 <em style="font-style:normal;color:var(--color-accent-strong)">ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="toy-detail.html">玩具库</a>
+        <a href="index.html#pricing">订阅套餐</a>
+        <a href="index.html#sanitize">消毒安全</a>
+        <a href="dashboard.html">会员平台</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--secondary btn--sm" href="toy-detail.html">返回玩具详情</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="padding-bottom:var(--space-20);">
+    <!-- 步骤指示 -->
+    <section style="padding-top:var(--space-10);">
+      <div class="stepper" style="max-width:760px;margin-inline:auto;">
+        <div class="step is-done">
+          <div class="step-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+          <div class="step-label">确认套餐</div>
+        </div>
+        <div class="step is-active">
+          <div class="step-ic">2</div>
+          <div class="step-label">配送信息</div>
+        </div>
+        <div class="step">
+          <div class="step-ic">3</div>
+          <div class="step-label">归还安排</div>
+        </div>
+        <div class="step">
+          <div class="step-ic">4</div>
+          <div class="step-label">确认</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid" style="grid-template-columns:7fr 5fr;gap:var(--space-8);align-items:start;margin-top:var(--space-10);">
+
+      <!-- 左栏：流程主体 -->
+      <div class="space-y-8">
+        <!-- 1 确认订阅套餐 -->
+        <section class="card card--hover">
+          <h2 class="h3" style="margin-bottom:var(--space-5);">1 · 确认订阅套餐</h2>
+          <div class="space-y-4">
+            <label class="plan-option">
+              <input type="radio" name="plan" value="month">
+              <div>
+                <div class="body-sm" style="font-weight:700;">月卡</div>
+                <div class="micro text-tertiary">按月付 · 随时可换</div>
+              </div>
+              <div class="plan-price"><div class="price price--sm"><span class="price-num">¥89</span><span class="price-unit">/月</span></div></div>
+            </label>
+            <label class="plan-option">
+              <input type="radio" name="plan" value="quarter">
+              <div>
+                <div class="body-sm" style="font-weight:700;">季卡</div>
+                <div class="micro text-tertiary">¥237/季 · 每季 1 次免费换新</div>
+              </div>
+              <div class="plan-price"><div class="price price--sm"><span class="price-num">¥79</span><span class="price-unit">/月</span></div></div>
+            </label>
+            <label class="plan-option plan-option--selected">
+              <input type="radio" name="plan" value="year" checked>
+              <div>
+                <div class="body-sm" style="font-weight:700;">年卡 <span class="badge badge--warning" style="margin-left:6px;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5l-3.5 2 1-4L6 10.5l4.2-.4L12 6l1.8 4.1 4.2.4-3.5 3 1 4z"/></svg>最划算</span></div>
+                <div class="micro text-tertiary">¥828/年 · 无限次换新 · 押金 ¥100</div>
+              </div>
+              <div class="plan-price"><div class="price price--sm"><span class="price-num">¥69</span><span class="price-unit">/月</span></div></div>
+            </label>
+          </div>
+          <p class="caption text-tertiary" style="margin-top:var(--space-4);">首期 12 个月，支持随时暂停；续订价与当前所选一致。</p>
+        </section>
+
+        <!-- 2 配送地址 -->
+        <section class="card card--hover">
+          <h2 class="h3" style="margin-bottom:var(--space-5);">2 · 配送地址</h2>
+          <div class="form-grid form-grid--2">
+            <div class="field">
+              <label class="label" for="recv-name">收货人 <span class="req">*</span></label>
+              <input class="input" id="recv-name" type="text" value="林女士" placeholder="请输入收货人姓名">
+            </div>
+            <div class="field">
+              <label class="label" for="recv-phone">手机号 <span class="req">*</span></label>
+              <input class="input" id="recv-phone" type="tel" value="138 0013 8000" placeholder="用于配送与提醒">
+            </div>
+            <div class="field">
+              <label class="label" for="recv-province">省 / 市 / 区 <span class="req">*</span></label>
+              <select class="select" id="recv-province">
+                <option>广东省 · 深圳市 · 南山区</option>
+                <option>北京市 · 朝阳区</option>
+                <option>上海市 · 浦东新区</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="recv-type">配送偏好</label>
+              <select class="select" id="recv-type">
+                <option>工作日送达（18:00–21:00）</option>
+                <option>周末送达（10:00–18:00）</option>
+                <option>均可</option>
+              </select>
+            </div>
+            <div class="field" style="grid-column:1 / -1;">
+              <label class="label" for="recv-addr">详细地址 <span class="req">*</span></label>
+              <textarea class="textarea" id="recv-addr" rows="2" placeholder="街道、小区、楼栋、门牌号">科技园南区 9 栋 302 室（自提柜旁）</textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3 归还安排 -->
+        <section class="card card--hover">
+          <h2 class="h3" style="margin-bottom:var(--space-5);">3 · 归还安排</h2>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:var(--space-6);align-items:start;">
+            <div>
+              <div class="label" style="margin-bottom:var(--space-3);">选择归还日期</div>
+              <div class="calendar">
+                <div class="calendar-head">
+                  <button class="icon-btn" type="button" aria-label="上个月" style="width:32px;height:32px;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+                  <span class="h4" style="font-size:15px;">2025 年 6 月</span>
+                  <button class="icon-btn" type="button" aria-label="下个月" style="width:32px;height:32px;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+                </div>
+                <div class="calendar-grid">
+                  <div class="calendar-dow">一</div><div class="calendar-dow">二</div><div class="calendar-dow">三</div><div class="calendar-dow">四</div><div class="calendar-dow">五</div><div class="calendar-dow">六</div><div class="calendar-dow">日</div>
+                  <div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted">1</div>
+                  <div class="calendar-cell calendar-cell--muted">2</div><div class="calendar-cell calendar-cell--muted">3</div><div class="calendar-cell calendar-cell--muted">4</div><div class="calendar-cell calendar-cell--muted">5</div><div class="calendar-cell calendar-cell--muted">6</div><div class="calendar-cell calendar-cell--muted">7</div><div class="calendar-cell calendar-cell--muted">8</div>
+                  <div class="calendar-cell calendar-cell--muted">9</div><div class="calendar-cell calendar-cell--muted">10</div><div class="calendar-cell calendar-cell--muted">11</div><div class="calendar-cell calendar-cell--muted">12</div><div class="calendar-cell calendar-cell--muted">13</div><div class="calendar-cell calendar-cell--today">14</div><div class="calendar-cell">15</div>
+                  <div class="calendar-cell">16</div><div class="calendar-cell">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell calendar-cell--selected">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div>
+                  <div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div>
+                  <div class="calendar-cell">30</div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div><div class="calendar-cell calendar-cell--muted"></div>
+                </div>
+              </div>
+              <p class="caption text-tertiary" style="margin-top:var(--space-3);">今天 06-14 · 已选 06-20（周五）· 归还日为使用期最后一天</p>
+            </div>
+            <div class="space-y-5">
+              <div>
+                <div class="label" style="margin-bottom:var(--space-3);">归还方式</div>
+                <div class="space-y-4">
+                  <label class="checkline">
+                    <input type="radio" name="return-way" checked>
+                    <span class="check-text"><strong style="color:var(--color-text-primary);">上门取件</strong> · 免费 · 快递员按预约时间上门</span>
+                  </label>
+                  <label class="checkline">
+                    <input type="radio" name="return-way">
+                    <span class="check-text"><strong style="color:var(--color-text-primary);">自助寄回</strong> · 顺丰到付 · 凭取件码寄出</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div class="label" style="margin-bottom:var(--space-3);">续租提醒</div>
+                <label class="checkline">
+                  <input type="checkbox" checked>
+                  <span class="check-text">归还日前 3 天提醒我：<strong style="color:var(--color-text-primary);">续租 / 换新 / 归还</strong></span>
+                </label>
+              </div>
+              <div class="body-sm text-secondary" style="background:var(--color-surface-muted);border-radius:var(--radius-md);padding:var(--space-4);">
+                归还后玩具进入复检，检测合格后押金 <strong class="num">¥100</strong> 在 3 个工作日内原路退回。
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 批次追溯条（信任组件 6.3） -->
+        <section class="card trace-card card--hover">
+          <div class="trace-head">
+            <div>
+              <h3 class="h4">本件玩具 · 消毒与流转记录</h3>
+              <p class="body-sm text-tertiary" style="margin-top:2px;">收货后扫码可查看实时流转与完整检测报告</p>
+            </div>
+            <span class="mono caption text-tertiary">批次 BATCH-20250613-0421</span>
+          </div>
+          <div class="trace">
+            <div class="node is-done">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="label">入库</div>
+              <div class="time mono">06-11</div>
+            </div>
+            <div class="node is-done">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="label">消毒</div>
+              <div class="time mono">06-12</div>
+            </div>
+            <div class="node is-done">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="label">质检</div>
+              <div class="time mono">06-13</div>
+            </div>
+            <div class="node is-doing">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></div>
+              <div class="label">配送</div>
+              <div class="time mono">06-14</div>
+            </div>
+            <div class="node">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4"/><path d="M21 3v4h-4"/></svg></div>
+              <div class="label">使用中</div>
+              <div class="time mono">—</div>
+            </div>
+            <div class="node">
+              <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v16H4z"/><path d="M4 9h16"/><path d="M8 3v4M16 3v4"/></svg></div>
+              <div class="label">归还复检</div>
+              <div class="time mono">—</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 右栏：订单摘要（吸顶） -->
+      <aside class="sticky-col">
+        <div class="card card--hover">
+          <h2 class="h3" style="margin-bottom:var(--space-5);">订单摘要</h2>
+          <div style="display:flex;gap:var(--space-4);padding-bottom:var(--space-5);border-bottom:1px solid var(--color-divider);">
+            <div class="order-thumb" style="width:76px;height:60px;">
+              <svg viewBox="0 0 76 60" role="img" aria-label="乐高积木经典款缩略图"><rect width="76" height="60" fill="#F8F1E6"/><rect x="20" y="24" width="36" height="15" rx="4" fill="#F2B33D"/><rect x="20" y="12" width="25" height="13" rx="4" fill="#F27355"/><rect x="45" y="12" width="15" height="13" rx="4" fill="#3E7C59"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-family:var(--font-display);font-size:15px;">乐高积木经典款</div>
+              <div class="micro text-tertiary">4–7 岁 · 本月第 1 件</div>
+              <div class="body-sm text-secondary" style="margin-top:4px;">× 1 · <span class="num">¥0</span>（含在套餐内）</div>
+            </div>
+          </div>
+
+          <div class="fee-list" style="margin-top:var(--space-3);">
+            <div class="fee-row"><span data-fee-label>订阅费（年卡 · 首月）</span><span class="fee-val" data-fee-plan>¥69</span></div>
+            <div class="fee-row"><span>玩具租赁费（含）</span><span class="fee-val">¥0</span></div>
+            <div class="fee-row"><span>运费</span><span class="fee-val">免费</span></div>
+            <div class="fee-row"><span>押金（可退）</span><span class="fee-val">¥100</span></div>
+            <div class="fee-row fee-row--total"><span>首月合计</span><span class="fee-val" data-fee-total>¥169</span></div>
+            <p class="caption text-tertiary">其中押金 ¥100 归还复检通过后退回</p>
+          </div>
+
+          <a id="confirm-btn" class="btn btn--primary btn--lg btn--block" href="success.html?plan=year" style="margin-top:var(--space-6);">确认订单</a>
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:var(--space-4);" class="caption text-tertiary">
+            <svg style="width:14px;height:14px;color:var(--color-success-text);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+            支付信息采用行业标准加密 · 支持微信 / 支付宝
+          </div>
+          <p class="caption text-tertiary" style="margin-top:var(--space-3);text-align:center;">
+            提交即代表同意 <a href="#">《用户协议》</a> 与 <a href="#">《押金与赔付规则》</a>
+          </p>
+        </div>
+
+        <div class="card" style="margin-top:var(--space-5);background:var(--color-surface-muted);border-color:var(--color-border);">
+          <div class="body-sm" style="font-weight:700;margin-bottom:var(--space-3);">退款与保障</div>
+          <ul class="body-sm text-secondary space-y-4">
+            <li style="display:flex;gap:8px;"><svg style="width:16px;height:16px;flex:none;color:var(--color-success-text);margin-top:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>首月不满意，全额退款</li>
+            <li style="display:flex;gap:8px;"><svg style="width:16px;height:16px;flex:none;color:var(--color-success-text);margin-top:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>随时暂停订阅，不产生费用</li>
+            <li style="display:flex;gap:8px;"><svg style="width:16px;height:16px;flex:none;color:var(--color-success-text);margin-top:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>玩具损坏按规则赔付，责任透明</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+<script>
+/* 套餐选择联动：读取 ?plan= 参数 → 默认选中对应套餐卡 → 费用明细联动 → 确认订单携带选择 */
+(function () {
+  var map = { month: { fee: 89, name: '月卡' }, quarter: { fee: 79, name: '季卡' }, year: { fee: 69, name: '年卡' } };
+  var params = new URLSearchParams(location.search);
+  var plan = params.get('plan') || 'year';
+  if (!map[plan]) plan = 'year';
+
+  var radios = document.querySelectorAll('input[name="plan"]');
+  var labelEl = document.querySelector('[data-fee-label]');
+  var planEl = document.querySelector('[data-fee-plan]');
+  var totalEl = document.querySelector('[data-fee-total]');
+  var cta = document.getElementById('confirm-btn');
+
+  function apply(p) {
+    var d = map[p] || map.year;
+    radios.forEach(function (r) {
+      var on = (r.value === p);
+      r.checked = on;
+      if (r.closest) r.closest('.plan-option').classList.toggle('plan-option--selected', on);
+    });
+    if (labelEl) labelEl.textContent = '订阅费（' + d.name + ' · 首月）';
+    if (planEl) planEl.textContent = '¥' + d.fee;
+    if (totalEl) totalEl.textContent = '¥' + (d.fee + 100);
+    if (cta) cta.href = 'success.html?plan=' + p;
+  }
+  radios.forEach(function (r) { r.addEventListener('change', function () { apply(r.value); }); });
+  apply(plan);
+})();
+</script>
+</body>
+</html>

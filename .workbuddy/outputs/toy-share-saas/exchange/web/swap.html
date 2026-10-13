@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发起交换 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21V12"/><path d="M12 15c-3-1.6-5.4-4.6-5.8-8C10 7 13 8.8 14 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15c3-1.6 5.4-4.6 5.8-8C14 7 11 8.8 10 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-growing" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 13c-2.8-1.7-5.6-2.3-8-2.1C4.4 8 6.8 12.8 12 13z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9c2.8-1.7 5.6-2.3 8-2.1C19.6 4 17.2 8.8 12 9z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.3l1.1 2.3 2.5.35-1.8 1.8.4 2.5L12 14.3l-2.2 1.2.4-2.5-1.8-1.8 2.5-.35z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="8" width="15" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 12h13v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 8c-2.5 0-4.2-1-4.2-2.7C7.8 3.6 9.6 2.8 12 4.4 14.4 2.8 16.2 3.6 16.2 5.3 16.2 7 14.5 8 12 8z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wrinkle" viewBox="0 0 24 24"><path d="M5 8c3.5 0 3.5 2 7 2s3.5-2 7-2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M5 16c3.5 0 3.5-2 7-2s3.5 2 7 2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-family" viewBox="0 0 24 24"><path d="M4 11.5l8-7 8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 9.5V20h11V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.2 15l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-parcel" viewBox="0 0 24 24"><path d="M4 7.2l8-3.2 8 3.2v9.6l-8 3.2-8-3.2z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.2l8 3.2 8-3.2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10.4V20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6.5h10.5v9H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 9.5H17l3.5 3.5v2.5h-7z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="16.6" cy="17.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7.5l8 3.5 8-3.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11v9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M9.5 8.5l2 2 3-3" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4.5L3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 8H15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M17 19.5L20.5 16 17 12.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 16H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4.2L21 19.5H3z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 16.8h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.6l2.4 4.9 5.5.8-4 3.9.95 5.5L12 16.2 7.15 18.7l.95-5.5-4-3.9 5.5-.8z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 20l-4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M5 15.5V6a1 1 0 0 1 1-1h9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9.5l6 5.5 6-5.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 20.5c1.2-3.8 3.9-5.7 7.5-5.7s6.3 1.9 7.5 5.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5.5h16v11.5H9.5L4 20.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.2-5.6-6.2-10.3a6.2 6.2 0 1 1 12.4 0C18.2 15.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10.4" r="2.3" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4.5" y="5.5" width="15" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4.5 10h15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M8.5 3.5v4M15.5 3.5v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M9.2 13.4L7.5 21l4.5-2.2L16.5 21l-1.7-7.6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4c-8 0-14 3-15.5 9.5C3.6 17.5 6.5 20.5 10.5 19.5 17 18 20 11 20 4z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 19.5C9 14 13 10.5 17 8.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M20 3v4h-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10.5 13.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11L12 4l8 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V20h12V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 13v-2a7.5 7.5 0 0 1 15 0v2" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><rect x="3.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><rect x="16.5" y="12.5" width="4" height="6" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 17.5a3.5 3.5 0 0 1-3.5 3.2H16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="top-nav">
+  <div class="container">
+    <div class="top-nav__inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark"><svg class="ic"><use href="#i-sprout"/></svg></span>
+        <span>童芽 <em>ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="explore.html" class="is-active">发现玩具</a>
+        <a href="explore.html#publish">发布玩具</a>
+        <a href="orders.html">交换订单</a>
+        <a href="profile.html">我的</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--soft btn--sm" href="membership.html">会员权益</a>
+        <a class="btn btn--primary btn--sm" href="membership.html">开通会员</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="padding-top:var(--space-8);">
+    <a class="link-btn" href="toy-detail.html" style="margin-bottom:var(--space-5);"><svg class="ic" style="transform:rotate(180deg);"><use href="#i-arrow"/></svg>返回玩具详情</a>
+
+    <h1 class="h1" style="margin-bottom:var(--space-2);">发起交换</h1>
+    <p class="page-head__sub" style="margin-bottom:var(--space-6);">一换一互邮：你寄一件，对方寄一件，运费与对方协商。</p>
+
+    <!-- 步骤指示：选玩具 → 提供我的玩具 → 确认 -->
+    <div class="step-bar" aria-label="交换步骤">
+      <div class="step-bar__item is-done"><span class="num">1</span>选玩具</div>
+      <div class="step-bar__line is-done"></div>
+      <div class="step-bar__item is-current"><span class="num">2</span>提供我的玩具</div>
+      <div class="step-bar__line"></div>
+      <div class="step-bar__item"><span class="num">3</span>确认发起</div>
+    </div>
+
+    <div class="app-grid">
+      <!-- 主列 -->
+      <div style="display:grid;gap:var(--space-6);min-width:0;">
+        <!-- 对方玩具摘要卡 -->
+        <section class="card" aria-label="对方玩具">
+          <div class="section-head" style="margin-bottom:var(--space-4);">
+            <h2 class="h4">对方想换的玩具</h2>
+            <span class="badge badge--info"><svg class="ic"><use href="#i-shield-check"/></svg>对方信用 985 · 优选</span>
+          </div>
+          <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
+            <div style="width:120px;height:120px;border-radius:var(--radius-lg);overflow:hidden;background:var(--color-surface-muted);flex:none;">
+              <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice"><rect width="320" height="200" fill="#F8F1E6"/><path d="M160 52l52 30-52 30-52-30z" fill="#F2B33D" stroke="#D98E1F" stroke-width="3"/><rect x="108" y="112" width="52" height="52" fill="#3E7C59" stroke="#2F5D46" stroke-width="3"/><rect x="164" y="112" width="52" height="52" fill="#43618E" stroke="#35506E" stroke-width="3"/><path d="M160 52v60" stroke="#8A7C6A" stroke-width="3"/></svg>
+            </div>
+            <div style="flex:1;min-width:220px;display:grid;gap:var(--space-2);">
+              <div style="display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap;">
+                <h3 class="h3">磁力片 100 片装</h3>
+                <span class="condition-badge condition--9new"><svg class="ic"><use href="#i-circle-check"/></svg>9成新</span>
+                <span class="safety-tag safety-tag--age">适合 3-8 岁</span>
+              </div>
+              <div class="body-sm text-secondary">北京 · 朝阳区 ｜ 妈妈·琳琳 发布</div>
+              <div style="display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap;">
+                <span class="verified-badge"><svg class="ic"><use href="#i-shield-check"/></svg>已实名</span>
+                <span class="verified-badge"><svg class="ic"><use href="#i-family"/></svg>家长认证</span>
+                <span class="credit-badge credit--elite"><svg class="ic"><use href="#i-star-shield"/></svg>优选 · <span class="credit-badge__score">985</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 我提供的玩具单选列表 -->
+        <section class="card" aria-label="我提供的玩具">
+          <div class="section-head" style="margin-bottom:var(--space-4);">
+            <h2 class="h4">我提供的玩具 <span class="text-tertiary" style="font-weight:400;">（选一件用于交换）</span></h2>
+            <a class="section-link link-btn" href="explore.html#publish"><svg class="ic"><use href="#i-plus"/></svg>去发布新玩具</a>
+          </div>
+          <div style="display:grid;gap:var(--space-3);">
+            <button class="pick-card is-selected" type="button" data-pick>
+              <span class="pick-card__radio" aria-hidden="true"></span>
+              <span class="pick-card__thumb">
+                <svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice"><rect width="120" height="120" fill="#FCF0D8"/><rect x="34" y="66" width="52" height="20" rx="5" fill="#F2B33D"/><rect x="34" y="44" width="34" height="18" rx="5" fill="#F27355"/><rect x="70" y="44" width="20" height="18" rx="5" fill="#3E7C59"/></svg>
+              </span>
+              <span class="pick-card__info">
+                <span class="pick-card__name">乐高得宝大颗粒积木 120 粒 <span class="condition-badge condition--9new"><svg class="ic"><use href="#i-circle-check"/></svg>9成新</span></span>
+                <span class="pick-card__note">适合 1.5-5 岁 · 无缺件无咬痕 · 附收纳盒</span>
+              </span>
+            </button>
+            <button class="pick-card" type="button" data-pick>
+              <span class="pick-card__radio" aria-hidden="true"></span>
+              <span class="pick-card__thumb">
+                <svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice"><rect width="120" height="120" fill="#E7F2E8"/><rect x="30" y="38" width="26" height="44" rx="3" fill="#F27355"/><rect x="58" y="34" width="26" height="48" rx="3" fill="#3E7C59"/><rect x="40" y="46" width="12" height="3" rx="1.5" fill="#FCE8E0"/><rect x="64" y="42" width="12" height="3" rx="1.5" fill="#E7F2E8"/></svg>
+              </span>
+              <span class="pick-card__info">
+                <span class="pick-card__name">儿童绘本 60 本 <span class="condition-badge condition--8new"><svg class="ic"><use href="#i-clock"/></svg>8成新</span></span>
+                <span class="pick-card__note">适合 0-6 岁 · 个别书脊有折角（已如实标注）</span>
+              </span>
+            </button>
+            <button class="pick-card" type="button" data-pick>
+              <span class="pick-card__radio" aria-hidden="true"></span>
+              <span class="pick-card__thumb">
+                <svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice"><rect width="120" height="120" fill="#FAEBD3"/><path d="M40 92c16 7 52 7 68 0" fill="none" stroke="#D98E1F" stroke-width="6" stroke-linecap="round"/><rect x="54" y="52" width="36" height="28" rx="10" fill="#F2B33D"/><circle cx="66" cy="62" r="3.5" fill="#33291F"/><circle cx="80" cy="62" r="3.5" fill="#33291F"/></svg>
+              </span>
+              <span class="pick-card__info">
+                <span class="pick-card__name">摇摇马 <span class="condition-badge condition--used"><svg class="ic"><use href="#i-wrinkle"/></svg>有使用痕迹</span></span>
+                <span class="pick-card__note">适合 1-3 岁 · 耳朵漆面有磕碰（已如实标注）</span>
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 交换说明 -->
+        <section class="card" aria-label="交换说明">
+          <h2 class="h4" style="margin-bottom:var(--space-4);">交换说明</h2>
+          <div style="display:grid;gap:var(--space-4);">
+            <label class="checkbox">
+              <input type="checkbox" checked>
+              <span><strong>运费与对方协商</strong> <span class="hint">（可与对方沟通分摊或由一方承担，结果随交换意向卡确认）</span></span>
+            </label>
+            <label class="field">
+              <span class="label">留言给对方（模板已预填，可修改）</span>
+              <textarea class="textarea" rows="4">你好！我是妈妈·小雨，信用分 862。想用「乐高得宝大颗粒积木 120 粒」换你的「磁力片 100 片装」，成色如图 9 成新、无缺件。运费可与对方协商，确认后 2 天内寄出，麻烦回复，谢谢！</textarea>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <!-- 侧栏 -->
+      <aside class="aside-stack">
+        <!-- 服务费保障条（会员态） -->
+        <div class="guarantee-bar guarantee-bar--member" role="note">
+          <span class="guarantee-bar__icon"><svg class="ic"><use href="#i-star-shield"/></svg></span>
+          <span class="guarantee-bar__body">会员免服务费 <span class="guarantee-bar__fee">¥0</span> · 本单立省 <span class="mono" style="color:var(--color-accent-strong);font-weight:700;">¥1.9</span></span>
+          <span class="badge badge--solid-success"><svg class="ic"><use href="#i-check"/></svg>会员免单</span>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4);">
+            <h2 class="h4">本单摘要</h2>
+            <span class="badge badge--warning"><svg class="ic"><use href="#i-clock"/></svg>待对方确认</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
+            <span class="micro text-secondary">我寄出</span>
+            <span class="badge badge--neutral">乐高得宝</span>
+            <svg class="ic" style="color:var(--color-accent-strong);"><use href="#i-swap"/></svg>
+            <span class="micro text-secondary">我收到</span>
+            <span class="badge badge--info">磁力片 100 片</span>
+          </div>
+          <div class="info-list" style="gap:var(--space-2);">
+            <div class="info-row"><span class="info-row__label">服务费</span><span>会员免单 ¥0（非会员 ¥1.9）</span></div>
+            <div class="info-row"><span class="info-row__label">运费</span><span>与对方协商</span></div>
+            <div class="info-row"><span class="info-row__label">发货时限</span><span>双方确认后 3 天内寄出</span></div>
+          </div>
+          <details class="guarantee-rules" style="margin-top:var(--space-4);">
+            <summary><svg class="ic"><use href="#i-shield"/></svg> 服务费规则</summary>
+            <ol>
+              <li>意向未成 / 取消 / 未互寄：<span class="mono">不收费</span>。</li>
+              <li>成功交换：双方发起快递时收取 <span class="mono">¥1.9</span>（会员免）。</li>
+              <li>纠纷由平台介入仲裁，举证 = 实拍 + 聊天 + 运单号。</li>
+            </ol>
+          </details>
+        </div>
+        <a class="btn btn--primary btn--lg btn--block" href="order-detail.html"><svg class="ic"><use href="#i-send"/></svg>确认发起交换</a>
+        <p class="caption text-tertiary" style="text-align:center;">提交后对方会收到意向，确认后生成交换订单</p>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 页脚 ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <span class="brand-mark" style="width:30px;height:30px;"><svg class="ic"><use href="#i-sprout"/></svg></span>
+          <span>童芽 ToySprout</span>
+        </div>
+        <p class="footer__desc">C2C 家长玩具交换平台：闲置玩具一换一互邮，每单服务费 ¥1.9，会员免单。信用互评、成色如实、平台担保。</p>
+      </div>
+      <div class="footer__col">
+        <h4>发现</h4>
+        <a href="index.html">品牌首页</a>
+        <a href="explore.html">浏览玩具</a>
+        <a href="toy-detail.html">玩具详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>交换</h4>
+        <a href="swap.html">发起交换</a>
+        <a href="orders.html">我的交换订单</a>
+        <a href="order-detail.html">订单详情示例</a>
+      </div>
+      <div class="footer__col">
+        <h4>账户</h4>
+        <a href="profile.html">我的主页</a>
+        <a href="membership.html">会员订阅</a>
+        <a href="profile.html#menu">收货地址与设置</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 童芽 ToySprout · 家长玩具交换平台（原型示例）</span>
+      <span>数据口径：服务费 ¥1.9/单 · 会员 ¥10/月</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-pick]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-pick]').forEach(function (b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+    });
+  });
+</script>
+</body>
+</html>

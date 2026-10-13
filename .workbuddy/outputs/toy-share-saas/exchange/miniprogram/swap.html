@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发起交换 · 童芽 ToySprout 小程序</title>
+<!-- 设计系统：WarmTrust v2（phase2-design-tokens-v2.md §11 Quick Snippet）｜ C2C 一换一互邮交换 -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏（返回箭头）+ 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <a class="nav-back" href="toy-detail.html" aria-label="返回上一页">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <span class="nav-title">发起交换</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 步骤：选我的玩具 → 确认交换 -->
+    <div class="steps-mini" aria-label="交换步骤">
+      <span class="step-mini step-mini--done"><span class="sn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>选择玩具</span>
+      <span class="step-line" aria-hidden="true"></span>
+      <span class="step-mini step-mini--active"><span class="sn">2</span>确认交换</span>
+    </div>
+
+    <!-- 对方玩具摘要卡（物如实：成色标签） -->
+    <section class="panel sec--tight" aria-label="对方玩具">
+      <div class="sec-head" style="margin-bottom:10px;"><div class="sec-title" style="font-size:15px;">对方想换</div></div>
+      <div class="toy-summary">
+        <span class="ts-thumb">
+          <svg viewBox="0 0 200 200" role="img" aria-label="布鲁可积木恐龙套装缩略图"><rect width="200" height="200" fill="#F3EADB"/><path d="M52 130l22-42 18 8 14-26 20 10 16-12 12 18 20 14-6 30z" fill="#3E7C59"/><path d="M46 130h128" stroke="#2F5D46" stroke-width="6" stroke-linecap="round"/><rect x="66" y="130" width="12" height="24" rx="5" fill="#2F5D46"/><rect x="122" y="130" width="12" height="24" rx="5" fill="#2F5D46"/></svg>
+        </span>
+        <div class="ts-main">
+          <div class="ts-name">布鲁可积木恐龙套装</div>
+          <div class="ts-meta">
+            <span class="cond-badge cond-badge--m cond-badge--9new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>9成新</span>
+            <span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>3–6岁</span>
+          </div>
+          <div class="ts-owner">
+            <span class="avatar avatar--success" style="width:18px;height:18px;font-size:10px;">乐</span>
+            乐乐爸 · <span class="credit-badge credit-badge--s credit-badge--elite"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M12 7l1.4 3 3.2.4-2.3 2.3.6 3.2L12 14.8l-2.9 1.5.6-3.2-2.3-2.3 3.2-.4z"/></svg>优选 985</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 我的玩具池单选（含成色标签 + 发布新玩具） -->
+    <section class="sec">
+      <div class="sec-head"><div><div class="sec-title">选一件我的玩具</div><div class="sec-sub">一换一 · 互相邮寄</div></div></div>
+      <div class="pool-list" role="radiogroup" aria-label="我的玩具池">
+
+        <button class="pool-item pool-item--active" type="button" role="radio" aria-checked="true">
+          <span class="pool-radio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>
+          <span class="pool-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="费雪小钢琴缩略图"><rect width="200" height="200" fill="#FCE8E0"/><rect x="46" y="96" width="108" height="52" rx="10" fill="#C94324"/><rect x="56" y="88" width="88" height="12" rx="6" fill="#F27355"/><g fill="#FFF"><rect x="58" y="104" width="9" height="26" rx="2"/><rect x="70" y="104" width="9" height="26" rx="2"/><rect x="82" y="104" width="9" height="26" rx="2"/><rect x="94" y="104" width="9" height="26" rx="2"/><rect x="106" y="104" width="9" height="26" rx="2"/><rect x="118" y="104" width="9" height="26" rx="2"/><rect x="130" y="104" width="9" height="26" rx="2"/></g></svg>
+          </span>
+          <span class="pool-main">
+            <span class="pool-name">费雪小钢琴</span>
+            <span class="pool-sub"><span class="cond-badge cond-badge--s cond-badge--9new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>9成新</span><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>1–3岁</span></span>
+          </span>
+        </button>
+
+        <button class="pool-item" type="button" role="radio" aria-checked="false">
+          <span class="pool-radio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>
+          <span class="pool-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="乐高得宝大颗粒缩略图"><rect width="200" height="200" fill="#E7F2E8"/><rect x="58" y="118" width="64" height="34" rx="6" fill="#3E7C59"/><circle cx="70" cy="126" r="4" fill="#E7F2E8"/><circle cx="84" cy="126" r="4" fill="#E7F2E8"/><circle cx="98" cy="126" r="4" fill="#E7F2E8"/><rect x="74" y="88" width="46" height="26" rx="6" fill="#F2B33D"/><rect x="122" y="88" width="34" height="26" rx="6" fill="#43618E"/></svg>
+          </span>
+          <span class="pool-main">
+            <span class="pool-name">乐高得宝大颗粒</span>
+            <span class="pool-sub"><span class="cond-badge cond-badge--s cond-badge--8new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.5 1.5"/></svg>8成新</span><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>1–4岁</span></span>
+          </span>
+        </button>
+
+        <button class="pool-item" type="button" role="radio" aria-checked="false">
+          <span class="pool-radio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12l4 4 8-8"/></svg></span>
+          <span class="pool-thumb">
+            <svg viewBox="0 0 200 200" role="img" aria-label="美乐儿童画板缩略图"><rect width="200" height="200" fill="#FAEBD3"/><rect x="66" y="66" width="68" height="52" rx="8" fill="#FBF6EC" stroke="#D98E1F" stroke-width="5"/><circle cx="86" cy="84" r="7" fill="#F27355"/><polygon points="104,84 112,96 96,96" fill="#3E7C59"/><path d="M76 118v30M124 118v30" stroke="#B06A1F" stroke-width="6" stroke-linecap="round"/></svg>
+          </span>
+          <span class="pool-main">
+            <span class="pool-name">美乐儿童画板</span>
+            <span class="pool-sub"><span class="cond-badge cond-badge--s cond-badge--new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h16V20H4z"/><path d="M12 9.5V20"/><path d="M12 9.5c-1.6-1.4-3.2-1.7-4.8-1.1.4 1.7 2 2.8 4.8 3.1 2.8-.3 4.4-1.4 4.8-3.1-1.6-.6-3.2-.3-4.8 1.1z"/></svg>全新</span><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>3–8岁</span></span>
+          </span>
+        </button>
+
+        <a class="pool-new" href="publish.html">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          发布新玩具加入交换池
+        </a>
+
+      </div>
+    </section>
+
+    <!-- 运费（与对方协商） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">运费</div></div>
+      <label class="checkline">
+        <input type="checkbox" checked aria-label="运费与对方协商">
+        <span class="check-text">运费与对方协商（可与对方沟通分摊 / 由一方承担）</span>
+      </label>
+      <p class="text-tertiary" style="font-size:12px;margin-top:6px;line-height:1.5;">运费分摊方式在聊天中确认，结果随交换意向卡存档。</p>
+    </section>
+
+    <!-- 服务费保障条（¥1.9 会员免单态切换 · 平台兜底） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">服务费保障</div></div>
+
+      <div class="guarantee" id="g-normal" hidden>
+        <span class="g-shield"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <div class="g-main">
+          <div class="g-title">本单服务费 <span class="fee">¥1.9</span>（会员免）</div>
+          <div class="g-sub">双方发起快递时收取 · 意向未成/取消不收费 · <strong>平台担保</strong></div>
+        </div>
+      </div>
+
+      <div class="guarantee guarantee--member" id="g-member">
+        <span class="g-shield" style="background:var(--color-primary);color:#FFFFFF;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.3 1.1 6L12 16.9 6.7 19.7l1.1-6L3.3 9.4l6.1-.8z"/></svg></span>
+        <div class="g-main">
+          <div class="g-title">会员免服务费 <span class="fee" style="color:var(--color-success-text);">¥0</span> · 本单立省 <span class="fee">¥1.9</span></div>
+          <div class="g-sub"><strong>会员</strong>免每单服务费，优先曝光，专属客服，信用分加成。</div>
+        </div>
+      </div>
+
+      <label class="switch-line" style="margin-top:10px;">
+        <span class="sw-text">我是会员，本单免服务费</span>
+        <input type="checkbox" id="member-switch" checked aria-label="会员免服务费开关">
+        <span class="switch" aria-hidden="true"></span>
+      </label>
+    </section>
+
+    <!-- 留言 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title" style="font-size:15px;">留言（可选）</div></div>
+      <input class="form-input" type="text" placeholder="留言给乐乐爸：可以换吗？我这边运费自理～" aria-label="留言">
+    </section>
+
+  </main>
+
+  <!-- ===== 底部固定操作栏 ===== -->
+  <div class="action-bar">
+    <a class="btn btn--primary" href="order-detail.html">发起交换</a>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function toast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('toast--show');
+      clearTimeout(t._h);
+      t._h = setTimeout(function () { t.classList.remove('toast--show'); }, 1800);
+    }
+    // 会员免服务费切换（当前用户为会员 → 默认开启，订单全链路 ¥0）
+    var sw = document.getElementById('member-switch');
+    function syncGuarantee() {
+      document.getElementById('g-normal').hidden = sw.checked;
+      document.getElementById('g-member').hidden = !sw.checked;
+    }
+    sw.addEventListener('change', syncGuarantee);
+    syncGuarantee();
+    // 我的玩具池单选
+    var poolItems = document.querySelectorAll('.pool-item');
+    poolItems.forEach(function (p) {
+      p.addEventListener('click', function () {
+        poolItems.forEach(function (x) { x.classList.remove('pool-item--active'); x.setAttribute('aria-checked', 'false'); });
+        p.classList.add('pool-item--active'); p.setAttribute('aria-checked', 'true');
+      });
+    });
+  </script>
+
+</div>
+</div>
+</body>
+</html>

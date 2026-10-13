@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>确认订单 · 租赁流程 · 童芽 ToySprout 小程序</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏（返回）+ 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <a class="nav-back" href="toy-detail.html" aria-label="返回上一页">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <span class="nav-title">确认订单</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 步骤指示器（确认套餐→配送→归还→支付，当前步高亮） -->
+    <div class="steps" role="list" aria-label="下单步骤">
+      <div class="step step--done" role="listitem"><div class="st-num"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><div class="st-label">确认套餐</div></div>
+      <div class="step step--active" role="listitem"><div class="st-num">2</div><div class="st-label">配送</div></div>
+      <div class="step" role="listitem"><div class="st-num">3</div><div class="st-label">归还</div></div>
+      <div class="step" role="listitem"><div class="st-num">4</div><div class="st-label">支付</div></div>
+    </div>
+
+    <!-- 1 租赁套餐（费用联动） -->
+    <section class="sec--tight">
+      <div class="sec-head"><div class="sec-title">1 · 租赁套餐</div></div>
+      <div class="plan-list" id="plan-list">
+        <label class="plan-card" data-plan="month" data-sub="89" data-total="189">
+          <span class="plan-check"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+          <span class="plan-main">
+            <span class="plan-name">月卡</span>
+            <span class="plan-desc">按月付 · 随时可换</span>
+            <span class="plan-off" id="month-off" hidden>首月 5 折 · ¥44.5</span>
+          </span>
+          <span class="plan-price"><span class="num" id="month-price">¥89</span> <span class="unit">/月</span></span>
+        </label>
+        <label class="plan-card" data-plan="quarter" data-sub="79" data-total="179">
+          <span class="plan-check"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+          <span class="plan-main">
+            <span class="plan-name">季卡 <span class="badge badge--tiny badge--neutral">¥237/季</span></span>
+            <span class="plan-desc">每季 1 次免费换新</span>
+          </span>
+          <span class="plan-price"><span class="num">¥79</span> <span class="unit">/月</span></span>
+        </label>
+        <label class="plan-card plan-card--active" data-plan="year" data-sub="69" data-total="169">
+          <span class="plan-check"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+          <span class="plan-main">
+            <span class="plan-name">年卡 <span class="badge badge--tiny badge--warning"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5l-3.5 2 1-4L6 10.5l4.2-.4L12 6l1.8 4.1 4.2.4-3.5 3 1 4z"/></svg>最划算</span></span>
+            <span class="plan-desc">无限次换新 · 优先上新</span>
+          </span>
+          <span class="plan-price"><span class="num">¥69</span> <span class="unit">/月</span></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 2 配送地址 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">2 · 配送地址</div><a class="link" href="#">修改<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></div>
+      <div class="addr-card">
+        <span class="pin-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 1114 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <div class="addr-main">
+          <div class="addr-name">林女士 <span class="badge badge--info">默认</span><span class="mono" style="font-size:12px;margin-left:auto;">138 0013 8000</span></div>
+          <div class="addr-detail">广东省 深圳市 南山区 科技园南区 · 3 栋 2 单元 502 室</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 归还日期 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">3 · 归还日期</div></div>
+      <div class="panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="menu-ic menu-ic--primary" style="width:36px;height:36px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/><path d="M12 13.5l2 2 3.5-3.5"/></svg></span>
+            <div>
+              <div style="font-size:15px;font-weight:700;">2025-06-20（周五）</div>
+              <div class="text-tertiary" style="font-size:12px;margin-top:2px;">默认 30 天租期 · 到期可续租</div>
+            </div>
+          </div>
+          <a class="link" href="#">改期<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="divider"></div>
+        <label class="checkline">
+          <input type="checkbox" checked aria-label="续租提醒">
+          <span class="check-text">到期前 3 天提醒我续租 / 归还（微信通知）</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 4 费用明细 -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">4 · 费用明细</div></div>
+      <div class="fee-list">
+        <div class="fee-row"><span>订阅费（<span id="fee-plan-name">年卡</span> ¥<span id="fee-plan-price">69</span>/月）</span><span class="val">¥<span id="fee-sub">69</span></span></div>
+        <div class="fee-row fee-row--discount" id="fee-discount-row" hidden><span>新人首月折扣（月卡 5 折）</span><span class="val">-¥<span id="fee-discount-amt">44.5</span></span></div>
+        <div class="fee-row"><span>押金（可退）</span><span class="val">¥100</span></div>
+        <div class="fee-row fee-row--total"><span>首月合计</span><span class="val">¥<span id="fee-total">169</span></span></div>
+        <div class="fee-note">押金在玩具完好归还后 3 个工作日内原路退回；损坏按《赔付规则》界定。首月合计 = 订阅费 + 押金。<span id="fee-note-discount" hidden>新人首月 5 折仅限首月、仅限月卡。</span></div>
+      </div>
+    </section>
+
+    <!-- 消毒排期预告（信任组件 6.3：纵向追溯条，当前到消毒质检琥珀呼吸） -->
+    <section class="sec">
+      <div class="sec-head"><div class="sec-title">5 · 消毒排期预告</div></div>
+      <div class="trace-card">
+        <div class="trace-head">
+          <div>
+            <div class="tt">批次 <span class="mono" style="font-size:13px;">BATCH-20250614-0731</span></div>
+            <div class="text-tertiary" style="font-size:12px;margin-top:2px;">下单后按此进度推进 · 预计 2 天送达</div>
+          </div>
+        </div>
+        <div class="vtl">
+          <div class="vtl-row vtl-row--done">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">订单确认</span><span class="vtl-time mono">06-14 09:30</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--done">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">配货</span><span class="vtl-time mono">06-14 14:20</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--doing">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">消毒质检</span><span class="vtl-time mono">06-15 08:20</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--todo">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">配送</span><span class="vtl-time mono">06-16 10:00</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--todo">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4"/><path d="M21 3v4h-4"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">使用中</span><span class="vtl-time mono">06-17</span></div></div>
+          </div>
+        </div>
+        <p class="trace-note">收货后扫码即可查看实时消毒质检报告与完整流转记录。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 底部全宽提交按钮 ===== -->
+  <div class="action-bar" style="display:block;">
+    <a class="btn btn--primary btn--lg btn--block" id="btn-submit" href="success.html">
+      提交订单 · 首月合计 ¥169
+    </a>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* 套餐选择 → 费用联动（支持 URL plan 参数回填 + 新人首月 5 折折扣会话） */
+(function () {
+  var cards = document.querySelectorAll('#plan-list .plan-card');
+  var elName = document.getElementById('fee-plan-name');
+  var elPrice = document.getElementById('fee-plan-price');
+  var elSub = document.getElementById('fee-sub');
+  var elTotal = document.getElementById('fee-total');
+  var btn = document.getElementById('btn-submit');
+  var elDiscRow = document.getElementById('fee-discount-row');
+  var elDiscAmt = document.getElementById('fee-discount-amt');
+  var elDiscNote = document.getElementById('fee-note-discount');
+  var monthOff = document.getElementById('month-off');
+  var monthPrice = document.getElementById('month-price');
+
+  var names = { month: '月卡', quarter: '季卡', year: '年卡' };
+
+  /* 解析 URL 参数：plan=month|quarter|year（P1-1 回填），discount=half（P1-2 新人首月 5 折） */
+  function qs(name) {
+    var m = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  var planParam = qs('plan');
+  var discountHalf = qs('discount') === 'half';
+
+  function sync(el) {
+    cards.forEach(function (c) { c.classList.toggle('plan-card--active', c === el); });
+    var plan = el.getAttribute('data-plan');
+    var sub = Number(el.getAttribute('data-sub'));      // 原价月费
+    var total = Number(el.getAttribute('data-total'));  // 无折扣首月合计（含押金）
+    var discounted = discountHalf && plan === 'month'; // 折扣仅首月、仅月卡
+    var subFinal = discounted ? Math.round(sub * 50) / 100 : sub; // 89 → 44.5
+    var totalFinal = discounted ? subFinal + 100 : total;         // 44.5 + 100 = 144.5
+
+    elName.textContent = names[plan];
+    elPrice.textContent = sub;   // 订阅费行展示原价，折扣单独成行，账目更清晰
+    elSub.textContent = sub;
+    elTotal.textContent = totalFinal;
+    btn.textContent = '提交订单 · 首月合计 ¥' + totalFinal;
+
+    /* 折扣行（仅月卡 + discount=half 会话；切换其他档位自动隐藏） */
+    if (elDiscRow) elDiscRow.hidden = !discounted;
+    if (elDiscAmt) elDiscAmt.textContent = discounted ? (sub - subFinal) : 0; // -¥44.5
+    if (elDiscNote) elDiscNote.hidden = !discounted;
+
+    /* 月卡卡片内折扣标识 + 划线价 */
+    if (monthOff) monthOff.hidden = !discounted;
+    if (monthPrice) {
+      monthPrice.innerHTML = discounted
+        ? '<s style="text-decoration:line-through;color:var(--color-text-tertiary);font-size:14px;font-weight:600;margin-right:4px;">¥89</s><em style="font-style:normal;color:var(--color-accent-strong);">¥44.5</em>'
+        : '¥89';
+    }
+  }
+  cards.forEach(function (c) { c.addEventListener('click', function () { sync(c); }); });
+
+  /* 初始选中：URL plan 参数优先；无参数保持默认（年卡） */
+  var initial = null;
+  if (planParam) {
+    cards.forEach(function (c) { if (c.getAttribute('data-plan') === planParam) initial = c; });
+  }
+  if (!initial) initial = document.querySelector('#plan-list .plan-card--active') || cards[cards.length - 1];
+  sync(initial);
+})();
+</script>
+</body>
+</html>

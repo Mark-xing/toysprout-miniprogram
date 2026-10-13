@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订阅已确认 · 童芽 ToySprout</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- ================= 顶部导航 ================= -->
+<header class="top-nav top-nav--solid">
+  <div class="container">
+    <div class="inner">
+      <a class="brand" href="index.html" aria-label="童芽 ToySprout 首页">
+        <span class="brand-mark">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9"/><path d="M12 12C10 9 7 8 4 8c0 3 1 5 8 4z"/><path d="M12 12c2-3 5-4 8-4 0 3-1 5-8 4z"/></svg>
+        </span>
+        <span>童芽 <em style="font-style:normal;color:var(--color-accent-strong)">ToySprout</em></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="toy-detail.html">玩具库</a>
+        <a href="index.html#pricing">订阅套餐</a>
+        <a href="index.html#sanitize">消毒安全</a>
+        <a href="dashboard.html">会员平台</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn--secondary btn--sm" href="dashboard.html">返回我的平台</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="max-width:780px;padding-block:var(--space-16);">
+
+    <!-- 成功头部 -->
+    <div style="text-align:center;margin-bottom:var(--space-10);">
+      <div class="success-check">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </div>
+      <h1 class="h1">订阅已确认</h1>
+      <p class="body-lg text-secondary" style="margin-top:var(--space-2);">
+        订单号 <span class="mono">ORD-20250614-0731</span>
+      </p>
+      <div style="margin-top:var(--space-4);">
+        <span class="badge badge--success badge--lg">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          消毒批次已生成 · <span class="mono">BATCH-20250614-0731</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 订单确认 -->
+    <section class="card card--hover" style="margin-bottom:var(--space-6);">
+      <h2 class="h3" style="margin-bottom:var(--space-4);">订单确认</h2>
+      <div class="confirm-row"><span>订阅套餐</span><span class="confirm-val" data-s-plan>年卡 · ¥69/月</span></div>
+      <div class="confirm-row"><span>本件玩具</span><span class="confirm-val">乐高积木经典款 · 4–7 岁</span></div>
+      <div class="confirm-row"><span>押金（可退）</span><span class="confirm-val">¥100</span></div>
+      <div class="confirm-row"><span>首月合计</span><span class="confirm-val" data-s-total>¥169</span></div>
+      <hr class="divider" style="margin:var(--space-4) 0;">
+      <div class="confirm-row"><span>配送地址</span><span class="confirm-val">林女士 · 138 **** 8000<br>广东省深圳市南山区科技园南区 9 栋 302 室</span></div>
+      <div class="confirm-row"><span>预计归还日</span><span class="confirm-val">06-20（周五）</span></div>
+      <p class="caption text-tertiary" style="margin-top:var(--space-3);">归还日前后 3 天可自由调整；到期前 3 天会提醒你续租 / 换新 / 归还。</p>
+    </section>
+
+    <!-- 消毒批次预告（信任组件） -->
+    <section class="card trace-card card--hover" style="margin-bottom:var(--space-8);">
+      <div class="trace-head">
+        <div>
+          <h3 class="h4">玩具已进入消毒质检流程</h3>
+          <p class="body-sm text-tertiary" style="margin-top:2px;">预计 2 天内送达 · 质检通过后将展示完整报告</p>
+        </div>
+        <span class="mono caption text-tertiary">批次 BATCH-20250614-0731</span>
+      </div>
+      <div class="trace">
+        <div class="node is-done">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+          <div class="label">订单确认</div>
+          <div class="time mono">06-14</div>
+        </div>
+        <div class="node is-done">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+          <div class="label">配货</div>
+          <div class="time mono">06-14</div>
+        </div>
+        <div class="node is-doing">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 11-12 0c0-4.5 6-11 6-11z"/></svg></div>
+          <div class="label">消毒质检</div>
+          <div class="time mono">进行中</div>
+        </div>
+        <div class="node">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></div>
+          <div class="label">配送</div>
+          <div class="time mono">—</div>
+        </div>
+        <div class="node">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4"/><path d="M21 3v4h-4"/></svg></div>
+          <div class="label">使用中</div>
+          <div class="time mono">—</div>
+        </div>
+        <div class="node">
+          <div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v16H4z"/><path d="M4 9h16"/><path d="M8 3v4M16 3v4"/></svg></div>
+          <div class="label">归还复检</div>
+          <div class="time mono">—</div>
+        </div>
+      </div>
+      <p class="caption text-tertiary" style="margin-top:var(--space-5);">消毒质检完成后，可在「我的订单」查看质检报告编号与完整流转记录。</p>
+    </section>
+
+    <!-- 行动 -->
+    <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;">
+      <a class="btn btn--primary btn--lg" href="dashboard.html">查看我的订单</a>
+      <a class="btn btn--secondary btn--lg" href="toy-detail.html">继续逛逛玩具库</a>
+    </div>
+    <p class="caption text-tertiary" style="text-align:center;margin-top:var(--space-5);">
+      首月不满意可全额退款 · 支持随时暂停订阅 · 押金归还复检通过后退回
+    </p>
+  </div>
+</main>
+<script>
+/* 与 rental.html 联动：读取 ?plan= 展示所选套餐与费用 */
+(function () {
+  var map = { month: { fee: 89, name: '月卡' }, quarter: { fee: 79, name: '季卡' }, year: { fee: 69, name: '年卡' } };
+  var params = new URLSearchParams(location.search);
+  var plan = params.get('plan') || 'year';
+  if (!map[plan]) plan = 'year';
+  var d = map[plan];
+  var planEl = document.querySelector('[data-s-plan]');
+  var totalEl = document.querySelector('[data-s-total]');
+  if (planEl) planEl.textContent = d.name + ' · ¥' + d.fee + '/月';
+  if (totalEl) totalEl.textContent = '¥' + (d.fee + 100);
+})();
+</script>
+</body>
+</html>

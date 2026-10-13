@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下单成功 · 童芽 ToySprout 小程序</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏（返回）+ 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <a class="nav-back" href="home.html" aria-label="返回首页">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <span class="nav-title">订单提交成功</span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 成功徽标 -->
+    <div class="success-hero">
+      <div class="success-check">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </div>
+      <h1 class="success-title">订单提交成功</h1>
+      <p class="success-sub">玩具消毒质检完成后将尽快为您配送</p>
+      <div class="success-order-no">订单号 <span class="mono">ORD-20250614-0731</span></div>
+    </div>
+
+    <!-- 订单摘要卡 -->
+    <section class="sec">
+      <div class="panel">
+        <div class="sec-head" style="margin-bottom:2px;"><div class="sec-title" style="font-size:15px;">订单摘要</div></div>
+        <div class="confirm-row"><span>租赁套餐</span><span class="val">年卡 · ¥69/月</span></div>
+        <div class="confirm-row"><span>玩具</span><span class="val">乐高积木经典款（4–7 岁）</span></div>
+        <div class="confirm-row"><span>归还日期</span><span class="val">2025-06-20（周五）</span></div>
+        <div class="confirm-row"><span>预计送达</span><span class="val" style="color:var(--color-info-text);">06-16（周一）</span></div>
+        <div class="confirm-row confirm-row--total"><span>首月合计（含押金）</span><span class="val">¥169</span></div>
+      </div>
+    </section>
+
+    <!-- 消毒批次预告卡（信任组件 6.3：订单确认✓→配货✓→消毒质检琥珀呼吸） -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="sec-title">消毒批次预告</div>
+        <span class="badge badge--warning"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>消毒质检中</span>
+      </div>
+      <div class="trace-card">
+        <div class="trace-head">
+          <div class="tt">批次 <span class="mono" style="font-size:13px;">BATCH-20250614-0731</span></div>
+        </div>
+        <div class="vtl">
+          <div class="vtl-row vtl-row--done">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">订单确认</span><span class="vtl-time mono">06-14 09:30</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--done">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">配货</span><span class="vtl-time mono">06-14 14:20</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--doing">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">消毒质检</span><span class="vtl-time mono">06-15 08:20</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--todo">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">配送</span><span class="vtl-time mono">06-16</span></div></div>
+          </div>
+          <div class="vtl-row vtl-row--todo">
+            <span class="vtl-dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 11-2.6-6.4"/><path d="M21 3v4h-4"/></svg></span>
+            <div class="vtl-main"><div class="vtl-line"><span class="vtl-label">使用中</span><span class="vtl-time mono">06-17</span></div></div>
+          </div>
+        </div>
+        <p class="trace-note">预计 2 天送达。收货后扫码即可查看实时消毒报告与完整流转记录。</p>
+      </div>
+    </section>
+
+    <!-- 双按钮 -->
+    <div class="sec" style="display:flex;gap:12px;">
+      <a class="btn btn--secondary" style="flex:1;" href="orders.html">查看我的订单</a>
+      <a class="btn btn--soft" style="flex:1;" href="library.html">继续逛逛</a>
+    </div>
+
+  </main>
+
+</div>
+</div>
+</body>
+</html>

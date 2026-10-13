@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发现 · 童芽 ToySprout 小程序</title>
+<!-- 设计系统：WarmTrust v2（phase2-design-tokens-v2.md §11 Quick Snippet）｜ C2C 一换一互邮交换 -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+<div class="page">
+
+  <!-- ===== 状态栏 + 导航栏 + 胶囊 ===== -->
+  <div class="nav-zone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons" aria-hidden="true">
+        <svg class="sb-signal" viewBox="0 0 18 12"><rect x="0.5" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="currentColor"/><rect x="9.5" y="2.2" width="3" height="9.8" rx="1" fill="currentColor"/><rect x="14" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+        <svg class="sb-wifi" viewBox="0 0 16 12"><path d="M1.5 4.5a10 10 0 0113 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 7a6.4 6.4 0 018 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 9.5a2.6 2.6 0 013 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.4" r="1" fill="currentColor"/></svg>
+        <svg class="sb-batt" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 000-4z" fill="currentColor"/></svg>
+      </span>
+    </div>
+    <nav class="nav-bar" aria-label="页面导航">
+      <span class="nav-title">童芽 <em class="brand-en">ToySprout</em></span>
+    </nav>
+    <button class="capsule" type="button" aria-label="更多">
+      <span class="cap-dots" aria-hidden="true">···</span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg class="cap-orb" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 页面主体 ===== -->
+  <main class="page-main">
+
+    <!-- 搜索栏 -->
+    <a class="search" href="discover.html" aria-label="搜索玩具 / 家长">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <span class="search-ph">搜索玩具 / 家长…</span>
+    </a>
+
+    <!-- 顶部信用提示条（人 + 平台） -->
+    <div class="trust-strip sec--tight" role="note">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>社区互相托付 · 看信用 · 看成色 · 平台担保 <span class="fee">¥1.9</span>/单（会员免）</span>
+    </div>
+
+    <!-- 分类 chips -->
+    <div class="chip-row sec--tight" role="tablist" aria-label="玩具分类">
+      <button class="chip chip--active" type="button" role="tab" aria-selected="true">全部</button>
+      <button class="chip" type="button" role="tab" aria-selected="false">积木</button>
+      <button class="chip" type="button" role="tab" aria-selected="false">益智</button>
+      <button class="chip" type="button" role="tab" aria-selected="false">木制</button>
+      <button class="chip" type="button" role="tab" aria-selected="false">早教</button>
+    </div>
+
+    <!-- 成色筛选（S 多选胶囊） -->
+    <div class="chip-row sec--tight" role="group" aria-label="成色筛选">
+      <button class="chip chip-s chip--active" type="button">全部成色</button>
+      <button class="chip chip-s" type="button">全新</button>
+      <button class="chip chip-s" type="button">9成新</button>
+      <button class="chip chip-s" type="button">8成新</button>
+      <button class="chip chip-s" type="button">有使用痕迹</button>
+    </div>
+
+    <!-- 玩具卡列表（成色标签卡角 + 适龄 + 主人信用 S 徽章 + 认证） -->
+    <section class="sec" aria-label="玩具列表">
+      <div class="toy-grid">
+
+        <!-- 卡 1：布鲁可积木恐龙套装 · 乐乐爸 优选985 -->
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="布鲁可积木恐龙套装">
+              <rect width="200" height="200" fill="#F3EADB"/>
+              <circle cx="160" cy="44" r="15" fill="#F2B33D" opacity=".85"/>
+              <path d="M52 130l22-42 18 8 14-26 20 10 16-12 12 18 20 14-6 30z" fill="#3E7C59"/>
+              <path d="M46 130h128" stroke="#2F5D46" stroke-width="6" stroke-linecap="round"/>
+              <rect x="66" y="130" width="12" height="24" rx="5" fill="#2F5D46"/>
+              <rect x="122" y="130" width="12" height="24" rx="5" fill="#2F5D46"/>
+              <circle cx="80" cy="88" r="2.6" fill="#E7F2E8"/>
+              <circle cx="96" cy="78" r="2.6" fill="#E7F2E8"/>
+            </svg>
+            <span class="cond-badge cond-badge--m cond-badge--9new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>9成新</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">布鲁可积木恐龙套装</h3>
+            <div class="toy-tags"><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>3–6岁</span></div>
+            <div class="toy-author">
+              <span class="avatar avatar--success toy-avatar">乐</span>
+              <span class="toy-author-name">乐乐爸</span>
+              <span class="credit-badge credit-badge--s credit-badge--elite"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M12 7l1.4 3 3.2.4-2.3 2.3.6 3.2L12 14.8l-2.9 1.5.6-3.2-2.3-2.3 3.2-.4z"/></svg>优选</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 卡 2：Hape 益智几何拼图 · 安安妈妈 信赖820 -->
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="Hape 益智几何拼图">
+              <rect width="200" height="200" fill="#E8EFF7"/>
+              <rect x="52" y="52" width="96" height="96" rx="10" fill="#FBF6EC" stroke="#43618E" stroke-width="4"/>
+              <circle cx="78" cy="78" r="16" fill="#F27355"/>
+              <rect x="102" y="70" width="30" height="30" rx="6" fill="#F2B33D"/>
+              <polygon points="70,114 90,128 78,146 60,128" fill="#3E7C59"/>
+              <path d="M112 112h20M122 102v20" stroke="#43618E" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+            <span class="cond-badge cond-badge--m cond-badge--new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h16V20H4z"/><path d="M12 9.5V20"/><path d="M12 9.5c-1.6-1.4-3.2-1.7-4.8-1.1.4 1.7 2 2.8 4.8 3.1 2.8-.3 4.4-1.4 4.8-3.1-1.6-.6-3.2-.3-4.8 1.1z"/></svg>全新</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">Hape 益智几何拼图</h3>
+            <div class="toy-tags"><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>2–5岁</span></div>
+            <div class="toy-author">
+              <span class="avatar avatar--info toy-avatar">安</span>
+              <span class="toy-author-name">安安妈妈</span>
+              <span class="credit-badge credit-badge--s credit-badge--trusted"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>信赖</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 卡 3：宜家姆拉轨道车 · 乐乐爸 优选985 -->
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="宜家姆拉轨道车">
+              <rect width="200" height="200" fill="#FCF0D8"/>
+              <ellipse cx="100" cy="114" rx="70" ry="38" fill="none" stroke="#D98E1F" stroke-width="7"/>
+              <ellipse cx="100" cy="114" rx="70" ry="38" fill="none" stroke="#B06A1F" stroke-width="1.6" stroke-dasharray="1 9"/>
+              <rect x="64" y="84" width="46" height="22" rx="7" fill="#F27355"/>
+              <rect x="80" y="70" width="20" height="16" rx="5" fill="#3E7C59"/>
+              <circle cx="72" cy="108" r="5" fill="#33291F"/>
+              <circle cx="100" cy="108" r="5" fill="#33291F"/>
+            </svg>
+            <span class="cond-badge cond-badge--m cond-badge--8new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.5 1.5"/></svg>8成新</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">宜家姆拉轨道车</h3>
+            <div class="toy-tags"><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>1–3岁</span></div>
+            <div class="toy-author">
+              <span class="avatar avatar--success toy-avatar">乐</span>
+              <span class="toy-author-name">乐乐爸</span>
+              <span class="credit-badge credit-badge--s credit-badge--elite"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M12 7l1.4 3 3.2.4-2.3 2.3.6 3.2L12 14.8l-2.9 1.5.6-3.2-2.3-2.3 3.2-.4z"/></svg>优选</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 卡 4：伟易达学习桌 · 糖糖爸爸 新芽580 -->
+        <a class="toy-card" href="toy-detail.html">
+          <div class="toy-media">
+            <svg viewBox="0 0 200 200" role="img" aria-label="伟易达儿童学习桌">
+              <rect width="200" height="200" fill="#FAEBD3"/>
+              <rect x="58" y="88" width="84" height="44" rx="10" fill="#D98E1F"/>
+              <rect x="52" y="80" width="96" height="14" rx="7" fill="#B06A1F"/>
+              <rect x="84" y="132" width="32" height="26" rx="4" fill="#B06A1F"/>
+              <circle cx="72" cy="97" r="5" fill="#F27355"/>
+              <rect x="84" y="95" width="18" height="10" rx="3" fill="#F2B33D"/>
+              <rect x="108" y="95" width="18" height="10" rx="3" fill="#3E7C59"/>
+              <circle cx="127" cy="100" r="5" fill="#43618E"/>
+            </svg>
+            <span class="cond-badge cond-badge--m cond-badge--8new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.5 1.5"/></svg>8成新</span>
+          </div>
+          <div class="toy-body">
+            <h3 class="toy-name">伟易达儿童学习桌</h3>
+            <div class="toy-tags"><span class="safety-tag safety-tag--age"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.5"/><path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z"/></svg>2–4岁</span></div>
+            <div class="toy-author">
+              <span class="avatar avatar--neutral toy-avatar">糖</span>
+              <span class="toy-author-name">糖糖爸爸</span>
+              <span class="credit-badge credit-badge--s credit-badge--sprout"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5V8"/><path d="M12 9.2c-2.2 1-3.4 2.8-3.5 5 1.4-.4 2.4-1.2 3.1-2.3.7 1.1 1.7 1.9 3.1 2.3-.1-2.2-1.3-4-3.5-5z"/></svg>新芽</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 底部 TabBar（发现 激活） ===== -->
+  <nav class="tab-bar" aria-label="底部导航">
+    <a class="tab-item tab-item--active" href="discover.html" aria-current="page">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="currentColor" stroke="none"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="#FFF" stroke="none"/></svg>
+      <span class="tab-label">发现</span>
+    </a>
+    <a class="tab-item" href="message.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.3 8.3 0 01-12 7.3L4 21l1.7-5A8.3 8.3 0 1121 12z"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.3 8.3 0 01-12 7.3L4 21l1.7-5A8.3 8.3 0 1121 12z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">消息</span>
+      <span class="tab-dot" aria-label="3 条未读" aria-hidden="true"></span>
+    </a>
+    <a class="tab-item tab-item--publish" href="publish.html">
+      <span class="tab-pub"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span class="tab-label">发布</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <svg class="ic tab-ic tab-ic--off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg>
+      <svg class="ic tab-ic tab-ic--on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor" stroke="none"/><path d="M5 20.5c1.2-3.6 3.9-5.5 7-5.5s5.8 1.9 7 5.5z" fill="currentColor" stroke="none"/></svg>
+      <span class="tab-label">我的</span>
+    </a>
+  </nav>
+
+</div>
+</div>
+</body>
+</html>
