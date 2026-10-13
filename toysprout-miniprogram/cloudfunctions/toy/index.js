@@ -53,7 +53,11 @@ function publicToy(t, ownerUser, viewerOpenid) {
   };
   if (ownerUser) {
     base.owner = {
-      id: ownerUser._openid,
+      // ⚠️ owner.id 是数据库 users 文档的主键 `_id`，**不是** openid。
+      // 前端「点击作者卡进入他人主页」正是拿这个 id 作为路由参数（user.getPublicProfile 入参），
+      // openid 属敏感标识、不下发前端，因此这里不能下发 _openid。
+      // 判断「是不是自己的玩具」请用 base.isMine（服务端按查看者 openid 算），不要拿 owner.id 比 ownerId。
+      id: ownerUser._id,
       name: ownerUser.name,
       avatarUrl: ownerUser.avatarUrl || null,
       isVerified: !!ownerUser.isVerified,
@@ -143,6 +147,24 @@ async function handleList(data, openid) {
   if (data.age) where.ageRange = db.RegExp({ regexp: data.age, options: 'i' });
   if (data.keyword) where.title = db.RegExp({ regexp: data.keyword, options: 'i' });
 
+  // 拉黑过滤：被当前用户拉黑的人发布的玩具不出现在发现页。
+  //
+  // 关键：过滤必须作用在**查询条件**上（where._openid = _.nin(...)），而不是取回一页后
+  // 再在应用层 filter —— 后者会让 count() 的 total 与实际可见条目对不上，分页自相矛盾。
+  // 放在 DB 层后 count() 与 get() 用同一份条件，total 与 items 天然自洽。
+  //
+  // 容错：`blocks` 集合漏建时 where().get() 抛 -502005，而本函数是发现页主链路，
+  // 不兜住整个发现页直接 500（与 attachWanted 踩过的坑同源）。降级为「不过滤」而非报错。
+  if (openid) {
+    try {
+      const blocksRes = await db.collection('blocks').where({ _openid: openid }).get();
+      const blockedOpenids = blocksRes.data.map((b) => b.blockedOpenid).filter(Boolean);
+      if (blockedOpenids.length) where._openid = _.nin(blockedOpenids);
+    } catch (e) {
+      console.error('[toy] 读取 blocks 失败，本次发现页不做拉黑过滤:', (e && e.message) || e);
+    }
+  }
+
   const page = Math.max(1, parseInt(data.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(data.limit, 10) || 20));
 
@@ -175,6 +197,66 @@ async function handleMine(data, openid) {
   const res = await db.collection('toys').where(where).orderBy('createdAt', 'desc').get();
   const items = await enrichOwners(res.data, openid);
   return { items: await withImageUrls(items) };
+}
+
+// 「我想要的」：把 wants（关系表）里的 toyId 还原成完整玩具卡片。
+//
+// 分页在 wants 记录上进行（按 createdAt 倒序），再按本页 toyId 批量取 toys，
+// 这样避免了"先把该用户所有玩具查出来再排序"的 N+1 / 全量扫描。
+// 返回体与 handleList 完全一致（复用 enrichOwners→publicToy / withImageUrls / attachWanted），
+// 保证卡片字段（isMine / wanted / wantCount / images…）与发现页、详情页同源。
+//
+// 过滤：已下架（status=removed）与已删除（文档查不到）的玩具一律剔除，绝不返回空壳对象，
+// 否则卡片会渲染成没有标题、作者为空的"幽灵卡片"。
+// 注意 total 统计的是 wants 记录数——被过滤掉的玩具仍计入 total，因此翻到末页可能出现
+// "这一页为空" 的情况（与 handleList 的 creditVerified 降级同理）。MVP 阶段可接受：
+// 用户看到的条目永远是真的，只是页尾可能提前到底。
+async function handleListWants(data, openid) {
+  const page = Math.max(1, parseInt(data.page, 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(data.limit, 10) || 20));
+
+  // 兜底：`wants` 集合漏建时 where().get() 抛 -502005，不能让「我想要的」整页 500。
+  // 降级为空列表（而不是报错），与 attachWanted 的读侧容错同一策略。
+  let wantRes;
+  try {
+    wantRes = await db.collection('wants')
+      .where({ _openid: openid })
+      .orderBy('createdAt', 'desc')
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .get();
+  } catch (e) {
+    console.error('[toy] 读取 wants 失败，listWants 降级为空列表:', (e && e.message) || e);
+    return { items: [], total: 0, page, limit, hasMore: false };
+  }
+
+  let total = 0;
+  try {
+    const countRes = await db.collection('wants').where({ _openid: openid }).count();
+    total = countRes.total;
+  } catch (e) {
+    // count 失败不影响本页数据，退化为"至少本页这么多"
+    total = (wantRes.data || []).length;
+  }
+
+  // 去重（同一 toyId 理论上只会有一条 want 记录，容错处理重复数据）并保序
+  const ids = [...new Set((wantRes.data || []).map((w) => w.toyId).filter(Boolean))];
+  if (!ids.length) {
+    return { items: [], total, page, limit, hasMore: page * limit < total };
+  }
+
+  const toysRes = await db.collection('toys').where({ _id: _.in(ids) }).get();
+  const toyMap = {};
+  toysRes.data.forEach((t) => { toyMap[t._id] = t; });
+  // 按"想要的先后顺序"排列；toyMap 里查不到 = 文档已删除，status=removed = 已下架，两者都剔除
+  const ordered = ids
+    .map((id) => toyMap[id])
+    .filter((t) => t && t.status !== 'removed');
+
+  let items = await enrichOwners(ordered, openid);
+  items = await withImageUrls(items);
+  items = await attachWanted(items, openid);
+  return { items, total, page, limit, hasMore: page * limit < total };
 }
 
 async function handleDetail(data, openid) {
@@ -274,6 +356,7 @@ exports.main = async (event, context) => {
     switch (event.action) {
       case 'list': return ok(await handleList(event, openid));
       case 'mine': return ok(await handleMine(event, openid));
+      case 'listWants': return ok(await handleListWants(event, openid));
       case 'detail': return ok((await handleDetail(event, openid)).toy);
       case 'create': return ok((await handleCreate(event, openid)).toy, '发布成功，玩具已进入交换池');
       case 'update': return ok((await handleUpdate(event, openid)).toy, '玩具已更新');

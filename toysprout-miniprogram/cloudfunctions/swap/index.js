@@ -22,10 +22,40 @@ const { deriveCreditLevel, ratingToCreditDelta, clampScore } = require('./credit
 const { assertProfileCompleted } = require('./publicUser');
 const points = require('./points');
 const storage = require('./storage');
+const notify = require('./notify');
 const payService = require('./services/payService');
 
 const SERVICE_FEE_FEN = 190; // ¥1.9（dev-checklist B-01 已拍板，双方发起快递时收取）
 const DISPUTE_TYPES = ['item_mismatch', 'not_received', 'damaged', 'other'];
+
+// 站内消息 + 订阅消息的统一出口。
+//
+// ⚠️ 关键约定：**通知失败绝不能影响主流程**。本函数包住的 notify.notifyAndPush
+// 已按「绝不抛异常」实现（内部 try/catch，失败只 console.error），
+// 因此这里可以直接 await 在各状态流转的成功路径上。
+//
+// subscribeTemplateKey 对应 _shared/subscribe-templates.js 的 key：
+// 该模板 ID 目前为空（待运营方在 MP 后台申请后填入），为空时会自动「跳过订阅推送、
+// 只发站内消息」，不报错、不阻断。
+function swapDetailPage(swapId) {
+  return '/packageSwap/order-detail/order-detail?id=' + swapId;
+}
+async function notifySwapUser(targetOpenid, opts) {
+  opts = opts || {};
+  const swapId = opts.swapId || '';
+  await notify.notifyAndPush(cloud, db, {
+    openid: targetOpenid,
+    type: opts.type,
+    title: opts.title,
+    content: opts.content,
+    targetType: notify.TARGET_SWAP,
+    targetId: swapId,
+    subscribeTemplateKey: opts.templateKey || null,
+    subscribePage: swapId ? swapDetailPage(swapId) : undefined,
+    // 订阅模板尚未申请，模板数据字段待定；申请后按模板字段补 subscribeData。
+    subscribeData: {},
+  });
+}
 
 function isMemberActive(user) {
   return !!(user && user.isMember && user.memberExpiresAt && new Date(user.memberExpiresAt) > new Date());
@@ -140,6 +170,16 @@ async function handleCreate(data, openid) {
   }
 
   const fresh = await getSwapOrThrow(addResult._id);
+
+  // 通知「被交换方」：有人想用某件玩具换你的玩具。
+  await notifySwapUser(targetToy._openid, {
+    type: notify.TYPES.SWAP_REQUEST,
+    title: '收到新的交换意向',
+    content: `「${initiator.name}」想用「${myToy.title}」交换你的「${targetToy.title}」`,
+    swapId: addResult._id,
+    templateKey: 'SWAP_REQUEST',
+  });
+
   return { swap: publicSwap(fresh) };
 }
 
@@ -212,6 +252,16 @@ async function handleRedeemWithPoints(data, openid) {
   await db.collection('toys').doc(toyId).update({ data: { status: 'swapping', updatedAt: now } }).catch(() => {});
 
   const fresh = await getSwapOrThrow(addResult._id);
+
+  // 通知「玩具发布方」：你的玩具被积分兑换了（兑换成立即进入 accepted，无需对方再确认）。
+  await notifySwapUser(publisherOpenid, {
+    type: notify.TYPES.SWAP_REQUEST,
+    title: '你的玩具被兑换了',
+    content: `有人用 ${pointsRequired} 积分兑换了你的「${toy.title}」`,
+    swapId: addResult._id,
+    templateKey: 'SWAP_REQUEST',
+  });
+
   const message = sameCity
     ? '兑换成功，同城可直接约定自提，无需邮寄'
     : (shippingPayer === 'publisher' ? '兑换成功，对方已选择包邮，等待对方寄出' : '兑换成功，运费由你承担，请与对方协商寄件后等待对方寄出');
@@ -230,6 +280,16 @@ async function handleConfirmPickup(data, openid) {
   if (upd.stats.updated === 0) throw new BizError(409, '该订单状态已发生变化，请刷新重试');
   await db.collection('toys').doc(s.targetToyId).update({ data: { status: 'exchanged', updatedAt: db.serverDate() } }).catch(() => {});
   const fresh = await getSwapOrThrow(s.id);
+
+  // 通知「玩具发布方」：兑换方已确认同城自提，交易完成。
+  await notifySwapUser(s.targetOpenid, {
+    type: notify.TYPES.SWAP_RECEIVED,
+    title: '对方已确认自提',
+    content: '交易完成，请在 7 天内评价对方',
+    swapId: s.id,
+    templateKey: 'SWAP_RECEIVED',
+  });
+
   return { swap: publicSwap(fresh), message: '已确认自提，交易完成，请在 7 天内评价对方' };
 }
 
@@ -290,6 +350,20 @@ async function handleRespond(data, openid) {
     await db.collection('toys').doc(s.targetToyId).update({ data: { status: 'available', updatedAt: db.serverDate() } }).catch(() => {});
   }
   const fresh = await getSwapOrThrow(s.id);
+
+  // 通知「发起方」：对方同意了 / 拒绝了这次交换意向。
+  const responder = await getUser(openid);
+  const responderName = (responder && responder.name) || '对方';
+  await notifySwapUser(s.initiatorOpenid, {
+    type: accept ? notify.TYPES.SWAP_ACCEPTED : notify.TYPES.SWAP_REJECTED,
+    title: accept ? '对方已同意交换' : '对方拒绝了交换',
+    content: accept
+      ? `「${responderName}」已同意与你交换，请协商寄件并填写运单`
+      : '很遗憾，对方拒绝了这次交换意向，玩具已退回交换池',
+    swapId: s.id,
+    templateKey: accept ? 'SWAP_ACCEPTED' : 'SWAP_REJECTED',
+  });
+
   return { swap: publicSwap(fresh), message: accept ? '已同意交换，请与对方协商寄件并填写运单' : '已拒绝该交换意向' };
 }
 
@@ -330,6 +404,16 @@ async function handleShip(data, openid) {
       .update({ data: { targetTrackingNo: trackingNo, status: 'shipping', updatedAt: db.serverDate() } });
     if (upd.stats.updated === 0) throw new BizError(409, '该订单状态已发生变化，请刷新重试');
     const fresh = await getSwapOrThrow(s.id);
+
+    // 通知「兑换方」：发布方已寄出。
+    await notifySwapUser(s.initiatorOpenid, {
+      type: notify.TYPES.SWAP_SHIPPED,
+      title: '对方已寄出',
+      content: `对方已填写运单号：${trackingNo}，请留意收货`,
+      swapId: s.id,
+      templateKey: 'SWAP_SHIPPED',
+    });
+
     return { swap: publicSwap(fresh), message: '运单号已登记，等待兑换方确认收货' };
   }
 
@@ -349,6 +433,17 @@ async function handleShip(data, openid) {
     if (upd.stats.updated > 0) message += '，双方均已寄出，等待收货';
   }
   const finalDoc = await getSwapOrThrow(s.id);
+
+  // 通知「对方」：你已寄出并登记了运单。
+  const shipOther = isInitiator ? s.targetOpenid : s.initiatorOpenid;
+  await notifySwapUser(shipOther, {
+    type: notify.TYPES.SWAP_SHIPPED,
+    title: '对方已寄出',
+    content: `对方已填写运单号：${trackingNo}，请留意收货`,
+    swapId: s.id,
+    templateKey: 'SWAP_SHIPPED',
+  });
+
   return { swap: publicSwap(finalDoc), message };
 }
 
@@ -366,6 +461,16 @@ async function handleConfirmReceipt(data, openid) {
     if (upd.stats.updated === 0) throw new BizError(409, '该订单状态已发生变化，请刷新重试');
     await db.collection('toys').doc(s.targetToyId).update({ data: { status: 'exchanged', updatedAt: db.serverDate() } }).catch(() => {});
     const fresh = await getSwapOrThrow(s.id);
+
+    // 通知「玩具发布方」：兑换方已确认收货，交易完成。
+    await notifySwapUser(s.targetOpenid, {
+      type: notify.TYPES.SWAP_RECEIVED,
+      title: '兑换方已确认收货',
+      content: '交易完成，请在 7 天内评价对方',
+      swapId: s.id,
+      templateKey: 'SWAP_RECEIVED',
+    });
+
     return { swap: publicSwap(fresh), message: '已确认收货，交易完成，请在 7 天内评价对方' };
   }
 
@@ -385,6 +490,18 @@ async function handleConfirmReceipt(data, openid) {
     }
   }
   const finalDoc = await getSwapOrThrow(s.id);
+
+  // 通知「对方」：你已确认收货（双方都收货时提示可互评）。
+  const receiptOther = isInitiator ? s.targetOpenid : s.initiatorOpenid;
+  const bothReceived = !!(finalDoc.initiatorReceivedAt && finalDoc.targetReceivedAt);
+  await notifySwapUser(receiptOther, {
+    type: notify.TYPES.SWAP_RECEIVED,
+    title: bothReceived ? '双方已确认收货' : '对方已确认收货',
+    content: bothReceived ? '交易完成，请在 7 天内互相评价' : '对方已确认收货，等待你确认',
+    swapId: s.id,
+    templateKey: 'SWAP_RECEIVED',
+  });
+
   return { swap: publicSwap(finalDoc), message };
 }
 
@@ -408,6 +525,15 @@ async function handleCancel(data, openid) {
     }).catch((e) => console.error('[swap] reverse publisher points failed:', e));
     await db.collection('toys').doc(s.targetToyId).update({ data: { status: 'available', updatedAt: db.serverDate() } }).catch(() => {});
     const fresh = await getSwapOrThrow(s.id);
+
+    // 通知「对方」：该兑换订单已取消。
+    await notifySwapUser(s.initiatorOpenid === openid ? s.targetOpenid : s.initiatorOpenid, {
+      type: notify.TYPES.SYSTEM,
+      title: '兑换已取消',
+      content: '对方取消了该兑换订单，积分已退还，玩具已退回交换池',
+      swapId: s.id,
+    });
+
     return { swap: publicSwap(fresh), message: '兑换已取消，积分已退还，玩具已退回交换池' };
   }
 
@@ -418,6 +544,15 @@ async function handleCancel(data, openid) {
   await db.collection('toys').doc(s.myToyId).update({ data: { status: 'available', updatedAt: db.serverDate() } }).catch(() => {});
   await db.collection('toys').doc(s.targetToyId).update({ data: { status: 'available', updatedAt: db.serverDate() } }).catch(() => {});
   const fresh = await getSwapOrThrow(s.id);
+
+  // 通知「对方」：该交换订单已取消。
+  await notifySwapUser(s.initiatorOpenid === openid ? s.targetOpenid : s.initiatorOpenid, {
+    type: notify.TYPES.SYSTEM,
+    title: '交换已取消',
+    content: '对方取消了该交换订单，双方玩具已退回交换池',
+    swapId: s.id,
+  });
+
   return { swap: publicSwap(fresh), message: '交换已取消，双方玩具已退回交换池' };
 }
 
@@ -425,6 +560,8 @@ async function handleCancel(data, openid) {
 async function handleDispute(data, openid) {
   const s = await getSwapOrThrow(data.id);
   if (s.initiatorOpenid !== openid && s.targetOpenid !== openid) throw new BizError(403, '无权操作该订单');
+  // 同 review：纠纷单要落 reporterOpenid + 举证材料并提交平台复核，属对外可见身份的写操作。
+  assertProfileCompleted(await getUserOrThrow(openid));
   if (['reviewed', 'cancelled'].includes(s.status)) throw new BizError(400, '该订单已完结，不可发起纠纷');
   const type = String(data.type || '').trim();
   const description = String(data.description || '').trim();
@@ -439,6 +576,15 @@ async function handleDispute(data, openid) {
   await db.collection('swaps').doc(s.id).update({ data: { status: 'disputed', updatedAt: now } });
   const fresh = await db.collection('disputes').doc(addResult._id).get();
   const d = fresh.data;
+
+  // 通知「对方」：该订单被发起纠纷，已进入平台复核。
+  await notifySwapUser(s.initiatorOpenid === openid ? s.targetOpenid : s.initiatorOpenid, {
+    type: notify.TYPES.SYSTEM,
+    title: '订单进入纠纷复核',
+    content: '对方对订单发起了纠纷，平台将在 3 个工作日内复核',
+    swapId: s.id,
+  });
+
   return {
     dispute: { id: d._id, swapId: d.swapId, reporterId: d.reporterOpenid, type: d.type, description: d.description, evidenceImages: d.evidenceImages, status: d.status, createdAt: d.createdAt },
     message: '纠纷已提交，平台将在 3 个工作日内复核（举证期 7 天）',
@@ -449,6 +595,10 @@ async function handleDispute(data, openid) {
 async function handleReview(data, openid) {
   const s = await getSwapOrThrow(data.id);
   if (s.initiatorOpenid !== openid && s.targetOpenid !== openid) throw new BizError(403, '无权评价该订单');
+  // 与 create / redeemWithPoints 同一道昵称闸门：互评会落一条带 reviewerOpenid 的记录
+  // 并改写对方信用分，属于「需要对外可见身份」的写操作，未设昵称不得提交。
+  // 前端拦截只是体验优化，服务端这里才是真正的防线（绕开页面直接调云函数同样会被拒）。
+  assertProfileCompleted(await getUserOrThrow(openid));
 
   const existing = await db.collection('reviews').where({ swapId: s.id, reviewerOpenid: openid }).get();
   if (existing.data.length) throw new BizError(409, '你已评价过该订单');
@@ -490,6 +640,16 @@ async function handleReview(data, openid) {
 
   const reviewDoc = await db.collection('reviews').doc(reviewId).get();
   const r = reviewDoc.data;
+
+  // 通知「被评价方」：你收到了一条新评价。
+  await notifySwapUser(revieweeOpenid, {
+    type: notify.TYPES.SWAP_REVIEWED,
+    title: '你收到了新评价',
+    content: `对方给了你 ${rating} 星评价` + (comment ? '：' + comment : ''),
+    swapId: s.id,
+    templateKey: 'SWAP_REVIEWED',
+  });
+
   return {
     review: { id: r._id, swapId: r.swapId, reviewerId: r.reviewerOpenid, revieweeId: r.revieweeOpenid, rating: r.rating, tags: r.tags, comment: r.comment, createdAt: r.createdAt },
     creditDelta,

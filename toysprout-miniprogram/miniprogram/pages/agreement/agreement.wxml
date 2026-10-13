@@ -1,0 +1,42 @@
+<!-- pages/agreement/agreement.wxml -->
+<!--
+  协议文本页：?type=user（用户协议）/ ?type=privacy（隐私政策）。
+  正文由 JS 侧 sections 数据驱动渲染（分段 + 小标题），避免把长文本硬写进模板。
+  注意：可选片段一律不在这里用 `{{a}} · {{b}}` 直接拼接（WXML 会把 null 渲染成
+  字符串「null」），本页无此类拼接，list 段落通过 wx:if 控制显隐。
+-->
+<view class="page agreement-page">
+  <view class="card">
+    <text class="h3 agreement-title">{{title}}</text>
+    <text class="caption text-tertiary agreement-updated">更新日期：{{updatedAt}}</text>
+  </view>
+
+  <view class="card" wx:for="{{sections}}" wx:key="heading" wx:for-item="section">
+    <text class="h4 agreement-heading">{{section.heading}}</text>
+
+    <text
+      wx:for="{{section.paragraphs}}"
+      wx:key="*this"
+      wx:for-item="para"
+      class="body-sm text-secondary agreement-para"
+    >{{para}}</text>
+
+    <view wx:if="{{section.list}}" class="agreement-list">
+      <view
+        wx:for="{{section.list}}"
+        wx:key="*this"
+        wx:for-item="li"
+        class="agreement-item"
+      >
+        <text class="agreement-dot">·</text>
+        <text class="body-sm text-secondary agreement-item__text">{{li}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card card--muted">
+    <text class="caption text-secondary">
+      本页文本用于向您说明服务规则与个人信息处理方式。其中以【待补充】标注的内容将在正式上线前补全。
+    </text>
+  </view>
+</view>

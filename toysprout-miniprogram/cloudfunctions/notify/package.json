@@ -1,0 +1,9 @@
+{
+  "name": "notify",
+  "version": "1.0.0",
+  "description": "童芽 ToySprout · 站内消息中心云函数（消息列表/未读数/已读）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

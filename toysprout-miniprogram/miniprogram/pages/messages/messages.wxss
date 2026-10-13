@@ -1,0 +1,49 @@
+/* pages/messages/messages.wxss */
+/* 复用 app.wxss 的 .page / .card / .btn / .empty-state / .loading-state / .caption 等全局 class，
+   这里只补消息列表特有的样式。色值一律走 app.wxss 的 CSS 变量，禁止自创。 */
+
+.messages-page { padding: 24rpx; }
+
+/* 顶部未读统计条 */
+.msg-bar { padding: 4rpx 4rpx 16rpx; }
+.msg-bar__btn { flex: none; }
+/* app.wxss 只给了 .btn--primary[disabled]，secondary 的禁用态在此补齐 */
+.msg-bar__btn[disabled] {
+  color: var(--color-disabled);
+  background: var(--color-disabled-bg);
+  border-color: var(--color-border);
+}
+
+/* 消息卡片 */
+.msg-item { display: block; }
+.msg-item--unread { border-left: 6rpx solid var(--color-accent-strong); }
+.msg-item__head { gap: 12rpx; }
+.msg-item__title {
+  font-size: 30rpx; font-weight: 600; color: var(--color-text-primary);
+  flex: 1; min-width: 0;
+}
+.msg-item--unread .msg-item__title { font-weight: 700; }
+.msg-item__content {
+  margin-top: 8rpx;
+  color: var(--color-text-secondary);
+  word-break: break-all;
+}
+.msg-item__time { display: block; margin-top: 12rpx; }
+
+/* 未读圆点 */
+.msg-dot {
+  width: 16rpx; height: 16rpx; border-radius: 50%;
+  background: var(--color-accent-strong); flex: none;
+}
+
+/* 列表底部 */
+.msg-foot { padding: 24rpx 0 48rpx; text-align: center; }
+.msg-foot__text { font-size: 24rpx; color: var(--color-text-tertiary); }
+
+/* 空态 / 错误态文案与按钮（复用 app.wxss 的 .empty-state 居中容器） */
+.msg-empty__title { display: block; font-size: 30rpx; font-weight: 600; color: var(--color-text-primary); }
+.msg-empty__desc {
+  display: block; margin: 12rpx 0 0;
+  font-size: 25rpx; line-height: 1.6; color: var(--color-text-tertiary);
+}
+.msg-empty__btn { width: 380rpx; margin: 36rpx auto 0; }

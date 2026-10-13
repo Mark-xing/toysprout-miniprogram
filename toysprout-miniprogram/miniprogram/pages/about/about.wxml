@@ -1,0 +1,37 @@
+<!-- pages/about/about.wxml -->
+<view class="page about-page">
+  <view class="card about-hero">
+    <text class="h1 about-name">{{appName}}</text>
+    <text class="body-sm text-secondary about-intro">{{intro}}</text>
+    <view class="flex-between about-version-row">
+      <text class="caption text-tertiary">版本号</text>
+      <text class="caption text-secondary">{{version}}</text>
+    </view>
+  </view>
+
+  <!-- 协议入口：分别跳转 ?type=user / ?type=privacy -->
+  <view class="menu-list card">
+    <view class="menu-item" data-type="user" bindtap="onGoAgreement">
+      <text>用户协议</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" data-type="privacy" bindtap="onGoAgreement">
+      <text>隐私政策</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="h4" style="display:block;margin-bottom:12rpx;">联系我们</text>
+    <view class="flex-between">
+      <text class="body-sm text-secondary">联系邮箱</text>
+      <text class="body-sm">{{email}}</text>
+    </view>
+  </view>
+
+  <view class="card card--muted">
+    <text class="caption text-secondary">
+      本页中标注为【待补充】的信息（如运营主体、联系邮箱等）将在正式上线前由运营方补全。
+    </text>
+  </view>
+</view>

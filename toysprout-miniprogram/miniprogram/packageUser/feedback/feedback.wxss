@@ -1,0 +1,64 @@
+/* packageUser/feedback/feedback.wxss */
+/* 仅补充本页专有结构；.card / .field / .opt-chip / .textarea / .input / .btn 等一律复用 app.wxss */
+
+.feedback-ph {
+  color: var(--color-text-tertiary);
+}
+
+.feedback-count {
+  display: block;
+  margin-top: 8rpx;
+  text-align: right;
+}
+
+/* 图片选择区：3 列等宽方形缩略图 */
+.feedback-imgs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.feedback-img {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  background: var(--color-surface-sunken);
+}
+
+.feedback-img__pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 删除按钮：右上角圆形热区 */
+.feedback-img__del {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 44rpx;
+  text-align: center;
+  border-radius: 0 0 0 16rpx;
+  background: rgba(51, 41, 31, 0.6);
+  color: #fff;
+  font-size: 32rpx;
+}
+
+/* 添加占位：虚线描边，与 app.wxss 的头像选择器风格一致 */
+.feedback-img--add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 2rpx dashed var(--color-border-strong);
+}
+
+.feedback-img__plus {
+  font-size: 64rpx;
+  line-height: 1;
+  color: var(--color-text-tertiary);
+}

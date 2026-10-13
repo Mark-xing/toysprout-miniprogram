@@ -18,6 +18,7 @@ Page({
     reviews: [],
     reviewTotal: 0,
     pointsBalance: 0,
+    unreadCount: 0, // 站内消息未读数，用于「消息中心」入口红点
   },
 
   onShow() {
@@ -25,6 +26,7 @@ Page({
     this.loadMyToys();
     this.loadReviews();
     this.loadPointsBalance();
+    this.loadUnreadCount();
   },
 
   async loadProfile() {
@@ -70,11 +72,26 @@ Page({
     if (res.code === 0) this.setData({ pointsBalance: res.data.balance || 0 });
   },
 
+  // 未读数仅用于入口红点：只取 1 条即可拿到 unreadCount，不必拉全量列表。
+  // 失败不打断整页（红点缺失不影响主功能），因此不 toast，只在控制台记录。
+  async loadUnreadCount() {
+    const res = await api.notify('list', { page: 1, limit: 1 });
+    if (res.code === 0) {
+      this.setData({ unreadCount: res.data.unreadCount || 0 });
+    } else {
+      console.warn('[mine] 未读数加载失败:', res.message);
+    }
+  },
+
   onGoVerify() { wx.navigateTo({ url: '/packageUser/verify/verify' }); },
   onGoOrders() { wx.navigateTo({ url: '/packageSwap/orders/orders' }); },
   onGoAddresses() { wx.navigateTo({ url: '/packageUser/addresses/addresses' }); },
   onGoMembership() { wx.navigateTo({ url: '/packageUser/membership/membership' }); },
   onGoPointsWallet() { wx.navigateTo({ url: '/packageUser/points-wallet/points-wallet' }); },
+  onGoWants() { wx.navigateTo({ url: '/packageUser/wants/wants' }); },
+  onGoMessages() { wx.navigateTo({ url: '/pages/messages/messages' }); },
+  onGoFeedback() { wx.navigateTo({ url: '/packageUser/feedback/feedback' }); },
+  onGoAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
 
   // 方案 A 之后没有"登录/退出登录"概念：身份由 openid 静默持有，
   // 用户能改的只是对外展示资料，所以入口从「退出」改为「编辑资料」。

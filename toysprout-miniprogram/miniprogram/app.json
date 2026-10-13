@@ -4,7 +4,10 @@
     "pages/discover/discover",
     "pages/publish/publish",
     "pages/mine/mine",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/agreement/agreement",
+    "pages/about/about",
+    "pages/messages/messages"
   ],
   "subPackages": [
     {
@@ -17,7 +20,7 @@
     },
     {
       "root": "packageUser",
-      "pages": ["addresses/addresses", "membership/membership", "verify/verify", "points-wallet/points-wallet"]
+      "pages": ["addresses/addresses", "membership/membership", "verify/verify", "points-wallet/points-wallet", "wants/wants", "user-profile/user-profile", "feedback/feedback"]
     }
   ],
   "tabBar": {

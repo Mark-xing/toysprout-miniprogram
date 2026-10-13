@@ -49,8 +49,19 @@
       <text>我的积分 · {{pointsBalance}}</text>
       <text class="menu-item__arrow">›</text>
     </view>
+    <view class="menu-item" bindtap="onGoWants">
+      <text>我想要的</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
     <view class="menu-item" bindtap="onGoOrders">
       <text>交换订单</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGoMessages">
+      <view class="flex-row gap-2">
+        <text>消息中心</text>
+        <text wx:if="{{unreadCount > 0}}" class="msg-badge">{{unreadCount}}</text>
+      </view>
       <text class="menu-item__arrow">›</text>
     </view>
     <view class="menu-item" bindtap="onGoAddresses">
@@ -59,6 +70,20 @@
     </view>
     <view class="menu-item" bindtap="onGoMembership">
       <text>会员中心</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGoFeedback">
+      <text>意见反馈</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <!-- 联系客服：用微信原生客服会话（open-type="contact"），不需要自己实现聊天界面。
+         注意：需在小程序后台「客服」里配置客服人员，否则点开是空会话——这属于运营配置，非代码问题。 -->
+    <button class="menu-item menu-item--plain" open-type="contact">
+      <text>联系客服</text>
+      <text class="menu-item__arrow">›</text>
+    </button>
+    <view class="menu-item" bindtap="onGoAbout">
+      <text>关于我们</text>
       <text class="menu-item__arrow">›</text>
     </view>
   </view>

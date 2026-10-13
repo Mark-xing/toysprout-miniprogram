@@ -9,9 +9,9 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const { ok, fail, BizError } = require('./response');
 
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'webp'];
-// 上传用途分流：玩具实拍图与用户头像分目录存放，便于按用途单独清理与统计配额。
+// 上传用途分流：玩具实拍图、用户头像、意见反馈配图分目录存放，便于按用途单独清理与统计配额。
 // 缺省保持 'toys'，兼容既有 publish 页的调用（它不传 scope）。
-const ALLOWED_SCOPES = ['toys', 'avatars'];
+const ALLOWED_SCOPES = ['toys', 'avatars', 'feedback'];
 
 async function handleGetUploadPath(data, openid) {
   const ext = String(data.ext || 'jpg').toLowerCase().replace('.', '');

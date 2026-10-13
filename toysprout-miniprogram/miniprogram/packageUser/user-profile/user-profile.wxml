@@ -1,0 +1,103 @@
+<!--
+  packageUser/user-profile/user-profile.wxml
+  他人主页：公开资料 + 在架玩具（双列瀑布流复用 toy-card）+ 收到的评价。
+  ⚠️ toy-card 的交互绑定必须是 bind:open / bind:want —— 绝不能写 bind:tap（原生事件名会同名串事件，
+     页面会收到 {x,y} 触点坐标而不是 {id}，本项目曾因此出 P0 事故，详见 toy-card.js）。
+-->
+<view class="page up-page">
+
+  <!-- 首屏加载 -->
+  <view wx:if="{{loading && !user.id}}" class="loading-state">正在加载…</view>
+
+  <!-- 加载失败：明确反馈 + 可重试，不白屏 -->
+  <view wx:elif="{{loadError && !user.id}}" class="empty-state">
+    <text class="up-empty__title">没能加载出来</text>
+    <text class="up-empty__desc">网络开小差了，检查网络后重试一次</text>
+    <button class="btn btn--secondary up-empty__btn" bindtap="onRetry">重试</button>
+  </view>
+
+  <block wx:else>
+    <!-- 资料卡 -->
+    <view class="card">
+      <view class="flex-row gap-3">
+        <image wx:if="{{user.avatarUrl}}" class="up-avatar" src="{{user.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="up-avatar up-avatar--ph"></view>
+        <view style="flex:1;min-width:0;">
+          <view class="flex-row gap-2">
+            <text class="h3">{{user.name || '童芽用户'}}</text>
+            <text wx:if="{{user.isVerified}}" class="verified-badge">已实名</text>
+            <text wx:if="{{user.isMember}}" class="badge credit--trusted">会员</text>
+          </view>
+          <!-- 可选片段已在 JS 侧用 joinMeta 滤空，避免渲染出字面量「null」 -->
+          <text class="caption text-tertiary" style="display:block;margin-top:8rpx;">{{metaLine}}</text>
+        </view>
+      </view>
+
+      <view class="flex-row" style="margin-top:24rpx;">
+        <view class="up-stat">
+          <text class="h3">{{user.creditScore || 500}}</text>
+          <text class="caption text-tertiary" style="margin-top:4rpx;">信用分</text>
+        </view>
+        <view class="up-stat">
+          <text class="badge {{creditCls}}">{{creditLabel}}</text>
+          <text class="caption text-tertiary" style="margin-top:8rpx;">信用等级</text>
+        </view>
+        <view class="up-stat">
+          <text class="h3">{{toys.length}}</text>
+          <text class="caption text-tertiary" style="margin-top:4rpx;">在架玩具</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 看自己的主页：不提供「拉黑 / 举报」这些注定失败或多此一举的入口 -->
+    <view wx:if="{{user.isSelf}}" class="notice-bar" style="margin-bottom:24rpx;">这是你自己的主页</view>
+    <view wx:else class="flex-row gap-2" style="margin-bottom:24rpx;">
+      <button class="btn btn--secondary" style="flex:1;" loading="{{blocking}}" bindtap="onBlockTap">
+        {{user.blocked ? '取消拉黑' : '拉黑'}}
+      </button>
+      <button class="btn btn--ghost" style="flex:1;" bindtap="onReportTap">举报</button>
+    </view>
+
+    <!-- 在架玩具 -->
+    <view class="up-section">
+      <view class="flex-between" style="margin-bottom:16rpx;">
+        <text class="h4">TA 的在架玩具</text>
+        <text class="caption text-tertiary">{{toys.length}} 件</text>
+      </view>
+      <view wx:if="{{toys.length === 0}}" class="empty-state" style="padding:40rpx 0;">TA 暂时没有在架的玩具</view>
+      <view wx:else class="up-cols">
+        <view class="up-col">
+          <view wx:for="{{leftCol}}" wx:key="id" class="up-card">
+            <toy-card toy="{{item}}" bind:open="onToyOpen" bind:want="onWantTap" />
+          </view>
+        </view>
+        <view class="up-col">
+          <view wx:for="{{rightCol}}" wx:key="id" class="up-card">
+            <toy-card toy="{{item}}" bind:open="onToyOpen" bind:want="onWantTap" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 收到的评价 -->
+    <view class="card">
+      <view class="flex-between" style="margin-bottom:16rpx;">
+        <text class="h4">收到的评价</text>
+        <text class="caption text-tertiary">{{avgRatingText}}</text>
+      </view>
+      <view wx:for="{{reviews}}" wx:key="id" class="up-review">
+        <view class="flex-between">
+          <text class="body-sm">{{item.reviewerName}}</text>
+          <text class="caption text-tertiary">{{item.dateLabel}}</text>
+        </view>
+        <view class="flex-row">
+          <view wx:for="{{item.stars}}" wx:key="*this" wx:for-item="star" class="star-icon {{star.filled ? 'star-icon--filled' : 'star-icon--empty'}}"></view>
+        </view>
+        <text wx:if="{{item.comment}}" class="body-sm text-secondary" style="display:block;">{{item.comment}}</text>
+      </view>
+      <view wx:if="{{reviews.length === 0}}" class="empty-state" style="padding:40rpx 0;">TA 还没有收到评价</view>
+    </view>
+  </block>
+
+  <report-sheet visible="{{reportVisible}}" title="举报该用户" bind:close="onReportClose" bind:report="onReportSubmit" />
+</view>

@@ -45,6 +45,7 @@ const RESERVED = new Set([
 // 要检查的组件：JS 定义路径 + 在 WXML 里出现的标签名
 const COMPONENTS = [
   { tag: 'toy-card', js: 'components/toy-card/toy-card.js' },
+  { tag: 'report-sheet', js: 'components/report-sheet/report-sheet.js' },
 ];
 
 // 递归收集所有 wxml

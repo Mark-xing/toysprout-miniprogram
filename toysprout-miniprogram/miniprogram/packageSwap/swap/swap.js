@@ -1,6 +1,7 @@
 // packageSwap/swap/swap.js
 const api = require('../../utils/api');
 const { CONDITION_META, CATEGORY_NAMES, joinMeta } = require('../../utils/format');
+const { requestSubscribe } = require('../../utils/subscribe');
 
 Page({
   data: {
@@ -65,6 +66,11 @@ Page({
   },
 
   async onSubmit() {
+    // 订阅授权：必须在用户点击的**同步调用栈**里发起，因此放在方法第一行、任何 await 之前。
+    // 不 await、不阻断主流程；用户拒绝或模板未申请时订阅封装内部自行跳过（见 utils/subscribe.js）。
+    // 请求发起方后续会收到的模板：对方同意/拒绝、对方发货。
+    requestSubscribe(['SWAP_ACCEPTED', 'SWAP_REJECTED', 'SWAP_SHIPPED']);
+
     // 发起交换会让对方看到你的昵称，属于「对外可见」操作：未设昵称先引导去设置。
     // 服务端 swap.create 有同样的兜底校验。
     if (!(await api.requireProfile())) return;

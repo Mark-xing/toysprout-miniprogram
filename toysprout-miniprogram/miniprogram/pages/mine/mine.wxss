@@ -12,6 +12,22 @@
 }
 .menu-item:last-child { border-bottom: none; }
 .menu-item__arrow { color: var(--color-text-tertiary); font-size: 32rpx; }
+/* 「联系客服」是 <button open-type="contact">（原生客服会话能力）。
+   <button> 自带背景色、圆角、左右内边距与一条 ::after 伪元素边框，
+   如果不压平，它会和旁边几行 .menu-item 长得完全不一样——尤其是那条伪元素边框，
+   会在大列表里多出一条横线。这里把它还原成普通菜单行。 */
+.menu-item--plain {
+  width: 100%; background: transparent; border-radius: 0;
+  text-align: left; line-height: normal; font-weight: normal;
+}
+.menu-item--plain::after { border: none; }
+/* 「消息中心」入口未读数红点（复用 app.wxss 令牌色，禁止自创色值） */
+.msg-badge {
+  display: inline-flex; align-items: center;
+  min-width: 32rpx; height: 32rpx; padding: 0 10rpx;
+  border-radius: 999px; background: var(--color-accent-strong); color: var(--color-text-inverse);
+  font-size: 22rpx; font-weight: 600; line-height: 1;
+}
 .toy-row { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 0; border-bottom: 1px solid var(--color-divider); }
 .toy-row:last-child { border-bottom: none; }
 .toy-row__img { width: 96rpx; height: 72rpx; border-radius: 12rpx; flex-shrink: 0; }

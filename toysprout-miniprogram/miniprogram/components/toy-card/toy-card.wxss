@@ -92,7 +92,10 @@
 }
 .tcard__tag--ship { color: var(--color-success-text); background: var(--color-success-tint); }
 
-.tcard__foot { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; }
+/* min-height 锁 44rpx = 心形 32rpx + 上下 padding 各 6rpx（右下「想要」按钮的高度）。
+   自有玩具（isMine）不显示心形、只留一行只读计数，高度本来会比他人卡片矮 4rpx——
+   瀑布流里两种卡片口径就不一致了（本文件顶部强调"高度必须可预测"），故锁住最小高度。 */
+.tcard__foot { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; min-height: 44rpx; }
 .tcard__author { display: flex; align-items: center; gap: 10rpx; flex: 1; min-width: 0; }
 .tcard__avatar {
   width: 40rpx; height: 40rpx; border-radius: 50%; flex-shrink: 0;
@@ -130,3 +133,6 @@
 }
 .tcard__wcount { font-size: 22rpx; color: var(--color-text-tertiary); }
 .tcard__wcount.is-on { color: var(--color-accent-strong); font-weight: 600; }
+/* 自有玩具的只读计数：不带心形、不可点，仅告知发布者「有多少人想要」。
+   与可点版本共用字号/颜色，补 flex-shrink 防止长数字把左侧作者名挤掉。 */
+.tcard__wcount--self { flex-shrink: 0; }

@@ -1,0 +1,19 @@
+/* packageUser/wants/wants.wxss */
+.wants-page { padding: 24rpx; }
+.wants-count {
+  padding: 4rpx 4rpx 16rpx;
+  font-size: 24rpx; color: var(--color-text-tertiary);
+}
+.wcols { display: flex; align-items: flex-start; gap: 20rpx; }
+.wcol { flex: 1; min-width: 0; }
+
+.wfoot { padding: 24rpx 0 48rpx; text-align: center; }
+.wfoot__text { font-size: 24rpx; color: var(--color-text-tertiary); }
+
+/* 空态 / 错误态文案与按钮（复用 app.wxss 的 .empty-state 居中容器） */
+.wants-empty__title { display: block; font-size: 30rpx; font-weight: 600; color: var(--color-text-primary); }
+.wants-empty__desc {
+  display: block; margin: 12rpx 0 0;
+  font-size: 25rpx; line-height: 1.6; color: var(--color-text-tertiary);
+}
+.wants-empty__btn { width: 380rpx; margin: 36rpx auto 0; }

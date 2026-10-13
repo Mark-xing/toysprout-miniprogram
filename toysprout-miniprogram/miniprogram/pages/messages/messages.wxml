@@ -1,0 +1,54 @@
+<!-- pages/messages/messages.wxml -->
+<view class="page messages-page">
+
+  <!-- 首屏加载 -->
+  <view wx:if="{{loading && items.length === 0}}" class="loading-state">正在加载消息…</view>
+
+  <!-- 加载失败：明确反馈 + 可重试，不白屏 -->
+  <view wx:elif="{{loadError && items.length === 0}}" class="empty-state">
+    <text class="msg-empty__title">没能加载出来</text>
+    <text class="msg-empty__desc">网络开小差了，检查网络后重试一次</text>
+    <button class="btn btn--secondary msg-empty__btn" bindtap="onRetry">重试</button>
+  </view>
+
+  <!-- 空态 -->
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    <text class="msg-empty__title">暂无消息</text>
+    <text class="msg-empty__desc">交换意向、发货、收货、评价等动态都会出现在这里</text>
+    <button class="btn btn--primary msg-empty__btn" bindtap="onGoDiscover">去发现页逛逛</button>
+  </view>
+
+  <block wx:else>
+    <!-- 顶部：未读统计 + 全部已读 -->
+    <view class="msg-bar flex-between">
+      <text class="caption text-tertiary">共 {{total}} 条 · 未读 {{unreadCount}} 条</text>
+      <button
+        class="btn btn--sm btn--secondary msg-bar__btn"
+        disabled="{{unreadCount === 0}}"
+        bindtap="onMarkAllRead"
+      >全部已读</button>
+    </view>
+
+    <!-- 消息列表 -->
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="card card--compact msg-item {{item.read ? '' : 'msg-item--unread'}}"
+      data-id="{{item.id}}"
+      bindtap="onItemTap"
+    >
+      <view class="flex-row msg-item__head">
+        <view wx:if="{{!item.read}}" class="msg-dot"></view>
+        <text class="msg-item__title">{{item.title}}</text>
+      </view>
+      <view class="body-sm msg-item__content">{{item.content}}</view>
+      <text class="caption text-tertiary msg-item__time">{{item.timeLabel}}</text>
+    </view>
+
+    <view class="msg-foot">
+      <text wx:if="{{loadingMore}}" class="msg-foot__text">正在加载更多…</text>
+      <text wx:elif="{{!hasMore}}" class="msg-foot__text">— 已经到底啦 —</text>
+      <text wx:else class="msg-foot__text">上滑看更多</text>
+    </view>
+  </block>
+</view>

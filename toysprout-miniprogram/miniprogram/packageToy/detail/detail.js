@@ -18,6 +18,7 @@ Page({
     // 积分双向流通（business-model-v3.md §2.1/§2.2）：运费归属预览 + 积分兑换状态
     shippingPreview: null, // { sameCity, shippingPayer, shippingNote, pointsRequired, myBalance, sufficientBalance }
     redeeming: false,
+    reportVisible: false, // 举报弹层开关（report-sheet 组件）
   },
 
   onLoad(query) {
@@ -119,7 +120,63 @@ Page({
     this.setData({ hasOwnerAvatar: false });
   },
 
+  // 点击作者卡 → 进入他人主页。
+  // 路由参数用 toy.owner.id（= 数据库 users 文档的 _id），**不是** openid：
+  // openid 属敏感标识，服务端不下发；user.getPublicProfile 也正是按 _id 查（见 toy.publicToy）。
+  onOwnerTap() {
+    const owner = this.data.toy && this.data.toy.owner;
+    if (!owner || !owner.id) return api.toast('暂时无法查看该作者主页', 'error');
+    wx.navigateTo({ url: '/packageUser/user-profile/user-profile?id=' + owner.id });
+  },
+
+  // 举报玩具。自己的玩具举报必然被服务端 400 拒绝（createReport 的「不能举报自己发布的玩具」），
+  // 入口本该隐藏（见 wxml 的 !isMine 分支），这里再兜一层，确保绝不会「点了没反应」。
+  onReportTap() {
+    if (this.data.isMine) return api.toast('不能举报自己发布的玩具', 'error');
+    this.setData({ reportVisible: true });
+  },
+  onReportClose() {
+    this.setData({ reportVisible: false });
+  },
+  async onReportSubmit(e) {
+    const detail = e.detail || {};
+    const res = await api.user('createReport', {
+      targetType: 'toy',
+      targetId: this.toyId,
+      reason: detail.reason,
+      description: detail.description || '',
+    });
+    if (res.code === 0) {
+      this.setData({ reportVisible: false });
+      api.toast(res.message || '举报已提交', 'success');
+    } else {
+      // 失败保留弹层，让用户能改原因后重试（不静默）
+      api.toast(res.message || '举报失败，请重试', 'error');
+    }
+  },
+
+  // 取玩具首图（images 已在 loadDetail 里转为签名链接）。尚未加载 / 无图时返回 ''，
+  // 由调用方决定是否设置 imageUrl —— **绝不传空串**：部分基础库下 imageUrl='' 会让分享卡片图变白。
+  firstImage() {
+    const imgs = (this.data.toy && this.data.toy.images) || [];
+    return imgs[0] || '';
+  },
+
+  // 分享给好友：卡片图用玩具首图；取不到时不设 imageUrl，由微信回落到默认截图。
   onShareAppMessage() {
-    return { title: this.data.toy.title || '童芽 ToySprout', path: '/packageToy/detail/detail?id=' + this.toyId };
+    const share = { title: this.data.toy.title || '童芽 ToySprout', path: '/packageToy/detail/detail?id=' + this.toyId };
+    const first = this.firstImage();
+    if (first) share.imageUrl = first;
+    return share;
+  },
+
+  // 分享到朋友圈：只能用 query（不能带 path），从朋友圈点进来时 onLoad 收到的正是 query.id，
+  // 与分享给好友走同一条详情定位逻辑。query 不带前导 '?'。
+  // ⚠️ 本项目严禁任何「分享给好友才能解锁 / 分享得积分」类诱导逻辑与文案，分享纯属自愿。
+  onShareTimeline() {
+    const share = { title: this.data.toy.title || '童芽 ToySprout', query: 'id=' + this.toyId };
+    const first = this.firstImage();
+    if (first) share.imageUrl = first;
+    return share;
   },
 });

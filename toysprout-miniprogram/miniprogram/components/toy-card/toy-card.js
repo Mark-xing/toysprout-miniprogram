@@ -46,6 +46,10 @@ Component({
     imgLoaded: false,
     categoryLabel: '', // 无图占位块上的品类文字
     hasAvatar: false, // 作者头像是否可用；加载失败时回落到默认头像占位
+    // isMine：当前查看者是不是这件玩具的发布者，由服务端 publicToy() 按查看者 openid 算出。
+    // true 时整块隐藏右下「想要」按钮、并禁用双击封面触发想要（服务端 handleToggleWant
+    // 对自有玩具直接 400「不能对自己发布的玩具点想要」，留着控件就是"点了必然报错"）。
+    isMine: false,
     burst: false, // 双击"想要"的爱心爆裂动效
   },
   observers: {
@@ -72,6 +76,11 @@ Component({
         creditLabel: cr.label,
         mediaPad: Math.round(cardRatio(toy.id) * 100),
         categoryLabel: CATEGORY_NAMES[toy.category] || '童芽玩具',
+        // isMine 放在这个"每次都重算"的 patch 里，而不是下面 switchedToy 分支：
+        // 它只是 toy.isMine 的直映射，不涉及任何"已加载 / 已失败"状态，
+        // 所以同玩具属性更新（点想要后页面回写）时重算不会闪图、也不会复活破图。
+        // switchedToy 那套守卫是专为 imgLoaded / hasImage / hasAvatar 三个加载态设计的，别混用。
+        isMine: !!toy.isMine,
       };
       if (switchedToy) {
         patch.hasImage = images.length > 0;
@@ -93,6 +102,14 @@ Component({
     // 小程序没有原生双击事件，只能自己做单击延迟判定：
     // 第一次点先挂 260ms 定时器，期间若再来一次就取消导航、改为想要。
     onMediaTap() {
+      // 自有玩具：不能"想要"（服务端 handleToggleWant 会 400），心形按钮也已隐藏，
+      // 双击想要这套语义在此完全不成立。直接按单击处理、立即进详情：
+      // 既不发出注定被拒的请求，也免掉 260ms 双击窗口带来的迟钝。
+      // 注意这里不是"静默 return"——open 事件会让页面立刻跳详情，用户有明确反馈。
+      if (this.data.isMine) {
+        this.triggerEvent(EVT_OPEN, { id: this.data.toy.id });
+        return;
+      }
       const now = Date.now();
       if (now - (this._lastTapAt || 0) < DOUBLE_TAP_MS) {
         this._lastTapAt = 0;

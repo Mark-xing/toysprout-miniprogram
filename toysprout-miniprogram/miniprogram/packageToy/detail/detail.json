@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "玩具详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "report-sheet": "/components/report-sheet/report-sheet"
+  }
 }

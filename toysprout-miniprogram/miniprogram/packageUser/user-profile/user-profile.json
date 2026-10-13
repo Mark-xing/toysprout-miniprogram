@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "TA 的主页",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "toy-card": "/components/toy-card/toy-card",
+    "report-sheet": "/components/report-sheet/report-sheet"
+  }
+}

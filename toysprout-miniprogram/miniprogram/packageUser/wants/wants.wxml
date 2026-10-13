@@ -1,0 +1,61 @@
+<!-- packageUser/wants/wants.wxml -->
+<!--
+  「我想要的」列表页：双列瀑布流复用 toy-card。
+  交互绑定必须是 bind:open（进详情）与 bind:want（切换想要）——
+  绝不能写 bind:tap：tap 是原生事件名，组件内原生 tap 会冒泡出组件边界，
+  页面会收到 {x,y} 触点坐标而不是 {id}（本项目曾因此出 P0 事故，详见 toy-card.js）。
+-->
+<view class="page wants-page">
+
+  <!-- 首屏加载 -->
+  <view wx:if="{{loading && items.length === 0}}" class="loading-state">正在加载…</view>
+
+  <!-- 加载失败：明确反馈 + 可重试，不白屏 -->
+  <view wx:elif="{{loadError && items.length === 0}}" class="empty-state">
+    <text class="wants-empty__title">没能加载出来</text>
+    <text class="wants-empty__desc">网络开小差了，检查网络后重试一次</text>
+    <button class="btn btn--secondary wants-empty__btn" bindtap="onRetry">重试</button>
+  </view>
+
+  <!-- 空态：引导去发现页逛逛 -->
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    <text class="wants-empty__title">还没有想要的玩具</text>
+    <text class="wants-empty__desc">去发现页逛逛，遇到心动的玩具点一下爱心就收藏在这里</text>
+    <button class="btn btn--primary wants-empty__btn" bindtap="onGoDiscover">去发现页逛逛</button>
+  </view>
+
+  <!-- 双列瀑布流 -->
+  <block wx:else>
+    <view class="wants-count">共 {{total}} 件想要的玩具</view>
+    <view class="wcols">
+      <view class="wcol">
+        <view
+          wx:for="{{leftCol}}"
+          wx:key="id"
+          class="wcard"
+          data-id="{{item.id}}"
+          bindlongpress="onCardLongPress"
+        >
+          <toy-card toy="{{item}}" bind:open="onToyOpen" bind:want="onWantTap" />
+        </view>
+      </view>
+      <view class="wcol">
+        <view
+          wx:for="{{rightCol}}"
+          wx:key="id"
+          class="wcard"
+          data-id="{{item.id}}"
+          bindlongpress="onCardLongPress"
+        >
+          <toy-card toy="{{item}}" bind:open="onToyOpen" bind:want="onWantTap" />
+        </view>
+      </view>
+    </view>
+
+    <view class="wfoot">
+      <text wx:if="{{loadingMore}}" class="wfoot__text">正在加载更多…</text>
+      <text wx:elif="{{!hasMore}}" class="wfoot__text">— 已经到底啦 —</text>
+      <text wx:else class="wfoot__text">上滑看更多</text>
+    </view>
+  </block>
+</view>

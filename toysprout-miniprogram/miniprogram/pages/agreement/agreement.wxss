@@ -1,0 +1,29 @@
+/* pages/agreement/agreement.wxss */
+/* 仅补充 app.wxss 未覆盖的排版细节（文本段落默认 inline，需显式置为 block 才能各占一行）。 */
+
+.agreement-title { display: block; }
+
+.agreement-updated { display: block; margin-top: 8rpx; }
+
+.agreement-heading { display: block; margin-bottom: 16rpx; }
+
+.agreement-para { display: block; margin-bottom: 16rpx; }
+
+.agreement-list { margin-top: 4rpx; }
+
+.agreement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+.agreement-item:last-child { margin-bottom: 0; }
+
+.agreement-dot {
+  flex: none;
+  color: var(--color-text-tertiary);
+  font-size: 26rpx;
+  line-height: 1.55;
+}
+
+.agreement-item__text { flex: 1; }

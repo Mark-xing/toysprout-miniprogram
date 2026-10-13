@@ -64,9 +64,10 @@ App({
       wx.getPrivacySetting({
         success(res) {
           if (res.needAuthorization) {
-            // 隐私协议未同意：交由各页面在需要发起网络请求前弹出隐私协议授权组件
-            // （微信基础库 2.32.3+ 提供 wx.requirePrivacyAuthorize，本项目在 utils/api.js 统一拦截）
-            console.log('[privacy] 需要用户同意隐私协议');
+            // 隐私协议尚未同意。这里只做记录，不在启动阶段弹窗：
+            // 真正的授权拦截点在 utils/api.js 的 ensurePrivacy()——每次 callFunction 发云函数前，
+            // 都会先用 wx.requirePrivacyAuthorize 拉起隐私弹窗（单飞 Promise 去重、旧基础库放行）。
+            console.log('[privacy] 需要用户同意隐私协议（授权拦截见 utils/api.js ensurePrivacy）');
           }
         },
       });

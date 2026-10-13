@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "我想要的",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "toy-card": "/components/toy-card/toy-card"
+  }
+}

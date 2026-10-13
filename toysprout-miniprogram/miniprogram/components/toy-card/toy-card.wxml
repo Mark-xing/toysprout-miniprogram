@@ -3,6 +3,7 @@
   小红书风格瀑布流卡片。
   结构：封面（等比占位 + 交互动效） → 标题(2行) → 作者行 + 想要。
   交互：单击封面/正文进详情；双击封面表"想要"；右下心形可直接点。
+        自有玩具（toy.isMine=true）不显示心形、双击封面直接进详情（不能对自己点想要）。
 
   ⚠️ 对外事件名（页面侧）：
     bind:open → detail { id }   进详情。**不能叫 `tap`**（原生事件同名会串事件，
@@ -59,11 +60,17 @@
         <view wx:if="{{toy.owner.isVerified}}" class="tcard__vf"></view>
       </view>
 
-      <!-- catchtap：不让点击冒泡到正文的进详情 -->
-      <view class="tcard__want" catchtap="onWantTap">
+      <!-- catchtap：不让点击冒泡到正文的进详情。
+           isMine=true（自己发布的玩具）时去掉心形与该点击：服务端 handleToggleWant 对自有玩具
+           直接 400「不能对自己发布的玩具点想要」，留着可点的控件等于给用户一个"点了必然报错"的按钮。
+           双击封面触发想要的路径也已在 onMediaTap 里对 isMine 短路（见 toy-card.js）。
+           但**保留计数**：发布者需要知道有多少人想要这件玩具——这是促成交换的正反馈，
+           整块隐藏等于把这条信息也一并藏掉了。故自有玩具换成一行只读文字。 -->
+      <view wx:if="{{!isMine}}" class="tcard__want" catchtap="onWantTap">
         <view class="tcard__heart {{toy.wanted ? 'is-on' : ''}}"></view>
         <text class="tcard__wcount {{toy.wanted ? 'is-on' : ''}}">{{toy.wantCount || 0}}</text>
       </view>
+      <text wx:else class="tcard__wcount tcard__wcount--self">{{toy.wantCount || 0}} 人想要</text>
     </view>
   </view>
 </view>

@@ -1,6 +1,7 @@
 // packageSwap/order-detail/order-detail.js
 const api = require('../../utils/api');
 const { STATUS_META, fenToYuan, formatDate, joinMeta } = require('../../utils/format');
+const { requestSubscribe } = require('../../utils/subscribe');
 
 const SM_STEPS = [
   { key: 'requested', label: '已发起' },
@@ -158,6 +159,11 @@ Page({
     } else api.toast(res.message, 'error');
   },
   async onConfirmReceipt() {
+    // 订阅授权：必须在用户点击的**同步调用栈**里发起，因此放在方法第一行、任何 await 之前。
+    // 不 await、不阻断主流程；用户拒绝或模板未申请时内部自行跳过（见 utils/subscribe.js）。
+    // 请求本用户后续会收到的模板：对方确认收货、收到新评价。
+    requestSubscribe(['SWAP_RECEIVED', 'SWAP_REVIEWED']);
+
     const res = await api.swap('confirmReceipt', { id: this.swapId });
     if (res.code === 0) { api.toast(res.message, 'success'); this.loadDetail(); }
     else api.toast(res.message, 'error');

@@ -7,3 +7,7 @@
 }
 /* 有真实头像时用 <image> 渲染，占位块的灰底仍然兜底 */
 .author-avatar--img { display: block; overflow: hidden; }
+/* 作者卡右侧的「查看主页 ›」提示 —— 让「卡片可点」这件事有可见暗示 */
+.author-entry { flex-shrink: 0; }
+/* 举报入口：低调的纯文字链接，不与主 CTA 抢注意力 */
+.report-entry { margin-top: 40rpx; text-align: center; }

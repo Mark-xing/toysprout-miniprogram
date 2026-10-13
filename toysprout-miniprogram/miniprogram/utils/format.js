@@ -35,6 +35,15 @@ const STATUS_META = {
   disputed: { label: '纠纷仲裁中', cls: 'st-danger' },
 };
 
+// 意见反馈类型枚举：value 必须与云函数 user.createFeedback 的 FEEDBACK_TYPES 一一对应，
+// label 仅前端展示。改这里务必同步改 cloudfunctions/user/index.js。
+const FEEDBACK_TYPES = [
+  { value: 'suggestion', label: '功能建议' },
+  { value: 'report', label: '内容举报' },
+  { value: 'transaction', label: '交易问题' },
+  { value: 'other', label: '其他' },
+];
+
 function fenToYuan(fen) {
   if (fen == null) return '0';
   return (fen / 100).toFixed(1).replace(/\.0$/, '');
@@ -86,4 +95,4 @@ function joinMeta(parts, sep) {
     .join(s);
 }
 
-module.exports = { CATEGORY_NAMES, CONDITION_META, CREDIT_META, STATUS_META, fenToYuan, formatDate, joinMeta };
+module.exports = { CATEGORY_NAMES, CONDITION_META, CREDIT_META, STATUS_META, FEEDBACK_TYPES, fenToYuan, formatDate, joinMeta };

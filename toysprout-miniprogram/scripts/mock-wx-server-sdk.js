@@ -34,6 +34,7 @@ function matchWhere(doc, where) {
     const cond = where[key];
     const val = doc[key];
     if (cond && cond.__in) return cond.__in.includes(val);
+    if (cond && cond.__nin) return !cond.__nin.includes(val);
     if (cond && cond.__neq !== undefined) return val !== cond.__neq;
     if (cond && cond.__regexp) {
       const re = new RegExp(cond.__regexp, cond.__options || '');
@@ -133,9 +134,19 @@ class Collection {
     this.name = name;
   }
   get _col() { return this.store.col(this.name); }
+  // 集合不存在时，真实 CloudBase 对**任何**操作（含 add）都会报 -502005。
+  // 早期 mock 只在 QueryBuilder 里校验，导致 add 在集合"缺失"时仍能成功——
+  // 于是「写侧故障注入」（failCollection + add）会假绿。这里补齐，保持与真实一致。
+  _assertCollectionExists() {
+    if (FAIL_COLLECTIONS.has(this.name)) {
+      throw new Error('collection.add:fail -502005 database collection not exists. ' +
+        '[ResourceNotFound] Db or Table not exist: ' + this.name);
+    }
+  }
   where(cond) { return new QueryBuilder(this._col, cond, this.name); }
   doc(id) { return new DocRef(this._col, id); }
   async add({ data }) {
+    this._assertCollectionExists();
     // ⚠️ 行为必须与真实云函数对齐：云函数侧 add() **不会**自动注入 _openid，
     // 只有小程序端 wx.cloud.database() 才会。一旦这里自动补 _openid，
     // 就会出现「云函数写入漏写 _openid → where({_openid}) 查不到」这类 Bug 在本地测试中假绿
@@ -156,6 +167,7 @@ class Collection {
 function createDb(store) {
   const command = {
     in: (arr) => ({ __in: arr }),
+    nin: (arr) => ({ __nin: arr }),
     neq: (v) => ({ __neq: v }),
     or: (conds) => ({ __or: conds }),
     and: (conds) => ({ __and: conds }),

@@ -254,7 +254,24 @@ Page({
     this.patchItem(id, { wanted: res.data.wanted, wantCount: res.data.wantCount });
   },
 
+  // 取信息流第一件玩具的首图（items 里的 images 已是签名链接）。无内容时返回 ''。
+  firstItemImage() {
+    const first = this.data.items && this.data.items[0];
+    return (first && first.images && first.images[0]) || '';
+  },
+
+  // 分享给好友：首页分享，卡片图优先取信息流第一件玩具的首图；
+  // 骨架屏 / 空态阶段取不到图则**不设 imageUrl**（不传空串），由微信回落到默认截图。
   onShareAppMessage() {
-    return { title: '童芽 ToySprout · 闲置玩具一换一', path: '/pages/discover/discover' };
+    const share = { title: '童芽 ToySprout · 闲置玩具一换一', path: '/pages/discover/discover' };
+    const first = this.firstItemImage();
+    if (first) share.imageUrl = first;
+    return share;
+  },
+
+  // 分享到朋友圈：首页分享，返回合适标题即可（无需 query）。
+  // ⚠️ 严禁任何「分享给好友才能解锁 / 分享得积分」类诱导逻辑与文案，分享纯属自愿。
+  onShareTimeline() {
+    return { title: '童芽 ToySprout · 闲置玩具一换一' };
   },
 });

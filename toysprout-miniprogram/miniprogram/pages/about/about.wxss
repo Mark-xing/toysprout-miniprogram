@@ -1,0 +1,26 @@
+/* pages/about/about.wxss */
+/* 仅补充本页专有结构；.page / .card / .card--muted / .h1 / .h4 / .body-sm / .caption 等复用 app.wxss */
+
+.about-page { padding-bottom: 60rpx; }
+
+.about-name { display: block; }
+
+.about-intro {
+  display: block;
+  margin-top: 16rpx;
+}
+
+.about-version-row {
+  margin-top: 24rpx;
+  padding-top: 20rpx;
+  border-top: 1px solid var(--color-divider);
+}
+
+/* 与 pages/mine 同一套列表样式，保证两处菜单观感一致 */
+.menu-list { padding: 0; }
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28rpx 32rpx; border-bottom: 1px solid var(--color-divider); font-size: 28rpx;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item__arrow { color: var(--color-text-tertiary); font-size: 32rpx; }

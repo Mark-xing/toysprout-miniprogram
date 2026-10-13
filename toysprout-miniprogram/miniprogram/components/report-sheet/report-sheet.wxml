@@ -1,0 +1,36 @@
+<!--
+  components/report-sheet/report-sheet.wxml
+  举报弹层。对外事件（页面侧）：
+    bind:close  → 用户取消 / 点遮罩关闭
+    bind:report → detail { reason, description } 提交举报（reason 为空时组件内已 toast，不发事件）
+  ⚠️ 事件名不能叫 tap/submit 等原生名（详见 report-sheet.js 顶部注释）。
+-->
+<view wx:if="{{visible}}" class="rs-overlay" bindtap="onClose">
+  <view class="card rs-card" catchtap="noop">
+    <text class="h4 rs-title">{{title}}</text>
+    <text class="caption text-secondary rs-sub">请选择举报原因，我们会尽快核实处理</text>
+
+    <view class="rs-reasons">
+      <view
+        wx:for="{{reasons}}"
+        wx:key="value"
+        class="opt-chip {{selected === item.value ? 'selected' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onPickReason"
+      >{{item.label}}</view>
+    </view>
+
+    <textarea
+      class="textarea rs-desc"
+      maxlength="200"
+      placeholder="补充说明（选填，200 字以内）"
+      value="{{description}}"
+      bindinput="onDescInput"
+    ></textarea>
+
+    <view class="rs-actions">
+      <button class="btn btn--ghost" style="flex:1;" bindtap="onClose">取消</button>
+      <button class="btn btn--danger" style="flex:1;" bindtap="onSubmit">提交举报</button>
+    </view>
+  </view>
+</view>

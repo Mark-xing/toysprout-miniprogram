@@ -1,0 +1,12 @@
+/* components/report-sheet/report-sheet.wxss */
+/* 组件内不能使用页面级样式（如 addresses.wxss 的 .modal-overlay），这里自带遮罩布局 */
+.rs-overlay {
+  position: fixed; inset: 0; background: rgba(51, 41, 31, 0.4); z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+}
+.rs-card { width: 86%; margin: 0; }
+.rs-title { display: block; }
+.rs-sub { display: block; margin: 8rpx 0 20rpx; }
+.rs-reasons { display: flex; flex-wrap: wrap; }
+.rs-desc { margin-top: 8rpx; }
+.rs-actions { display: flex; gap: 16rpx; margin-top: 32rpx; }

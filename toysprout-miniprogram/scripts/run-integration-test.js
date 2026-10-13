@@ -37,6 +37,7 @@ const swap = loadFn('swap');
 const review = loadFn('review');
 const membership = loadFn('membership');
 const pointsFn = loadFn('points');
+const notify = loadFn('notify');
 
 let PASS = 0, FAIL = 0;
 function check(desc, cond, extra) {
@@ -189,6 +190,70 @@ async function main() {
   r = await call(toy, 'openid-A', 'toggleWant', { toyId: toyB });
   mockSdk.failCollection('wants', false);
   check('wants 集合缺失时写侧明确报错（不静默吞掉）', r.code !== 0, r);
+
+  console.log('===== C3. 「我想要的」列表（listWants） =====');
+  // 前置：C2 结束时 openid-A 已取消对 toyB 的想要（wants 里只剩 C 的那条），先重新想要一次。
+  r = await call(toy, 'openid-A', 'toggleWant', { toyId: toyB });
+  check('A 重新想要 toyB 成功', r.code === 0 && r.data.wanted === true, r);
+
+  r = await call(toy, 'openid-A', 'listWants', { page: 1, limit: 20 });
+  const wantItems = (r.data && r.data.items) || [];
+  const wantTarget = wantItems.find((t) => t.id === toyB);
+  check('listWants 返回 code=0 且含 items/total',
+    r.code === 0 && Array.isArray(r.data.items) && typeof r.data.total === 'number', r.data);
+  check('listWants 命中已想要的玩具', !!wantTarget, wantItems.map((t) => t.id));
+  check('listWants 卡片 wanted=true',
+    !!wantTarget && wantTarget.wanted === true, wantTarget && wantTarget.wanted);
+  // 与 list / detail 同源：复用 publicToy，必须带 isMine / wantCount / images
+  check('listWants 卡片字段与 list 一致（isMine/wantCount/images 齐备）',
+    !!wantTarget && typeof wantTarget.isMine === 'boolean' && typeof wantTarget.wantCount === 'number'
+      && Array.isArray(wantTarget.images),
+    wantTarget);
+  // A 不是这些玩具的发布者 → isMine 必须为 false（与 detail 口径一致）
+  check('listWants 中他人玩具 isMine=false', !!wantTarget && wantTarget.isMine === false, wantTarget && wantTarget.isMine);
+  // 数量断言不写死：从实时 wants 记录推导 total
+  const wantsA = mockSdk.getStore().col('wants').filter((w) => w._openid === 'openid-A').length;
+  check('listWants total 等于该用户 wants 记录数（实时推导）',
+    r.data.total === wantsA, { total: r.data.total, wantsA });
+
+  // 过滤：已下架玩具、已删除（查不到）的玩具都不能出现在结果里，更不能是空壳对象
+  r = await call(toy, 'openid-B', 'create', {
+    title: 'listWants-下架玩具', category: 'plush_fabric', ageRange: '0-6', conditionLevel: '9new',
+    images: ['cloud://w/1.jpg', 'cloud://w/2.jpg', 'cloud://w/3.jpg'],
+  });
+  const toyWRemoved = r.data.id;
+  await call(toy, 'openid-A', 'toggleWant', { toyId: toyWRemoved });
+  await call(toy, 'openid-B', 'remove', { id: toyWRemoved });
+
+  r = await call(toy, 'openid-B', 'create', {
+    title: 'listWants-删除玩具', category: 'plush_fabric', ageRange: '0-6', conditionLevel: '9new',
+    images: ['cloud://w/4.jpg', 'cloud://w/5.jpg', 'cloud://w/6.jpg'],
+  });
+  const toyWDeleted = r.data.id;
+  await call(toy, 'openid-A', 'toggleWant', { toyId: toyWDeleted });
+  // 模拟文档被彻底删除（管理员清理 / 作者注销），wants 里仍残留指向它的记录
+  const storeW = mockSdk.getStore();
+  const delIdx = storeW.col('toys').findIndex((t) => t._id === toyWDeleted);
+  if (delIdx >= 0) storeW.col('toys').splice(delIdx, 1);
+
+  r = await call(toy, 'openid-A', 'listWants', { page: 1, limit: 50 });
+  const wantIds = (r.data.items || []).map((t) => t.id);
+  check('listWants 过滤已下架玩具', !wantIds.includes(toyWRemoved), wantIds);
+  check('listWants 过滤已删除(查不到)玩具，不返回空壳',
+    !wantIds.includes(toyWDeleted) && r.data.items.every((t) => !!t && !!t.id && !!t.title), wantIds);
+
+  // 故障路径：wants 集合漏建（真实环境 -502005）→ 不能 500，降级为空列表
+  mockSdk.failCollection('wants', true);
+  r = await call(toy, 'openid-A', 'listWants', {});
+  mockSdk.failCollection('wants', false);
+  check('wants 集合缺失时 listWants 不 500（降级空列表）',
+    r.code === 0 && Array.isArray(r.data.items) && r.data.items.length === 0, r);
+
+  // 分页：limit=1 时当前页至多 1 条，hasMore 与实际总量一致
+  const wantsNow = mockSdk.getStore().col('wants').filter((w) => w._openid === 'openid-A').length;
+  r = await call(toy, 'openid-A', 'listWants', { page: 1, limit: 1 });
+  check('listWants 支持分页（limit 生效且 hasMore 正确）',
+    r.code === 0 && r.data.items.length <= 1 && r.data.hasMore === (wantsNow > 1), { data: r.data, wantsNow });
 
   console.log('===== D. 发起交换 + 状态机 =====');
   // 手动把 B 设为会员（模拟种子数据状态）
@@ -463,6 +528,277 @@ async function main() {
   r = await call(pointsFn, 'openid-A', 'previewShipping', { toyId: toyA });
   check('previewShipping 传自己的玩具 → 400 且提示「自己发布的玩具」',
     r.code === 400 && /自己发布的玩具/.test(r.message || ''), r);
+
+  console.log('===== O. 举报 / 拉黑 / 他人主页（社交与安全） =====');
+  const storeO = mockSdk.getStore();
+  const userB = storeO.col('users').find((u) => u._openid === 'openid-B');
+  const userA = storeO.col('users').find((u) => u._openid === 'openid-A');
+  const userBId = userB._id; // users._id（**不是** openid）
+  const userAId = userA._id;
+
+  // owner.id 必须是 users._id（他人主页的路由参数来源），不能是 openid（敏感标识不下发）
+  r = await call(toy, 'openid-A', 'detail', { id: toyB3 });
+  check('toy.detail 的 owner.id 是 users._id 而非 openid',
+    r.code === 0 && !!r.data.owner && r.data.owner.id === userBId && r.data.owner.id !== 'openid-B',
+    r.data && r.data.owner);
+
+  // ---- 举报玩具 ----
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'toy', targetId: toyB3, reason: 'fake', description: '信息不实' });
+  check('举报玩具成功（status=pending）', r.code === 0 && r.data && r.data.status === 'pending' && r.data.targetType === 'toy', r);
+  const toyReports = storeO.col('reports').filter((x) => x.targetType === 'toy' && x.targetId === toyB3);
+  check('reports 落库且显式写入 _openid（云函数侧 add 不自动注入）',
+    toyReports.length === 1 && toyReports[0]._openid === 'openid-A', toyReports);
+
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'toy', targetId: toyB3, reason: 'fraud' });
+  check('重复举报同一目标幂等（不重复插入、给出提示）',
+    r.code === 0 && /举报过/.test(r.message || '')
+      && storeO.col('reports').filter((x) => x.targetType === 'toy' && x.targetId === toyB3).length === 1, r);
+
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'toy', targetId: toyA, reason: 'fake' });
+  check('不能举报自己发布的玩具（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'toy', targetId: toyB3, reason: 'not_a_reason' });
+  check('非法举报原因被拒（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'alien', targetId: toyB3, reason: 'fake' });
+  check('非法 targetType 被拒（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'toy', targetId: 'not-exist-toy', reason: 'fake' });
+  check('举报不存在的玩具返回 404', r.code === 404, r);
+
+  // ---- 举报用户（targetId = users._id）----
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'user', targetId: userBId, reason: 'inappropriate', description: '言语不当' });
+  check('举报用户成功', r.code === 0 && r.data && r.data.targetType === 'user', r);
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'user', targetId: userAId, reason: 'other' });
+  check('不能举报自己（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createReport', { targetType: 'user', targetId: 'not-exist-user-id', reason: 'other' });
+  check('举报不存在的用户返回 404', r.code === 404, r);
+
+  // ---- 拉黑前：A 能搜到 B 的玩具 ----
+  r = await call(toy, 'openid-A', 'list', { keyword: 'B取消测试' });
+  check('拉黑前 A 能看到 B 的玩具',
+    r.code === 0 && (r.data.items || []).some((t) => t.ownerId === 'openid-B'), r.data);
+
+  // ---- 拉黑 ----
+  r = await call(user, 'openid-A', 'block', { userId: userBId });
+  check('拉黑成功', r.code === 0, r);
+  const blockRows = storeO.col('blocks').filter((x) => x._openid === 'openid-A');
+  check('blocks 落库且 blockedOpenid 是 openid（供发现页过滤）',
+    blockRows.length === 1 && blockRows[0].blockedOpenid === 'openid-B', blockRows);
+
+  r = await call(user, 'openid-A', 'block', { userId: userBId });
+  check('重复拉黑幂等（不重复插入）',
+    r.code === 0 && /黑名单/.test(r.message || '')
+      && storeO.col('blocks').filter((x) => x._openid === 'openid-A').length === 1, r);
+
+  r = await call(user, 'openid-A', 'block', { userId: userAId });
+  check('不能拉黑自己（400）', r.code === 400, r);
+
+  // ---- 拉黑后：发现页过滤生效（本次关键点）----
+  r = await call(toy, 'openid-A', 'list', { keyword: 'B取消测试' });
+  const afterBlock = (r.data && r.data.items) || [];
+  check('拉黑后 A 的发现页不再出现 B 的玩具',
+    r.code === 0 && !afterBlock.some((t) => t.ownerId === 'openid-B'), afterBlock.map((t) => t.ownerId));
+  // total 与过滤自洽：关键词「B取消测试」只有 B 有；过滤后应为 0（从实时数据推导，不写死无关数字）
+  const expectedTotal = storeO.col('toys')
+    .filter((t) => t.status === 'available' && t._openid !== 'openid-B' && /B取消测试/.test(t.title || '')).length;
+  check('拉黑后 total 与过滤后的可见条目自洽',
+    r.code === 0 && r.data.total === expectedTotal, { total: r.data && r.data.total, expectedTotal });
+
+  // ---- 故障路径：blocks 集合漏建（真机 -502005）→ 发现页降级为不过滤，仍 200 ----
+  mockSdk.failCollection('blocks', true);
+  r = await call(toy, 'openid-A', 'list', { keyword: 'B取消测试' });
+  mockSdk.failCollection('blocks', false);
+  check('blocks 集合缺失时 list 不 500（降级为不过滤）',
+    r.code === 0 && (r.data.items || []).some((t) => t.ownerId === 'openid-B'), r);
+
+  // ---- 黑名单列表 ----
+  r = await call(user, 'openid-A', 'listBlocks', {});
+  check('listBlocks 返回已拉黑的用户（id=users._id）',
+    r.code === 0 && (r.data.items || []).some((i) => i.id === userBId), r.data);
+  check('listBlocks 不泄露 openid',
+    r.code === 0 && (r.data.items || []).every((i) => i._openid === undefined), r.data);
+
+  // ---- 他人主页 ----
+  r = await call(user, 'openid-A', 'getPublicProfile', { userId: userBId });
+  check('getPublicProfile 返回用户公开资料', r.code === 0 && !!r.data.user && r.data.user.name === userB.name, r.data && r.data.user);
+  check('他人主页 isSelf=false', r.code === 0 && r.data.user.isSelf === false, r.data && r.data.user && r.data.user.isSelf);
+  check('他人主页不泄露 phone', r.code === 0 && r.data.user.phone === undefined, r.data && r.data.user);
+  check('他人主页不泄露 _openid / 证件哈希',
+    r.code === 0 && r.data.user._openid === undefined && r.data.user.idCardHash === undefined, r.data && r.data.user);
+  check('他人主页标记我已拉黑 TA', r.code === 0 && r.data.user.blocked === true, r.data && r.data.user && r.data.user.blocked);
+  const bAvailable = storeO.col('toys').filter((t) => t._openid === 'openid-B' && t.status === 'available');
+  check('他人主页在架玩具均为该用户且状态 available',
+    r.code === 0 && r.data.toys.every((t) => t.ownerId === 'openid-B' && t.status === 'available')
+      && r.data.toys.length === bAvailable.length,
+    { got: r.data.toys.length, bAvailable: bAvailable.length });
+  check('他人主页在架玩具带 owner.id=users._id（卡片可再点进主页）',
+    r.code === 0 && r.data.toys.every((t) => t.owner && t.owner.id === userBId),
+    r.code === 0 ? r.data.toys.map((t) => t.owner && t.owner.id) : r);
+  const bReviews = storeO.col('reviews').filter((x) => x.revieweeOpenid === 'openid-B');
+  check('他人主页返回收到的评价（条数与实时 reviews 一致）',
+    r.code === 0 && r.data.reviewTotal === bReviews.length && r.data.reviews.length === bReviews.length,
+    { got: r.data.reviewTotal, bReviews: bReviews.length });
+  check('他人主页评价带均分',
+    r.code === 0 && (bReviews.length === 0 ? r.data.avgRating === null : typeof r.data.avgRating === 'number'),
+    r.data && r.data.avgRating);
+
+  // 看自己主页
+  r = await call(user, 'openid-A', 'getPublicProfile', { userId: userAId });
+  check('getPublicProfile 看自己 isSelf=true', r.code === 0 && r.data.user.isSelf === true, r.data && r.data.user && r.data.user.isSelf);
+
+  // 入参错误
+  r = await call(user, 'openid-A', 'getPublicProfile', {});
+  check('缺少 userId 返回 400', r.code === 400, r);
+  r = await call(user, 'openid-A', 'getPublicProfile', { userId: 'not-exist-user-id' });
+  check('不存在的用户返回 404', r.code === 404, r);
+
+  // ---- 取消拉黑后恢复 ----
+  r = await call(user, 'openid-A', 'unblock', { userId: userBId });
+  check('取消拉黑成功', r.code === 0, r);
+  check('blocks 记录已删除', storeO.col('blocks').filter((x) => x._openid === 'openid-A').length === 0, storeO.col('blocks'));
+  r = await call(toy, 'openid-A', 'list', { keyword: 'B取消测试' });
+  check('取消拉黑后 B 的玩具重新可见',
+    r.code === 0 && (r.data.items || []).some((t) => t.ownerId === 'openid-B'), r.data);
+
+  console.log('===== P. 意见反馈（user.createFeedback） =====');
+  const storeP = mockSdk.getStore();
+
+  // 正常提交（含选填的联系方式与图片）
+  r = await call(user, 'openid-A', 'createFeedback', {
+    type: 'suggestion', description: '希望增加按城市筛选玩具', contact: 'a@example.com',
+    images: ['cloud://f/1.jpg', 'cloud://f/2.jpg'],
+  });
+  check('提交反馈成功（status=pending）',
+    r.code === 0 && r.data && r.data.status === 'pending' && r.data.type === 'suggestion', r);
+  check('反馈落库且显式写入 _openid（云函数侧 add 不自动注入）',
+    storeP.col('feedbacks').length === 1 && storeP.col('feedbacks')[0]._openid === 'openid-A',
+    storeP.col('feedbacks'));
+  check('反馈回执带 description / contact / images',
+    r.code === 0 && r.data.description === '希望增加按城市筛选玩具'
+      && r.data.contact === 'a@example.com' && Array.isArray(r.data.images) && r.data.images.length === 2, r.data);
+
+  // 选填字段缺省：contact 归一为 ''、images 归一为 []
+  r = await call(user, 'openid-A', 'createFeedback', { type: 'other', description: '只填了必填项' });
+  check('选填字段缺省时 contact 为空串且 images 为空数组',
+    r.code === 0 && r.data.contact === '' && Array.isArray(r.data.images) && r.data.images.length === 0, r.data);
+
+  // 校验类分支（服务端为唯一真相源，前端拦截只是体验优化）
+  r = await call(user, 'openid-A', 'createFeedback', { type: 'suggestion', description: '   ' });
+  check('空白描述被拒（400）', r.code === 400 && /描述/.test(r.message || ''), r);
+  r = await call(user, 'openid-A', 'createFeedback', { type: 'not_a_type', description: 'x' });
+  check('非法反馈类型被拒（400）', r.code === 400 && /类型/.test(r.message || ''), r);
+  r = await call(user, 'openid-A', 'createFeedback', { type: 'suggestion', description: 'x'.repeat(501) });
+  check('描述超 500 字被拒（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createFeedback', { type: 'suggestion', description: 'x', contact: 'x'.repeat(101) });
+  check('联系方式超 100 字被拒（400）', r.code === 400, r);
+  r = await call(user, 'openid-A', 'createFeedback', {
+    type: 'suggestion', description: 'x',
+    images: ['cloud://f/1.jpg', 'cloud://f/2.jpg', 'cloud://f/3.jpg', 'cloud://f/4.jpg'],
+  });
+  check('图片超过 3 张被拒（400）', r.code === 400, r);
+
+  // 校验失败不应落库（仅上面 2 条合法反馈）
+  check('校验失败不产生脏数据（feedbacks 仍为 2 条）', storeP.col('feedbacks').length === 2, storeP.col('feedbacks').length);
+
+  console.log('===== Q. 站内消息中心（notifications 集合 + notify 云函数 + swap 写消息） =====');
+  const storeQ = mockSdk.getStore();
+  // 未读数一律从实时 store 推导（禁止写死绝对值，避免数据漂移误报）
+  const unreadOf = (openid) => storeQ.col('notifications').filter((n) => n._openid === openid && !n.read).length;
+  const notifOf = (openid) => storeQ.col('notifications').filter((n) => n._openid === openid);
+
+  // 造 2 件 A 的 + 2 件 B 的可用玩具（各 3 图满足发布校验）
+  const mkToy = (openid, title, imgs) => call(toy, openid, 'create', {
+    title, category: 'building_blocks', ageRange: '3-6', conditionLevel: 'new', images: imgs,
+  });
+  r = await mkToy('openid-A', 'Q消息A玩具1', ['cloud://q/a1.jpg', 'cloud://q/a2.jpg', 'cloud://q/a3.jpg']);
+  check('Q: A 造玩具1成功', r.code === 0, r);
+  const qToyA = r.data.id;
+  r = await mkToy('openid-A', 'Q消息A玩具2', ['cloud://q/a4.jpg', 'cloud://q/a5.jpg', 'cloud://q/a6.jpg']);
+  const qToyA2 = r.data.id;
+  r = await mkToy('openid-B', 'Q消息B玩具1', ['cloud://q/b1.jpg', 'cloud://q/b2.jpg', 'cloud://q/b3.jpg']);
+  check('Q: B 造玩具1成功', r.code === 0, r);
+  const qToyB = r.data.id;
+  r = await mkToy('openid-B', 'Q消息B玩具2', ['cloud://q/b4.jpg', 'cloud://q/b5.jpg', 'cloud://q/b6.jpg']);
+  const qToyB2 = r.data.id;
+
+  // ---- 写入：A 发起交换 → B 收到 1 条未读 swap_request ----
+  const beforeB = unreadOf('openid-B');
+  r = await call(swap, 'openid-A', 'create', { targetToyId: qToyB, myToyId: qToyA, message: 'Q消息测试' });
+  check('Q: 发起交换成功', r.code === 0 && r.data.status === 'requested', r);
+  const qSwapId = r.data.id;
+  check('Q: 被交换方未读数恰好 +1（站内消息已写入）',
+    unreadOf('openid-B') === beforeB + 1, { before: beforeB, after: unreadOf('openid-B') });
+  const qNewest = notifOf('openid-B').filter((n) => n.targetId === qSwapId)[0];
+  check('Q: 该消息 type=swap_request / read=false / 归属 B / targetType=swap',
+    !!qNewest && qNewest.type === 'swap_request' && qNewest.read === false
+      && qNewest._openid === 'openid-B' && qNewest.targetType === 'swap', qNewest);
+  check('Q: 消息带标题与内容（非空）',
+    !!qNewest && !!qNewest.title && !!qNewest.content, qNewest);
+
+  // ---- list：未读数与实时一致 + 跨用户隔离 ----
+  r = await call(notify, 'openid-B', 'list', {});
+  check('Q: B list 返回 items 数组', r.code === 0 && Array.isArray(r.data.items), r);
+  check('Q: list 未读数与实时统计一致',
+    r.code === 0 && r.data.unreadCount === unreadOf('openid-B'),
+    { got: r.code === 0 ? r.data.unreadCount : null, live: unreadOf('openid-B') });
+  check('Q: list 包含刚写入的消息', r.code === 0 && r.data.items.some((n) => n.targetId === qSwapId),
+    r.code === 0 ? r.data.items.map((n) => n.id) : r);
+  check('Q: list item 形状完整（id/type/title/content/targetType/targetId/read/createdAt）',
+    r.code === 0 && r.data.items.length > 0 && r.data.items.every((n) =>
+      'id' in n && 'type' in n && 'title' in n && 'content' in n
+      && 'targetType' in n && 'targetId' in n && typeof n.read === 'boolean' && 'createdAt' in n),
+    r.code === 0 ? r.data.items[0] : r);
+  r = await call(notify, 'openid-C', 'list', {});
+  check('Q: 跨用户隔离（C 拉不到 B 的那条消息）',
+    r.code === 0 && !r.data.items.some((n) => n.targetId === qSwapId),
+    r.code === 0 ? r.data.items.map((n) => n.targetId) : r);
+
+  // ---- markRead：单条已读 + 幂等 + 缺参 400 ----
+  const beforeRead = unreadOf('openid-B');
+  r = await call(notify, 'openid-B', 'markRead', { id: qNewest._id });
+  check('Q: 单条已读后未读数 -1',
+    r.code === 0 && r.data.unreadCount === beforeRead - 1,
+    { got: r.code === 0 ? r.data.unreadCount : null, before: beforeRead });
+  r = await call(notify, 'openid-B', 'markRead', { id: qNewest._id });
+  check('Q: 重复 markRead 幂等（未读数不再下降）',
+    r.code === 0 && r.data.unreadCount === beforeRead - 1,
+    r.code === 0 ? r.data.unreadCount : r);
+  check('Q: 已读后 store 中该条 read=true',
+    notifOf('openid-B').find((n) => n._id === qNewest._id).read === true, null);
+  r = await call(notify, 'openid-B', 'markRead', {});
+  check('Q: markRead 缺 id 返回 400', r.code === 400, r);
+
+  // ---- markAllRead ----
+  r = await call(notify, 'openid-B', 'markAllRead', {});
+  check('Q: 全部已读后未读数归零（响应与实时双确认）',
+    r.code === 0 && r.data.unreadCount === 0 && unreadOf('openid-B') === 0,
+    { got: r.code === 0 ? r.data.unreadCount : null, live: unreadOf('openid-B') });
+
+  // ---- 读侧降级：notifications 集合缺失时 list 不 500 ----
+  mockSdk.failCollection('notifications', true);
+  r = await call(notify, 'openid-B', 'list', {});
+  mockSdk.failCollection('notifications', false);
+  check('Q: 集合缺失时 list 降级为空列表（code=0）',
+    r.code === 0 && r.data.items.length === 0 && r.data.unreadCount === 0, r);
+
+  // ---- 核心：通知写入失败不影响主流程 ----
+  const beforeFailA = notifOf('openid-A').length;
+  mockSdk.failCollection('notifications', true);
+  r = await call(swap, 'openid-B', 'respond', { id: qSwapId, accept: true });
+  mockSdk.failCollection('notifications', false);
+  check('Q: notifications 写失败时 respond 仍成功且状态流转到 accepted（通知不阻断主流程）',
+    r.code === 0 && r.data.status === 'accepted',
+    { code: r.code, status: r.code === 0 ? r.data.status : null });
+  // 反向对照：确认「写失败」真的发生了（否则上面这条是空转），A 不应收到 swap_accepted
+  check('Q: 反向对照——写失败期间 A 确实没收到 swap_accepted（证明降级路径被走到）',
+    !notifOf('openid-A').some((n) => n.targetId === qSwapId && n.type === 'swap_accepted')
+      && notifOf('openid-A').length === beforeFailA,
+    { aCount: notifOf('openid-A').length, before: beforeFailA });
+
+  // ---- 恢复后写入正常 ----
+  const beforeRecover = unreadOf('openid-B');
+  r = await call(swap, 'openid-A', 'create', { targetToyId: qToyB2, myToyId: qToyA2, message: 'Q恢复测试' });
+  check('Q: 集合恢复后新发起交换成功', r.code === 0, r);
+  check('Q: 恢复后未读数再次 +1（写入链路整体可用）',
+    unreadOf('openid-B') === beforeRecover + 1, { before: beforeRecover, after: unreadOf('openid-B') });
 
   console.log('');
   console.log('========================================');

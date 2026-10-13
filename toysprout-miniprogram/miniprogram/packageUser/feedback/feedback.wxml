@@ -1,0 +1,59 @@
+<!-- packageUser/feedback/feedback.wxml -->
+<view class="page feedback-page">
+  <view class="card">
+    <text class="h4" style="display:block;margin-bottom:8rpx;">意见反馈</text>
+    <text class="caption text-secondary" style="display:block;margin-bottom:24rpx;">你的建议会帮助我们持续改进「童芽」，感谢每一份反馈</text>
+
+    <view class="field">
+      <text class="field-label">反馈类型</text>
+      <view class="flex-wrap">
+        <view
+          wx:for="{{types}}"
+          wx:key="value"
+          class="opt-chip {{type === item.value ? 'selected' : ''}}"
+          data-value="{{item.value}}"
+          bindtap="onTypeTap"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">详细描述（必填）</text>
+      <textarea
+        class="textarea"
+        placeholder="请尽量描述清楚遇到的问题或希望改进的地方"
+        placeholder-class="feedback-ph"
+        value="{{description}}"
+        maxlength="{{descMax}}"
+        bindinput="onDescInput"
+      />
+      <text class="caption text-tertiary feedback-count">{{description.length}}/{{descMax}}</text>
+    </view>
+
+    <view class="field">
+      <text class="field-label">联系方式（选填）</text>
+      <input
+        class="input"
+        placeholder="手机号 / 微信号 / 邮箱，便于我们回复你"
+        value="{{contact}}"
+        maxlength="{{contactMax}}"
+        bindinput="onContactInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="field-label">图片（选填，最多 {{imagesMax}} 张）</text>
+      <view class="feedback-imgs">
+        <view wx:for="{{images}}" wx:key="*this" class="feedback-img">
+          <image class="feedback-img__pic" src="{{item}}" mode="aspectFill" />
+          <view class="feedback-img__del" data-index="{{index}}" bindtap="onRemoveImage">×</view>
+        </view>
+        <view wx:if="{{images.length < imagesMax}}" class="feedback-img feedback-img--add" bindtap="onChooseImage">
+          <text class="feedback-img__plus">+</text>
+        </view>
+      </view>
+    </view>
+
+    <button class="btn btn--primary btn--block" bindtap="onSubmit" loading="{{submitting}}">提交反馈</button>
+  </view>
+</view>

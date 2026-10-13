@@ -24,7 +24,9 @@
         <text class="body-sm text-secondary">{{toy.description || '主人未填写描述'}}</text>
       </view>
 
-      <view class="card" style="margin-top:20rpx;">
+      <!-- 作者卡可点击 → 进入他人主页。C2C 交易里「对方是谁、有什么玩具、评价如何」是信任建立的关键，
+           而 openid 不下发前端，故用服务端下发的 toy.owner.id（= users._id）作为主页路由参数。 -->
+      <view class="card" style="margin-top:20rpx;" bindtap="onOwnerTap">
         <view class="flex-row gap-2">
           <image wx:if="{{hasOwnerAvatar}}" class="author-avatar author-avatar--img" src="{{toy.owner.avatarUrl}}" mode="aspectFill" binderror="onOwnerAvatarError" />
           <view wx:else class="author-avatar"></view>
@@ -39,6 +41,7 @@
               {{reviewSummaryText}}
             </text>
           </view>
+          <text class="caption text-tertiary author-entry">查看主页 ›</text>
         </view>
       </view>
 
@@ -61,6 +64,14 @@
         </button>
         <button class="btn btn--secondary" style="flex:1;" bindtap="onSwapTap">发起一换一交换</button>
       </view>
+
+      <!-- 举报入口：自己的玩具不显示 —— 服务端 createReport 对「举报自己发布的玩具」必然 400 拒绝，
+           留着只会让用户点了报错（不给注定失败的操作入口）。 -->
+      <view wx:if="{{!isMine}}" class="report-entry" bindtap="onReportTap">
+        <text class="caption text-tertiary">举报该玩具</text>
+      </view>
     </view>
   </view>
+
+  <report-sheet visible="{{reportVisible}}" title="举报该玩具" bind:close="onReportClose" bind:report="onReportSubmit" />
 </view>
