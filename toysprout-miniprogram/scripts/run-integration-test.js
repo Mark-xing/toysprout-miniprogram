@@ -54,7 +54,10 @@ async function main() {
 
   console.log('===== A. 认证（微信登录，openid自动建档） =====');
   let r = await call(auth, 'openid-A', 'sendCode', { phone: '13711112222' });
-  check('sendCode 返回固定验证码', r.data && r.data.code === '1234', r);
+  // 约束的是「服务端不把验证码告诉调用方」这件事本身，与当前用的是固定码还是随机码无关。
+  check('sendCode 不回传验证码明文', r.code === 0 && r.data && r.data.code === undefined, r);
+  check('sendCode 仍返回有效期与开发态标记', r.code === 0 && r.data.expiresIn > 0 && r.data.devOnly === true, r);
+  check('sendCode 响应体整体不含验证码明文', !JSON.stringify(r).includes('1234'), r);
   r = await call(auth, 'openid-A', 'login', { phone: '13711112222', code: '1234', name: '回归测试用户A' });
   check('登录成功建档', r.code === 0 && r.data.user, r);
   r = await call(auth, 'openid-A', 'login', { phone: '13711112222', code: '9999', name: 'x' });

@@ -89,7 +89,52 @@
   `.DS_Store`、`*.log`、`toysprout-mvp/data/*.db*`、`.env*`、`*.pem/*.key/*.p12/id_rsa*`。
   首次提交 178 个文件、约 5M（最大是 `generated-images/` 里的设计稿 PNG，778K）。
 
-## 提审阻塞项
+## 微信开发者工具 CLI（实测：能上传前端，但部署云函数有硬缺陷）
 
-- `app.js` 的 `checkPrivacyAndSession` 只打日志，**从未真正调用 `wx.requirePrivacyAuthorize`**。
-  头像昵称填写已属个人信息收集，**提审前必须处理**。
+CLI 在 `/Applications/wechatwebdevtools.app/Contents/MacOS/cli`，本机已登录（`cli islogin`）。
+
+- ✅ `cli upload --project <绝对路径> -v 1.0.0 -d "<备注>"` **真能把小程序代码上传成开发版本**，
+  并回报各包真实体积（本项目实测 main 97.7KB / TOTAL 160.3KB）。这是「部署上线」里
+  **AI 唯一能代劳的前端步骤**；之后的【提交审核】【发布】在 MP 后台，无 CLI 可代劳。
+- ✅ `cli cloud functions deploy --env <envId> --names <fn> ...` 对**无子目录**的函数可用。
+- ❌ 同一命令部署**目录里有子目录**的函数（`auth` / `swap` / `membership` / `review` 都有
+  `services/`）**必报** `{"code":"EISDIR","message":"Error: EISDIR: illegal operation on a
+  directory, read"}`。`--paths` 换写法也失败；无子目录的 `toy` 成功 → **已隔离确认是"子目录"这个因素**，
+  不是路径含中文、也不是 config.json。
+  → 这类函数只能用 CloudBase MCP 的 `manageFunctions(updateFunctionCode)`，或 IDE GUI 右键上传。
+- ⚠️ **MCP 通道不读 `config.json`**（`manageFunctions` 的 schema 里根本没有对应字段）。
+  所以 `config.json` 中声明的 **openapi 权限只认 IDE GUI 上传**那条路，MCP 部署不会生效。
+
+## 订阅消息：openapi 权限只在 swap 需要，且极易漏
+
+- 全仓唯一云调用点是 `cloudfunctions/_shared/notify.js` 的 `cloud.openapi.subscribeMessage.send`；
+  **真正会调到它的只有 `swap`**（只有 `swap/index.js` require 并调 `notifyAndPush`）。
+  `notify` 云函数只是复用 `./notify` 里的 `COLLECTION` / `isCollectionMissingError` 常量，不发消息。
+- 因此权限声明放在 `cloudfunctions/swap/config.json`：
+  `{"permissions":{"openapi":["subscribeMessage.send"]}}`。
+- ⚠️ 模板 ID 为空时 `_shared/notify.js` 会提前 return `{sent:false,reason:'no_template'}`，
+  try/catch 也把失败降级为 `{sent:false}` 永不抛 —— 所以**权限缺失是被"空模板"掩盖的潜伏缺陷**：
+  一填上模板 ID 就会 100% 静默失败。填完模板 ID 后必须用 IDE GUI 重新上传 `swap`。
+
+## 提审阻塞项（2026-10-13 更新）
+
+- ✅ **隐私授权已落地**：`miniprogram/utils/api.js` 的 `ensurePrivacy()` 真实调用
+  `wx.getPrivacySetting` + `wx.requirePrivacyAuthorize`，拒绝时 toast 有反馈。
+  （另仍需在 MP 后台【服务内容声明】配置《用户隐私保护指引》，否则平台侧不拦、弹窗也不会出现。）
+- 🔴 协议/隐私正文仍有 `【待补充】`（`agreement.js:18/86/91/100/130/165/166/180`、`about.js:8`）——
+  正文写着"运营者：待补充"几乎必被驳回。**需用户提供运营主体名称 / 联系邮箱 / 争议解决方式 / 生效日期。**
+- 🔴 展示 ¥1.9 服务费 / ¥10 会员，但 `swap/services/payService.js`、`membership/services/payService.js`
+  直接 `return {success:true, mock:true}` —— "展示收费未真实扣款"是审核常见驳回点。
+- 🔴 二手闲置交易类目对**个人主体**是否开放未核实（`RELEASE-CHECKLIST.md:28`）。
+- 🟡 云上演示数据未清，且**仓库里没有任何入库/清库脚本**（`seedDemo` 只出现在文档里，
+  数据是当时用 MCP 手工插的）。清理只能人工：`toys` 按 `seedDemo: true` 筛、
+  `users` 按 `_openid` 前缀 `demo-owner-` 筛；注意有 1 件用户手建的「乐高」不带该标记，勿误删。
+- 🟡 `miniprogram/images/` 是 0 字节空目录、前端 0 处引用 —— 无破图风险，可不处理。
+
+## 不要留下调试后门（本轮实例）
+
+`auth` 云函数原来的 `sendCode` **把验证码回传给调用方**（`return {code: result.code, ...}`），
+且 `login` 的失败文案写着"开发态验证码为 1234"。固定码本身无害（账号键是 openid，无人能靠它登录），
+但**"接口把验证码告诉调用方"这个形状带上线，等真接入短信网关就原地变成账号接管漏洞**。
+已改为验证码只进服务端日志、响应只给 `{devOnly, expiresIn}`，并把该约束写成测试断言。
+教训：**别把"当前是 mock 所以没事"当理由保留危险的接口形状。**

@@ -27,7 +27,12 @@ async function handleSendCode(data) {
   const phone = String(data.phone || '').trim();
   if (!PHONE_RE.test(phone)) throw new BizError(400, '手机号格式不正确');
   const result = await sendVerificationCode({ phone });
-  return { code: result.code, devOnly: result.mock, expiresIn: result.expiresIn };
+  // ⚠️ 绝不把验证码回传给调用方。
+  // 当前是模拟实现（固定 1234）看起来无害，但「接口把验证码告诉你」这个行为一旦带上线，
+  // 就等于任何客户端都能自助通过验证——等真接入短信网关那天，它会原地变成账号接管漏洞，
+  // 而那时没人会记得回来删这一行。开发期要看码请查后端日志（下一行已打），不要走响应体。
+  console.log('[auth] sendCode 开发态验证码 phone=%s code=%s', phone, result.code);
+  return { devOnly: result.mock, expiresIn: result.expiresIn };
 }
 
 // 登录 / 建档。两种调用形态：
@@ -49,7 +54,7 @@ async function handleLogin(data, openid) {
       const name = String(data.name || '').trim();
       if (!PHONE_RE.test(phone)) throw new BizError(400, '请填写正确的手机号');
       const codeOk = await verifyCode({ phone, code });
-      if (!codeOk) throw new BizError(400, '验证码错误，开发态验证码为 1234');
+      if (!codeOk) throw new BizError(400, '验证码错误');
       if (!name) throw new BizError(400, '请填写昵称');
       profile = { phone, name };
     } else {

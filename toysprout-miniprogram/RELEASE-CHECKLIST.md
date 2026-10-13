@@ -23,28 +23,87 @@
 ## 合规硬性要求
 
 - [ ] 隐私协议弹窗已配置（【开发管理】→【服务内容声明】完整填写）
-- [ ] 用户协议/隐私政策文本页面已补充（当前版本待补，见 DEPLOY-GUIDE.md 第六步）
+  - 代码侧已就位：`miniprogram/utils/api.js` 的 `ensurePrivacy()` 已真实调用
+    `wx.getPrivacySetting` + `wx.requirePrivacyAuthorize`（拒绝时 toast 有反馈）。
+    **但后台不配置《用户隐私保护指引》时平台不会拦截，弹窗也不会出现** —— 后台那步必须做。
+- [ ] 用户协议/隐私政策文本页面已补充（**当前仍是 `【待补充】` 占位，见下**）
 - [ ] 无诱导分享、无诱导关注公众号弹窗
 - [ ] 服务类目选择正确（建议咨询微信客服确认二手闲置交易类目要求）
 - [ ] 收费环节（服务费¥1.9/会员¥10）金额展示清晰，无隐藏扣费
-- [ ] 主包体积 ≤2MB，总包 ≤20MB（微信开发者工具【详情】查看）
+- [ ] 主包体积 ≤2MB，总包 ≤20MB —— **实测：主包 97.7 KB / 总计 160.3 KB，无风险**
 - [ ] 无 emoji 作为功能图标（本项目已通过 P0 扫描，0 命中）
 - [ ] 无违规内容（种子测试数据均为正常玩具描述，无敏感词）
+
+### ⚠️ 提审前必须清掉的 `【待补充】` 占位（审核硬门槛）
+
+正文里写着"运营者：待补充"几乎必被驳回。需运营方提供下列信息后替换：
+
+| 文件 | 行 | 待填内容 |
+|---|---|---|
+| `pages/agreement/agreement.js` | 18 | 用户协议开头的运营主体名称 |
+| 同上 | 86 | 争议解决方式 |
+| 同上 | 91 | 运营者名称 + 联系邮箱 |
+| 同上 | 100 | 隐私政策开头的运营主体名称 |
+| 同上 | 130 | 存储地域及保存期限 |
+| 同上 | 165 / 166 | 运营者名称 + 联系邮箱 |
+| 同上 | 180 | 政策生效日期（`updatedAt`） |
+| `pages/about/about.js` | 17 | 联系邮箱（`email`）※ |
+| `pages/agreement/agreement.wxml` | 39 | 页面顶部"待补充说明"提示（补全后应删掉） |
+| `pages/about/about.wxml` | 34 | 同上 |
+
+※ `about.js` 的 `version` 不写死，从 `wx.getAccountInfoSync().miniProgram.version` 读，
+正式版能读到号；读不到时才回落占位，无需手工填。
+（另 `agreement.js:9` 与 `about.js:3` 是解释占位约定的注释，替换时要一并删掉。）
 
 ## 技术就位确认
 
 - [x] AppID 已填入 `project.config.json`（`wx1b408ef04842f84a`）
 - [x] 云开发环境已创建，环境 ID 已填入 `app.js` 的 `globalData.envId`（`cloud1-d9gtvt3k34dcfec16`）
-- [x] 9 个云数据库集合已建立并配置安全规则（含新增 `points_accounts`/`points_ledger`），规则统一为客户端不可读写 —— 依据：前端零直连数据库，全部读写经云函数
-- [x] 8 个云函数（`auth`/`user`/`toy`/`swap`/`review`/`membership`/`upload`/`points`）已全部部署成功，且**逐个用 `invokeFunction` 实测调用通过**（`InvokeResult: 0`，无 `ErrMsg`）
-- [x] 云存储跨用户可见性已解决：环境免费体验期内 ACL 锁死 `PRIVATE`，已改用云函数签发临时签名链接（`_shared/storage.js`），实测匿名拉取 HTTP 200 且内容一致，无需升级套餐（详见 DEPLOY-GUIDE.md 第四步补充）
+- [x] **14 个**云数据库集合已建立并配置安全规则（原 9 个 + `wants` / `reports` / `blocks` /
+  `feedbacks` / `notifications`），规则统一为客户端不可读写 —— 依据：前端零直连数据库，全部读写经云函数
+- [x] **9 个**云函数（`auth`/`user`/`toy`/`swap`/`review`/`membership`/`upload`/`points`/`notify`）
+  已全部部署，`Status=Active`，且逐个用 `invokeFunction` 实测调用通过
+- [x] 云存储跨用户可见性已解决：环境免费体验期内 ACL 锁死 `PRIVATE`，已改用云函数签发临时签名链接
+  （`_shared/storage.js`），实测匿名拉取 HTTP 200 且内容一致，无需升级套餐
+- [x] **小程序代码已上传为 `1.0.0` 开发版本**（IDE 上报包体积：main 97.7 KB / TOTAL 160.3 KB）
+- [x] 本地验收脚本全绿：集成 186 / 事件契约 14 / 详情兑换 35 / toy-card 56 + check-utils 全通过
 - [ ] 真机预览测试通过（至少用 2 个测试账号完整走一遍交换双向流程）
 - [ ] 云函数日志无异常报错（云开发控制台【云函数】→ 点击函数 → 查看日志）
 
+### ⚠️ 订阅消息权限：config.json 只认 IDE GUI 上传
+
+`cloudfunctions/swap/config.json` 已声明 `{"permissions":{"openapi":["subscribeMessage.send"]}}`
+（全仓唯一云调用点 `_shared/notify.js` 的 `cloud.openapi.subscribeMessage.send`，
+且真正调用它的只有 `swap`）。**但这条权限只在用微信开发者工具 GUI 右键上传 `swap` 时生效** ——
+CloudBase MCP 的 `updateFunctionCode` 不读 `config.json`，而开发者工具 CLI
+（`cli cloud functions deploy`）遇到含 `services/` 子目录的函数会报 `EISDIR` 直接失败。
+
+当前模板 ID 为空，`_shared/notify.js` 会提前 `return {sent:false, reason:'no_template'}`，
+所以**权限缺失是被"空模板"掩盖的潜伏缺陷**：一填上模板 ID 就会 100% 静默推送失败。
+→ 填模板 ID 时，请顺手在 IDE 里右键 `cloudfunctions/swap` →「上传并部署：云端安装依赖」。
+
 ## 已知限制（提交审核时如实说明，避免审核疑问）
 
-- 短信验证码为开发态模拟（固定 1234），如审核询问，可说明"验证码功能已实现接口，正在申请短信服务商资质，将在后续版本接入真实短信网关"
-- 支付为模拟态，如涉及资金问题，需在审核备注中说明"当前版本服务费/会员费为功能演示，暂未接入真实微信支付，等商户号审批通过后接入"（**重要**：若审核方发现"展示收费但未真实扣款"，可能被要求先去除收费展示或加注"内测阶段"标识，请视审核反馈调整）
+- 手机号验证码为开发态模拟（`cloudfunctions/auth/services/smsService.js` 固定 `1234`），
+  但**登录流程已不经过手机号**（方案 A：openid 即身份，见 `auth/index.js` 头部注释），
+  前端无任何入口调用 `sendCode`，该分支属预留代码。如审核询问，可说明
+  "手机号验证码接口已实现，待主体升级后接入真实短信服务商"。
+  > 注：`sendCode` 已改为**不回传验证码**（只进服务端日志），避免"接口把验证码告诉调用方"的形状带上线。
+- 支付为模拟态，如涉及资金问题，需在审核备注中说明"当前版本服务费/会员费为功能演示，
+  暂未接入真实微信支付，等商户号审批通过后接入"（**重要**：若审核方发现"展示收费但未真实扣款"，
+  可能被要求先去除收费展示或加注"内测阶段"标识，请视审核反馈调整）
+
+## 演示数据清理（上线前建议做，仓库无脚本）
+
+云上现有 `seedDemo: true` 的演示数据：`users` 4 个演示作者（`_openid` 形如 `demo-owner-*`）、
+`toys` 14 件（图片走 `https://picsum.photos/seed/*`，**仅在关闭域名校验时可显示**，
+提审演示时可能显示为破图）。
+
+清理只能人工（**仓库里没有任何入库/清库脚本**）：
+- `toys`：按 `seedDemo: true` 筛
+- `users`：按 `_openid` 前缀 `demo-owner-` 筛
+- ⚠️ 库里另有 1 件用户手工创建的「乐高」（`_id=3f1b36026ac9db6d000419313e7e8b4d`，
+  `city=null`，图片走云存储），**不带 `seedDemo` 标记，不要误删**。
 
 ## 建议：分阶段提交策略
 
