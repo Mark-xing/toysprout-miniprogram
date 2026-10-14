@@ -95,15 +95,26 @@ CloudBase MCP 的 `updateFunctionCode` 不读 `config.json`，而开发者工具
 
 ## 演示数据清理（上线前建议做，仓库无脚本）
 
-云上现有 `seedDemo: true` 的演示数据：`users` 4 个演示作者（`_openid` 形如 `demo-owner-*`）、
-`toys` 14 件（图片走 `https://picsum.photos/seed/*`，**仅在关闭域名校验时可显示**，
-提审演示时可能显示为破图）。
+2026-10-14 直连云数据库实测的现存数据：
 
-清理只能人工（**仓库里没有任何入库/清库脚本**）：
-- `toys`：按 `seedDemo: true` 筛
-- `users`：按 `_openid` 前缀 `demo-owner-` 筛
-- ⚠️ 库里另有 1 件用户手工创建的「乐高」（`_id=3f1b36026ac9db6d000419313e7e8b4d`，
-  `city=null`，图片走云存储），**不带 `seedDemo` 标记，不要误删**。
+| 集合 | 条数 | 性质 |
+|---|---|---|
+| `users` | 5 | 1 条真实（`向兴国` / `_openid=ohav85CnID4kBNChnkEgNKmEcgrA`）+ **4 条演示**（`_openid` 前缀 `demo-owner-`，均带 `seedDemo: true`） |
+| `toys` | 15 | 1 条真实（`乐高`，云存储图，`_id=3f1b36026ac9db6d000419313e7e8b4d`）+ **14 条演示**（全部带 `seedDemo: true`） |
+| `wants` | 3 | 3 条都指向演示玩具 → 清理后成孤儿，应一并删 |
+| `reports` | 1 | **测试残留**：`reason: "fake"`，`targetId` 指向演示玩具 `ts-pen` |
+| `addresses` | 1 | 真实收货地址（含真实手机号）——**属于用户本人数据，不要动** |
+
+⚠️ 关于演示图片：14 件演示玩具的图都是 `https://picsum.photos/seed/*`。
+**`<image>` 组件并不校验合法域名**，所以不是被域名校验挡住的；真正的风险是
+`picsum.photos` 是**境外图床**，国内真机加载可能很慢或直接失败 ——
+审核员打开发现页看到一屏加载不出来的灰块，是实打实的观感问题。
+（另：`project.private.config.json` 里 `urlCheck: false` 是本地私有配置，不上传生产。）
+
+清理只能人工（**仓库里没有任何入库/清库脚本**，`seedDemo` 只出现在文档里，数据是当初用 MCP 手工插的）：
+- `toys` / `users`：按 `seedDemo: true` 筛
+- `wants` / `reports`：按上面的关联关系清
+- ⚠️ 真实的那 1 件「乐高」与那 1 条地址**不带 `seedDemo` 标记，不要误删**
 
 ## 建议：分阶段提交策略
 
